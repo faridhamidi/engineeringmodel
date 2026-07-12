@@ -62,9 +62,25 @@ Absence of incidents is evidence of stable operation, not proof that every risk 
 
 Use **control plane** only when the system contains authority, canonical desired state, policy derivation, observation, and a reconciliation or enforcement path.
 
-Use **hexagonal architecture** only when ports isolate core decisions from adapters and bypasses are prevented or at least detectable.
+Use **hexagonal architecture** only when interfaces isolate core decisions from integrations and bypasses are prevented or at least detectable.
 
 Use **SRE** only for practices actually implemented, such as service objectives, error budgets, incident learning, or toil-reduction mechanisms. Reading SRE literature is not implementation.
+
+The repository's foundation should normally use property-based wording rather than require these labels.
+
+## Extracting a foundation rule
+
+A cross-cutting rule belongs here when it:
+
+- applies across more than one product or subsystem;
+- prevents a concrete class of design, testing, or operational failure;
+- can begin with low implementation cost;
+- has an observable or testable conformance condition;
+- remains useful without requiring the source project's exact terminology or tooling.
+
+Prefer "external effects cross named seams" over "all projects must use hexagonal architecture." Prefer "operation context crosses every hop" over "all projects must deploy distributed tracing."
+
+The extracted rule should preserve the property while discarding source-specific service names, provider choices, file paths, and mature-project machinery.
 
 ## Confidentiality
 
