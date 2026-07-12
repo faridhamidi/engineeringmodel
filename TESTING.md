@@ -110,6 +110,29 @@ This is more informative than calling something a unit test or integration test.
 9. Regression tests for every escaped semantic defect.
 10. Seeded bad examples proving that test oracles actually detect failure.
 
+## Foundation checks
+
+A new repository does not need a large architecture suite. It should add a few checks for the seams whose accidental collapse would be expensive.
+
+Useful initial checks include:
+
+- decision modules do not import external provider SDKs;
+- external clients are created only in designated integration modules;
+- one named component owns each important irreversible mutation;
+- declared action or outcome catalogs match the behavior that consumes them;
+- known asynchronous hops carry the required correlation fields.
+
+### Ratchet incomplete boundaries
+
+A boundary may be valuable before it is fully cleaned up. When existing violations cannot be removed immediately:
+
+1. enumerate the known violation set;
+2. fail the test if a new violation appears;
+3. shrink the allowed set as cleanup lands;
+4. convert the ratchet into a zero-violation rule when complete.
+
+This prevents an imperfect architecture from becoming a permanently expanding exception.
+
 ## What not to copy
 
 Do not copy test counts, naming ceremonies, or coverage thresholds from a larger system without identifying the risk they control.
