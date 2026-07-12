@@ -72,8 +72,20 @@ A test suite should attempt to falsify safety claims, protect previously broken 
 
 Testing rigor is not ceremony. It is the ability to state what must never happen and provide evidence that the implementation rejects it.
 
+## Establish legibility early
+
+A small codebase is the cheapest place to preserve boundaries, declare shared vocabulary, and propagate operation context.
+
+Use the lightest mechanism that works. The objective is not to impose a named architecture; it is to prevent external effects, system decisions, and cross-hop execution from becoming indistinguishable as the code grows.
+
+## Earn abstraction from repetition
+
+Declare an interface, registry, state machine, or tracing layer when a concrete dependency, repeated rule, or diagnostic gap justifies it.
+
+Do not pre-build a complete architecture. Create a narrow seam early, enforce it, and deepen it only after the system demonstrates the need.
+
 ## Keep claims smaller than the system
 
-A domain-specific control plane can be serious without being equivalent to Kubernetes or Crossplane. Ports and adapters can reduce coupling without proving actual multi-cloud support. Strong tests can improve confidence without proving correctness.
+A domain-specific control plane can be serious without being equivalent to Kubernetes or Crossplane. Interfaces can reduce coupling without proving actual multi-cloud support. Strong tests can improve confidence without proving correctness.
 
 Precise limits make the achievement more credible, not less.
