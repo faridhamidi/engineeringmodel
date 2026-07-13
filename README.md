@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="docs/assets/engineering-model-governance-harness.avif" alt="Engineering Models — governed automation harness" width="100%">
+</p>
+
 # Engineering Models
 
 Reusable engineering tradecraft extracted from operational software, organized by adoption cost and problem scope.
