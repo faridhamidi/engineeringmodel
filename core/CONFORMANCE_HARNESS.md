@@ -42,7 +42,7 @@ A repository may legitimately adopt Core boundaries, tests, and safe defaults wi
 | Term | Narrow meaning |
 |---|---|
 | **Repository conformance harness** | Coordinated rule projections, deterministic checkers, conformance evidence, ratchets, lifecycle records, ownership declarations, and audit output. |
-| **Rule identifier** | Stable, immutable identifier for one mechanically checked architectural property. |
+| **Rule identifier** | Stable, immutable namespaced identifier in `<layer>.<domain>.<number>` form for one mechanically checked architectural property. |
 | **Positive conformance test** | Test showing that the current repository satisfies the rule's declared enforcement mode. |
 | **Minimal falsifier** | Smallest known-bad input or repository fragment proving that the checker detects a prohibited new violation. |
 | **Checker adapter** | Language- or tool-specific implementation of a more general rule meaning. |
@@ -51,6 +51,35 @@ A repository may legitimately adopt Core boundaries, tests, and safe defaults wi
 | **Ownership binding** | Mechanical correspondence between owners declared in the manifest and principals covering the manifest through repository ownership configuration. |
 
 These terms are local to this optional escalation. They are not additions to the Governed Automation vocabulary.
+
+## Identifier format
+
+Rule identifiers use:
+
+```text
+<LAYER>.<DOMAIN>.<NUMBER>
+```
+
+Examples:
+
+```text
+CORE.ARCH.001
+CORE.CONTEXT.001
+GOV.AUTH.001
+FIXTURE.ARCH.001
+```
+
+The layer identifies the adoption surface, the domain identifies the enduring architectural concern, and the final segment is a zero-padded sequence within that namespace. Fixture-only rules use `FIXTURE.*` and must not appear in the live repository manifest.
+
+Identifiers are immutable after activation and are never reused. Do not encode lifecycle, enforcement mode, severity, checker kind, implementation language, file paths, or module names in the identifier. Those properties may change while rule identity remains stable.
+
+Use the validation form:
+
+```regex
+^(CORE|GOV|FIXTURE)\.[A-Z][A-Z0-9_]*\.\d{3}$
+```
+
+Create a new domain only for an enduring architectural concern, not for one checker implementation or file layout.
 
 ## Escalation ladder
 
