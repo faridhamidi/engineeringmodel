@@ -3,17 +3,20 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from .model import EffectiveDecision
-from .reconciler import Reconciler
+from .reconciliation_request import ReconciliationRequestPort
 from .security import Identity, Role, require_role
 
 
 @dataclass
 class Recovery:
-    reconciler: Reconciler
+    request_port: ReconciliationRequestPort
     identity: Identity
 
     def retry_committed(self, decision_id: str) -> EffectiveDecision:
         require_role(self.identity, Role.RECOVERY)
-        # Recovery holds no commit or mutation credential. It requests re-entry
-        # through the component that already owns execution authority.
-        return self.reconciler.reconcile(decision_id)
+        # Recovery owns only a request capability. It does not receive the
+        # reconciler object, its workload identity, or the managed resource.
+        return self.request_port.request_reconciliation(
+            decision_id,
+            caller=self.identity,
+        )

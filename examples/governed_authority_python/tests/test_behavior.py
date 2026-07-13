@@ -11,14 +11,16 @@ from governed_authority_example.commit import CommitAuthority, ValidationError
 from governed_authority_example.external import ManagedResource
 from governed_authority_example.model import CanonicalDecision, Proposal
 from governed_authority_example.reconciler import Reconciler
+from governed_authority_example.reconciliation_request import ReconciliationGateway
 from governed_authority_example.recovery import Recovery
 from governed_authority_example.security import AuthorizationError, Identity, Role
-from governed_authority_example.store import CanonicalStore
+from governed_authority_example.store import CanonicalStore, ConcurrencyError
 
 
 COMMIT_ID = Identity("commit-service", Role.COMMIT)
 RECONCILER_ID = Identity("reconciler-service", Role.RECONCILER)
 RECOVERY_ID = Identity("recovery-service", Role.RECOVERY)
+DISCOVERY_ID = Identity("discovery-service", Role.DISCOVERY)
 
 
 class GovernedAuthorityBehaviorTests(unittest.TestCase):
@@ -27,7 +29,8 @@ class GovernedAuthorityBehaviorTests(unittest.TestCase):
         self.resource = ManagedResource()
         self.committer = CommitAuthority(self.store, COMMIT_ID)
         self.reconciler = Reconciler(self.store, self.resource, RECONCILER_ID)
-        self.recovery = Recovery(self.reconciler, RECOVERY_ID)
+        self.request_gateway = ReconciliationGateway(self.reconciler)
+        self.recovery = Recovery(self.request_gateway, RECOVERY_ID)
 
     def test_proposal_has_no_external_effect(self) -> None:
         proposal = Proposal("case-1", True, True, True)
@@ -68,11 +71,35 @@ class GovernedAuthorityBehaviorTests(unittest.TestCase):
                 identity=COMMIT_ID,
             )
 
-    def test_recovery_reenters_execution_without_stronger_identity(self) -> None:
+    def test_recovery_reenters_through_authenticated_request_boundary(self) -> None:
         self.committer.commit(Proposal("case-6", True, True, True))
         effective = self.recovery.retry_committed("case-6")
         self.assertTrue(effective.enabled)
         self.assertEqual(self.resource.states["case-6"], True)
+
+    def test_reconciliation_gateway_rejects_unrelated_role(self) -> None:
+        self.committer.commit(Proposal("case-7", True, True, True))
+        with self.assertRaises(AuthorizationError):
+            self.request_gateway.request_reconciliation(
+                "case-7",
+                caller=DISCOVERY_ID,
+            )
+        self.assertNotIn("case-7", self.resource.states)
+
+    def test_recovery_cannot_reconcile_missing_canonical_decision(self) -> None:
+        with self.assertRaises(KeyError):
+            self.recovery.retry_committed("missing")
+        self.assertEqual(self.resource.states, {})
+
+    def test_stale_expected_version_cannot_overwrite_newer_decision(self) -> None:
+        self.committer.commit(Proposal("case-8", True, True, True, expected_version=0))
+        stale = Proposal("case-8", False, True, True, expected_version=0)
+        with self.assertRaisesRegex(ConcurrencyError, "stale or non-sequential"):
+            self.committer.commit(stale)
+
+        current = self.store.get("case-8")
+        self.assertEqual(current.version, 1)
+        self.assertTrue(current.requested_enabled)
 
 
 if __name__ == "__main__":

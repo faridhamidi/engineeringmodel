@@ -8,9 +8,11 @@ The runtime checks show that logical authority is backed by role enforcement:
 
 - `COMMIT` may write canonical state but cannot mutate the managed resource;
 - `RECONCILER` may mutate the managed resource but cannot write canonical state;
-- `RECOVERY` requests reconciliation and receives neither stronger credential.
+- `RECOVERY` owns only an authenticated reconciliation-request capability;
+- the recovery object does not import or hold the privileged reconciler type, identity, store, or managed resource;
+- stale proposal versions cannot overwrite newer canonical decisions.
 
-The structural tests additionally restrict protected method call sites.
+The structural tests additionally restrict protected method call sites and prove that recovery reaches execution only through the request boundary.
 
 Run from the repository root:
 

@@ -35,7 +35,8 @@ python -m unittest discover -s examples/core_boundaries_python/tests -v
 - another identity can mutate the managed resource;
 - runtime role enforcement backs the logical authority split;
 - repeated reconciliation is idempotent;
-- recovery re-enters through reconciliation instead of acquiring stronger credentials;
+- recovery re-enters through an authenticated request boundary instead of receiving a privileged reconciler object or identity;
+- stale proposal versions cannot overwrite newer canonical decisions;
 - structural checks reject new protected call sites.
 
 Run:
