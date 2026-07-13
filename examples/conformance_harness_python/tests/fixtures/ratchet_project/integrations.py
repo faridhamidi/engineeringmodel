@@ -1,0 +1,2 @@
+class VendorClient: pass
+VendorClient()

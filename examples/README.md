@@ -25,6 +25,28 @@ Run:
 python -m unittest discover -s examples/core_boundaries_python/tests -v
 ```
 
+## Repository conformance harness
+
+[`conformance_harness_python/`](conformance_harness_python/) demonstrates:
+
+- a typed and fail-closed rule manifest;
+- stable lifecycle and version-independent historical lineage;
+- zero-violation and exact-ratchet enforcement;
+- rationale and approval-policy references;
+- public owner principals bound to CODEOWNERS entries;
+- Python-specific checker adapters;
+- per-rule positive tests and minimal falsifiers;
+- isolated generic ratchet and lifecycle fixtures;
+- active, ratchet, ownership, and historical audit output.
+
+Run:
+
+```bash
+python -m unittest discover -s examples/conformance_harness_python/tests -v
+```
+
+This witness does not prescribe a project layout, manifest schema, language, hosting platform, or organizational ownership model.
+
 ## Governed authority
 
 [`governed_authority_python/`](governed_authority_python/) demonstrates:

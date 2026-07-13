@@ -17,5 +17,10 @@ jobs:
           python-version: "3.12"
       - name: Test core boundary witness
         run: python -m unittest discover -s examples/core_boundaries_python/tests -v
+      - name: Test conformance harness witness
+        run: python -m unittest discover -s examples/conformance_harness_python/tests -v
+      - name: Run conformance harness audit
+        working-directory: examples/conformance_harness_python
+        run: python run_audit.py --report-path artifacts/conformance-audit.md
       - name: Test governed authority witness
         run: python -m unittest discover -s examples/governed_authority_python/tests -v
