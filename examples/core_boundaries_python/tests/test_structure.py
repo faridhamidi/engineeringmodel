@@ -58,7 +58,7 @@ integrations.VendorClient()
             if constructor_call_count(source, "VendorClient"):
                 found.add(path.name)
 
-        # In a legacy codebase this set may temporarily contain known violations.
+        # In an existing codebase this set may temporarily contain known violations.
         # Any new call site fails until the allowed set is deliberately reviewed.
         allowed_construction_sites = {"integrations.py"}
         self.assertEqual(found, allowed_construction_sites)

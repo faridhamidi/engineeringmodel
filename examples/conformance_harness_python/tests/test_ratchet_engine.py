@@ -22,7 +22,7 @@ class RatchetEngineTests(unittest.TestCase):
     def _fixture_rule(self):
         manifest = load_harness_manifest(FIXTURES / "ratchet_manifest.json")
         rule = manifest.active_rules[0]
-        self.assertEqual(rule.id, "CORE998")
+        self.assertEqual(rule.id, "FIXTURE.ARCH.001")
         return rule
 
     def test_declared_set_equal_to_observed_set_passes(self) -> None:
@@ -42,15 +42,15 @@ class RatchetEngineTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             self._copy_fixture(root)
-            (root / "legacy_b.py").unlink()
+            (root / "known_b.py").unlink()
             self.assertFalse(evaluate_rule(self._fixture_rule(), root).ok)
 
     def test_cleanup_with_manifest_shrink_passes(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             self._copy_fixture(root)
-            (root / "legacy_b.py").unlink()
-            rule = replace(self._fixture_rule(), known_violations=("legacy_a.py",))
+            (root / "known_b.py").unlink()
+            rule = replace(self._fixture_rule(), known_violations=("known_a.py",))
             self.assertTrue(evaluate_rule(rule, root).ok)
 
     def test_transition_to_zero_requires_empty_observed_set(self) -> None:
@@ -59,8 +59,8 @@ class RatchetEngineTests(unittest.TestCase):
             self._copy_fixture(root)
             zero_rule = replace(self._fixture_rule(), enforcement_mode="zero_violation", known_violations=())
             self.assertFalse(evaluate_rule(zero_rule, root).ok)
-            (root / "legacy_a.py").unlink()
-            (root / "legacy_b.py").unlink()
+            (root / "known_a.py").unlink()
+            (root / "known_b.py").unlink()
             self.assertTrue(evaluate_rule(zero_rule, root).ok)
 
 

@@ -16,16 +16,16 @@ class RepositoryInvariantTests(unittest.TestCase):
     def setUpClass(cls) -> None:
         cls.results = {result.rule.id: result for result in evaluate_manifest(load_harness_manifest())}
 
-    def test_core001(self) -> None:
-        self.assertTrue(self.results["CORE001"].ok, self.results["CORE001"].detail)
+    def test_core_arch_001(self) -> None:
+        self.assertTrue(self.results["CORE.ARCH.001"].ok, self.results["CORE.ARCH.001"].detail)
 
-    def test_core002(self) -> None:
-        result = self.results["CORE002"]
+    def test_core_arch_002(self) -> None:
+        result = self.results["CORE.ARCH.002"]
         self.assertTrue(result.ok, result.detail)
-        self.assertEqual(result.observed_paths, ("sample_project/legacy_adapter.py",))
+        self.assertEqual(result.observed_paths, ("sample_project/known_constructor_site.py",))
 
-    def test_core003(self) -> None:
-        self.assertTrue(self.results["CORE003"].ok, self.results["CORE003"].detail)
+    def test_core_context_001(self) -> None:
+        self.assertTrue(self.results["CORE.CONTEXT.001"].ok, self.results["CORE.CONTEXT.001"].detail)
 
 
 if __name__ == "__main__":

@@ -2,12 +2,12 @@
   "manifest_version": 1,
   "rules": [
     {
-      "id": "CORE998",
+      "id": "FIXTURE.ARCH.001",
       "lifecycle": "active",
       "enforcement_mode": "ratchet",
       "known_violations": [
-        "legacy_a.py",
-        "legacy_b.py"
+        "known_a.py",
+        "known_b.py"
       ],
       "statement": "Fixture constructor sites remain ratcheted.",
       "rationale_ref": "../../../../core/CONFORMANCE_HARNESS.md#enforcement-modes",

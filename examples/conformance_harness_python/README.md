@@ -5,7 +5,7 @@ This dependency-free Python witness demonstrates one possible repository conform
 ## Demonstrated
 
 - typed, fail-closed manifest parsing;
-- stable rule identifiers and lifecycle validation;
+- stable namespaced rule identifiers and lifecycle validation;
 - zero-violation and exact-ratchet enforcement;
 - rationale and approval-policy references;
 - exact public owner principals and CODEOWNERS correspondence;

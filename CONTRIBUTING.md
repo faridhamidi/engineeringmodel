@@ -63,7 +63,7 @@ A repository conformance harness is an optional Core Hygiene escalation. Product
 A new or changed harness rule should include:
 
 - a canonical rationale reference;
-- a stable rule identifier;
+- a stable namespaced rule identifier in `<layer>.<domain>.<number>` form;
 - lifecycle and enforcement mode;
 - an exact known-violation set when ratcheted;
 - exact public owner principals;
@@ -77,6 +77,8 @@ A new or changed harness rule should include:
 - an evidence boundary;
 - adoption cost and a skip condition;
 - historical lineage when retired or superseded.
+
+Choose an existing rule domain when it fits. Do not create a domain for one implementation detail, renumber rules, or recycle retired identifiers. Fixture rules use `FIXTURE.*` and remain outside the live manifest.
 
 Naming conventions, directory placement, and agent instructions are not executable evidence by themselves. Do not weaken a rule, checker, and falsifier together merely to restore a passing build; state which architectural decision changed.
 
@@ -98,6 +100,42 @@ This includes changes to:
 The manifest validates ownership declarations and approval-policy references. The executable witness does not prove that the hosting platform requires code-owner review, enables branch protection, or prevents administrative bypass. Record that hosting-platform evidence separately before claiming enforced review.
 
 Historical rule identifiers are immutable and never reused. Retired and superseded records remain visible with equivalent fidelity across manifest versions. Any deliberate weakening of that retention requires a separate architecture decision whose explicit subject is lineage reduction.
+
+## Commit messages
+
+Use Conventional Commits:
+
+```text
+<type>(<optional-scope>): <description>
+```
+
+Supported types:
+
+```text
+feat
+fix
+docs
+test
+refactor
+ci
+chore
+```
+
+Recommended scopes include `core`, `harness`, `conformance`, `governed-automation`, `examples`, `case-studies`, and `ci`.
+
+Examples:
+
+```text
+feat(harness): namespace conformance rule identifiers
+docs(core): define rule identifier format
+test(conformance): add namespace validation cases
+fix(harness): reject fixture identifiers in the live manifest
+ci(witnesses): run conformance audit
+```
+
+Commit messages describe the semantic change, not the editing activity. Avoid messages such as `update files`, `make changes`, `fix stuff`, or `address feedback`.
+
+This repository documents the convention but does not enforce commit-message linting. Add enforcement only when release, changelog, or versioning automation materially depends on commit classification.
 
 ## Evidence tags
 

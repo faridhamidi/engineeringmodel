@@ -148,6 +148,8 @@ The responsibilities are distinct:
 - the **minimal falsifier** introduces one prohibited new violation and proves the intended rule rejects it;
 - **generic fixture-driven tests** prove ratchet, lifecycle, ownership-binding, and audit mechanics once, independently of live rule identifiers.
 
+Generic harness-engine tests use `FIXTURE.*` identifiers and must not depend on active repository-rule namespaces.
+
 For a zero-violation rule, the positive test expects an empty prohibited set. For a ratcheted rule, it expects the observed set to equal the exact declared set.
 
 A change that modifies a rule, checker, and falsifier must explain whether the protected architectural property changed. Weakening all three merely to restore a passing build is not conformance evidence.

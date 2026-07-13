@@ -10,7 +10,7 @@ if __package__ in {None, ""}:
 
 from harness import HarnessManifest, MANIFEST_PATH, REPO_ROOT, RuleDefinition, WITNESS_ROOT, load_harness_manifest
 
-RULE_ID_RE = re.compile(r"^CORE\d{3}$")
+RULE_ID_RE = re.compile(r"^(CORE|GOV|FIXTURE)\.[A-Z][A-Z0-9_]*\.\d{3}$")
 OWNER_RE = re.compile(r"^@[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?(?:/[A-Za-z0-9_.-]+)?$")
 SUPPORTED_LIFECYCLES = {"proposed", "active", "retired", "superseded"}
 SUPPORTED_MODES = {"zero_violation", "ratchet"}
@@ -93,7 +93,7 @@ def parse_codeowners(path: Path) -> dict[str, tuple[str, ...]]:
 def _validate_rule(rule: RuleDefinition, ids: set[str]) -> list[Violation]:
     violations: list[Violation] = []
     if not RULE_ID_RE.fullmatch(rule.id):
-        violations.append(Violation(f"rule ID must match CORE###: {rule.id}"))
+        violations.append(Violation(f"rule ID must match <layer>.<domain>.<number>: {rule.id}"))
     if rule.lifecycle not in SUPPORTED_LIFECYCLES:
         violations.append(Violation(f"{rule.id} has unsupported lifecycle: {rule.lifecycle}"))
     if len(rule.statement) > 160:
@@ -195,6 +195,10 @@ def validate_manifest(
     if len(ids) != len(set(ids)):
         violations.append(Violation("rule IDs must be unique and never reused"))
     id_set = set(ids)
+    if manifest_path.resolve() == MANIFEST_PATH.resolve():
+        for rule_id in ids:
+            if rule_id.startswith("FIXTURE."):
+                violations.append(Violation(f"live manifest must not use FIXTURE namespace: {rule_id}"))
     for rule in manifest.rules:
         violations.extend(_validate_rule(rule, id_set))
     violations.extend(_validate_supersession_cycles(manifest))
