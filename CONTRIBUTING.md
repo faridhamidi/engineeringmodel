@@ -1,92 +1,96 @@
 # Contributing
 
-This repository should preserve engineering reasoning, not advertise the author.
+This repository preserves engineering reasoning rather than advertising tools, architecture labels, or the author.
 
-## Required structure
+## Choose the layer first
 
-A new model or case study should state:
+A contribution belongs in **Core Hygiene** when it:
 
-- the concrete operating context;
-- the decision or state being governed;
-- the actors and authority boundaries;
-- the invariant;
-- the mechanism;
+- applies to many non-trivial codebases;
+- can begin with low implementation cost;
+- prevents a concrete design, testing, or diagnostic failure;
+- has an observable or executable conformance condition;
+- remains useful without governance, approval, or shared-resource mutation.
+
+A contribution belongs in **Governed Automation** only when it addresses consequential external effects, durable authority, material blast radius, evidence-sensitive action, or recovery bypass risk.
+
+Do not place a specialized authority mechanism in the core layer merely because it improved one complex system.
+
+## Required model structure
+
+A new model should state:
+
+- trigger condition;
+- problem;
+- mechanism;
+- invariant;
 - failure and recovery behavior;
-- tests or operational evidence;
-- limitations;
+- evidence;
+- boundary or rejection condition;
 - what was deliberately not built.
 
-## Claim classification
+## Evidence tags
 
-Mark important claims mentally or explicitly as one of:
+Use these tags explicitly in case studies and material conclusions:
 
-- **implemented** — visible in production code;
-- **tested** — protected by a named test or executable check;
+- **implemented** — visible in code;
+- **tested** — protected by a named executable check;
 - **deployed** — running in a real environment;
-- **operationally used** — consumed by real operators or workflows;
+- **operationally used** — consumed by a real workflow or operator;
 - **proposed** — documented direction, not current behavior;
 - **inferred** — a conclusion drawn from evidence but not directly measured.
 
-Do not let a proposed design inherit the language of deployed behavior.
+Recommended lesson block:
+
+```markdown
+### Lesson
+
+**Evidence:** implemented, tested  
+**Scope:** one bounded system  
+**Conclusion:** ...
+```
+
+Do not let an inference inherit the confidence of the implementation evidence beneath it.
+
+## Case-study rules
+
+A positive case must show why the adoption gate was satisfied.
+
+A negative or non-adoption case must be one of:
+
+- an observed misapplication with evidence of its cost; or
+- a clearly labelled counterfactual analysis grounded in a real system.
+
+Never present a constructed counterexample as an operational failure.
 
 ## Writing rules
 
-Use plain technical language. Prefer "sole canonical writer" to "enterprise governance engine" and "exhaustive finite cross-product" to "advanced testing methodology."
+Use plain technical language. Prefer property statements such as “external effects cross named seams” over architecture-brand requirements.
 
 Avoid:
 
-- revolutionary;
-- next-generation;
+- revolutionary or next-generation;
 - enterprise-grade without defined evidence;
 - production-ready without an operating record;
 - best practice without context;
 - zero-error or zero-downtime as unqualified objectives;
-- cloud-agnostic when only one provider is implemented;
+- provider-independent when only one provider is implemented;
 - AI-powered when a model is incidental to the value;
-- comparisons to large frameworks without a strict statement of which property is shared.
-
-## Evidence rule
-
-Every broad conclusion should identify its basis:
-
-- source behavior;
-- test or invariant;
-- deployment state;
-- operational use;
-- measured result;
-- documented incident or defect.
-
-Absence of incidents is evidence of stable operation, not proof that every risk was prevented.
-
-## Architecture terminology rule
-
-Use **control plane** only when the system contains authority, canonical desired state, policy derivation, observation, and a reconciliation or enforcement path.
-
-Use **hexagonal architecture** only when interfaces isolate core decisions from integrations and bypasses are prevented or at least detectable.
-
-Use **SRE** only for practices actually implemented, such as service objectives, error budgets, incident learning, or toil-reduction mechanisms. Reading SRE literature is not implementation.
-
-The repository's foundation should normally use property-based wording rather than require these labels.
-
-## Extracting a foundation rule
-
-A cross-cutting rule belongs here when it:
-
-- applies across more than one product or subsystem;
-- prevents a concrete class of design, testing, or operational failure;
-- can begin with low implementation cost;
-- has an observable or testable conformance condition;
-- remains useful without requiring the source project's exact terminology or tooling.
-
-Prefer "external effects cross named seams" over "all projects must use hexagonal architecture." Prefer "operation context crosses every hop" over "all projects must deploy distributed tracing."
-
-The extracted rule should preserve the property while discarding source-specific service names, provider choices, file paths, and mature-project machinery.
+- comparisons to large frameworks without stating the exact shared property.
 
 ## Confidentiality
 
-Do not include employer names, account identifiers, internal domains, credentials, proprietary source, unapproved adoption metrics, or incident details that identify affected parties.
+Do not include:
 
-Sanitize the example while preserving the state model and decision.
+- employer or customer names;
+- account, tenant, host, or internal system identifiers;
+- internal domains, paths, credentials, or network details;
+- proprietary source code;
+- unapproved adoption metrics;
+- incident details that identify affected parties;
+- screenshots, logs, prompts, or generated artifacts containing personal or operational metadata.
+
+Sanitize the example while preserving the decision, state model, failure mode, and evidence class. Public source material may still contain details that should not be repeated in a generalized case study.
 
 ## Revision rule
 
