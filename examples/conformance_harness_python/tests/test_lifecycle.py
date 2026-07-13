@@ -17,12 +17,12 @@ class LifecycleTests(unittest.TestCase):
     def test_only_active_rules_execute(self) -> None:
         manifest = load_harness_manifest()
         self.assertTrue(all(rule.lifecycle == "active" for rule in manifest.active_rules))
-        self.assertEqual({rule.id for rule in manifest.historical_rules}, {"CORE004", "CORE005"})
+        self.assertEqual({rule.id for rule in manifest.historical_rules}, {"CORE.ARCH.003", "CORE.CONTEXT.002"})
 
     def test_missing_successor_fails(self) -> None:
         manifest = load_harness_manifest()
         rules = tuple(
-            replace(rule, superseded_by="CORE999") if rule.id == "CORE005" else rule
+            replace(rule, superseded_by="CORE.ARCH.999") if rule.id == "CORE.CONTEXT.002" else rule
             for rule in manifest.rules
         )
         changed = HarnessManifest(manifest.manifest_version, rules, manifest.audit)
@@ -32,8 +32,8 @@ class LifecycleTests(unittest.TestCase):
     def test_supersession_cycle_fails(self) -> None:
         manifest = load_harness_manifest()
         rules = tuple(
-            replace(rule, lifecycle="superseded", superseded_by="CORE005", retirement_reason="fixture")
-            if rule.id == "CORE003"
+            replace(rule, lifecycle="superseded", superseded_by="CORE.CONTEXT.002", retirement_reason="fixture")
+            if rule.id == "CORE.CONTEXT.001"
             else rule
             for rule in manifest.rules
         )
@@ -46,8 +46,8 @@ class LifecycleTests(unittest.TestCase):
         checks = (AuditResult("tests", ("python",), 0, 0.01, "ok", ""),)
         report = render_report(manifest, (), checks)
         self.assertIn("## Historical Rules", report)
-        self.assertIn("CORE004", report)
-        self.assertIn("CORE005", report)
+        self.assertIn("CORE.ARCH.003", report)
+        self.assertIn("CORE.CONTEXT.002", report)
 
 
 if __name__ == "__main__":

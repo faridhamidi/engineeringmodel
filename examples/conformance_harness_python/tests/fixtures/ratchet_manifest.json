@@ -2,7 +2,7 @@
   "manifest_version": 1,
   "rules": [
     {
-      "id": "CORE998",
+      "id": "FIXTURE.ARCH.001",
       "lifecycle": "active",
       "enforcement_mode": "ratchet",
       "known_violations": [

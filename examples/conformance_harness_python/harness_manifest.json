@@ -2,7 +2,7 @@
   "manifest_version": 1,
   "rules": [
     {
-      "id": "CORE001",
+      "id": "CORE.ARCH.001",
       "lifecycle": "active",
       "enforcement_mode": "zero_violation",
       "statement": "Decision modules do not import integration clients.",
@@ -21,11 +21,11 @@
           "sample_project.integrations"
         ]
       },
-      "positive_test": "tests.test_repository_invariants.RepositoryInvariantTests.test_core001",
-      "refutation_test": "tests.test_checker_refutations.CheckerRefutationTests.test_core001"
+      "positive_test": "tests.test_repository_invariants.RepositoryInvariantTests.test_core_arch_001",
+      "refutation_test": "tests.test_checker_refutations.CheckerRefutationTests.test_core_arch_001"
     },
     {
-      "id": "CORE002",
+      "id": "CORE.ARCH.002",
       "lifecycle": "active",
       "enforcement_mode": "ratchet",
       "known_violations": [
@@ -48,11 +48,11 @@
           "sample_project/integrations.py"
         ]
       },
-      "positive_test": "tests.test_repository_invariants.RepositoryInvariantTests.test_core002",
-      "refutation_test": "tests.test_checker_refutations.CheckerRefutationTests.test_core002"
+      "positive_test": "tests.test_repository_invariants.RepositoryInvariantTests.test_core_arch_002",
+      "refutation_test": "tests.test_checker_refutations.CheckerRefutationTests.test_core_arch_002"
     },
     {
-      "id": "CORE003",
+      "id": "CORE.CONTEXT.001",
       "lifecycle": "active",
       "enforcement_mode": "zero_violation",
       "statement": "Service operations carry a stable operation identifier.",
@@ -70,11 +70,11 @@
         "function": "run_operation",
         "parameter": "operation_id"
       },
-      "positive_test": "tests.test_repository_invariants.RepositoryInvariantTests.test_core003",
-      "refutation_test": "tests.test_checker_refutations.CheckerRefutationTests.test_core003"
+      "positive_test": "tests.test_repository_invariants.RepositoryInvariantTests.test_core_context_001",
+      "refutation_test": "tests.test_checker_refutations.CheckerRefutationTests.test_core_context_001"
     },
     {
-      "id": "CORE004",
+      "id": "CORE.ARCH.003",
       "lifecycle": "retired",
       "statement": "Legacy synchronous delivery boundary.",
       "rationale_ref": "../../core/CONFORMANCE_HARNESS.md#historical-rules",
@@ -85,7 +85,7 @@
       "retirement_reason": "The synchronous delivery boundary was removed from the witness."
     },
     {
-      "id": "CORE005",
+      "id": "CORE.CONTEXT.002",
       "lifecycle": "superseded",
       "statement": "Legacy operation-context naming rule.",
       "rationale_ref": "../../core/CONFORMANCE_HARNESS.md#historical-rules",
@@ -93,8 +93,8 @@
         "@faridhamidi"
       ],
       "approval_control_ref": "../../CONTRIBUTING.md#conformance-rule-approval",
-      "superseded_by": "CORE003",
-      "retirement_reason": "CORE003 now owns the operation-context boundary."
+      "superseded_by": "CORE.CONTEXT.001",
+      "retirement_reason": "CORE.CONTEXT.001 now owns the operation-context boundary."
     }
   ],
   "audit": {

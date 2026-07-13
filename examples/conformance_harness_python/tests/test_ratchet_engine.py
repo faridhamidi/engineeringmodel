@@ -22,7 +22,7 @@ class RatchetEngineTests(unittest.TestCase):
     def _fixture_rule(self):
         manifest = load_harness_manifest(FIXTURES / "ratchet_manifest.json")
         rule = manifest.active_rules[0]
-        self.assertEqual(rule.id, "CORE998")
+        self.assertEqual(rule.id, "FIXTURE.ARCH.001")
         return rule
 
     def test_declared_set_equal_to_observed_set_passes(self) -> None:

@@ -8,6 +8,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import json
 import tempfile
 import unittest
+from dataclasses import replace
+
 from check_manifest import validate_manifest
 from harness import MANIFEST_PATH, load_harness_manifest
 
@@ -35,6 +37,20 @@ class ManifestTests(unittest.TestCase):
         )
         messages = [item.message for item in validate_manifest(duplicate)]
         self.assertTrue(any("unique" in message for message in messages))
+
+    def test_flat_rule_id_is_rejected(self) -> None:
+        manifest = load_harness_manifest()
+        changed_rule = replace(manifest.rules[0], id="CORE001")
+        changed = type(manifest)(manifest.manifest_version, (changed_rule, *manifest.rules[1:]), manifest.audit)
+        messages = [item.message for item in validate_manifest(changed)]
+        self.assertTrue(any("<layer>.<domain>.<number>" in message for message in messages))
+
+    def test_fixture_namespace_is_rejected_in_live_manifest(self) -> None:
+        manifest = load_harness_manifest()
+        changed_rule = replace(manifest.rules[0], id="FIXTURE.ARCH.001")
+        changed = type(manifest)(manifest.manifest_version, (changed_rule, *manifest.rules[1:]), manifest.audit)
+        messages = [item.message for item in validate_manifest(changed)]
+        self.assertTrue(any("must not use FIXTURE namespace" in message for message in messages))
 
 
 if __name__ == "__main__":
