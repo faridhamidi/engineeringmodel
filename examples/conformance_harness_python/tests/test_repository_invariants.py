@@ -22,7 +22,7 @@ class RepositoryInvariantTests(unittest.TestCase):
     def test_core_arch_002(self) -> None:
         result = self.results["CORE.ARCH.002"]
         self.assertTrue(result.ok, result.detail)
-        self.assertEqual(result.observed_paths, ("sample_project/legacy_adapter.py",))
+        self.assertEqual(result.observed_paths, ("sample_project/known_constructor_site.py",))
 
     def test_core_context_001(self) -> None:
         self.assertTrue(self.results["CORE.CONTEXT.001"].ok, self.results["CORE.CONTEXT.001"].detail)

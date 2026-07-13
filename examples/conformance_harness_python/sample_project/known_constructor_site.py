@@ -1,5 +1,5 @@
 from sample_project.integrations import VendorClient
 
 
-def legacy_send(payload: str) -> str:
+def send_from_known_site(payload: str) -> str:
     return VendorClient().send(payload)

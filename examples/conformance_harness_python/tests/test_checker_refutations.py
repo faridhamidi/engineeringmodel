@@ -32,7 +32,7 @@ class CheckerRefutationTests(unittest.TestCase):
             project = root / "sample_project"
             project.mkdir(parents=True)
             (project / "integrations.py").write_text("class VendorClient: pass\nVendorClient()\n", encoding="utf-8")
-            (project / "legacy_adapter.py").write_text(
+            (project / "known_constructor_site.py").write_text(
                 "from sample_project.integrations import VendorClient\nVendorClient()\n", encoding="utf-8"
             )
             (project / "bypass.py").write_text(

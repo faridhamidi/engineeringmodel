@@ -182,7 +182,7 @@ The checker must observe no prohibited violations.
 
 ### Ratchet
 
-The rule is active with an exact known legacy violation set. The observed set must equal the declared set. New violations fail. Cleanup without shrinking the declaration also fails, because the manifest would no longer describe current reality.
+The rule is active with an exact known violation set. The observed set must equal the declared set. New violations fail. Cleanup without shrinking the declaration also fails, because the manifest would no longer describe current reality.
 
 The primary invariant is:
 
