@@ -14,6 +14,29 @@ The runtime checks show that logical authority is backed by role enforcement:
 
 The structural tests additionally restrict protected method call sites and prove that recovery reaches execution only through the request boundary.
 
+## Model 10 coverage
+
+| Authority-component security property | Witness status |
+|---|---|
+| Distinct logical identities | Executed |
+| Role-restricted protected effects | Executed |
+| Authenticated recovery request | Executed |
+| Fail-closed validation | Executed |
+| Version and replay protection | Partially executed — stale expected-version rejection is tested; transport replay controls are not |
+| Credential rotation and revocation | Not demonstrated |
+| Independently retained audit evidence | Not demonstrated |
+| Break-glass authorization and post-use review | Not demonstrated |
+
+## Not demonstrated by this witness
+
+- workload-identity provisioning;
+- substrate permission policies;
+- credential rotation and revocation;
+- independently retained audit storage;
+- break-glass authorization and post-use review.
+
+These remain production security requirements where the adoption gate and threat model justify them. They are not represented by synthetic in-memory roles.
+
 Run from the repository root:
 
 ```bash

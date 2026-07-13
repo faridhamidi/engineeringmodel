@@ -63,7 +63,9 @@ Each protected power should map to an enforceable identity and permission set:
 - recovery credentials can request bounded re-entry but cannot impersonate commit or reconciliation identities;
 - authority-boundary messages are authenticated, schema-validated, and replay-safe;
 - privileged actions emit independently retained audit evidence;
-- break-glass access is separate from normal service identity and does not masquerade as ordinary recovery.
+- where normal recovery cannot address a credible emergency, break-glass access is separate, time-bounded, auditable, and distinct from ordinary recovery.
+
+Workload-identity provisioning, substrate permission policies, credential rotation and revocation, independently retained audit storage, and break-glass authorization and post-use review are production controls outside the executable witness.
 
 See [Authority-component security](MODELS.md#10-authority-component-security) for the canonical model.
 
@@ -90,4 +92,4 @@ The distinction matters during failure. A workflow engine may resume at the next
 
 ## Executable witness
 
-The dependency-free [`governed_authority_python`](../examples/governed_authority_python/) specimen demonstrates draft isolation, fail-closed validation, sole canonical writing, sole external mutation, runtime role enforcement, idempotent reconciliation, recovery re-entry, and static bypass checks. It is a proof that these constraints are executable, not a production reference architecture.
+The dependency-free [`governed_authority_python`](../examples/governed_authority_python/) specimen demonstrates draft isolation, fail-closed validation, sole canonical writing, sole external mutation, runtime role enforcement, idempotent reconciliation, recovery re-entry, and static bypass checks. It is a proof that these constraints are executable, not a production reference architecture. Its [Model 10 coverage matrix](../examples/governed_authority_python/README.md#model-10-coverage) identifies the production security controls it does not demonstrate.

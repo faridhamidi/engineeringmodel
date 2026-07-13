@@ -175,7 +175,9 @@ Select models by trigger. Do not copy the complete set as a starter template.
 - bind operations to version or idempotency tokens to handle replay and redelivery;
 - retain audit evidence outside the mutable business record where practical;
 - rotate and revoke credentials without transferring authority to weaker components;
-- define a separate, explicit, auditable break-glass path.
+- where normal recovery cannot address a credible emergency, define a separate, explicit, time-bounded, and auditable break-glass procedure.
+
+**Witness coverage:** the [governed-authority coverage matrix](../examples/governed_authority_python/README.md#model-10-coverage) distinguishes controls executed by the in-memory specimen from production controls that remain documented but unproven here.
 
 **Invariant:** no component can impersonate a stronger power, reuse its credentials, or call the protected substrate directly outside the designated boundary.
 
