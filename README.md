@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/assets/engineering-model-governance-harness.avif" alt="Engineering Models — governed automation harness" width="100%">
+  <img src="docs/assets/engineering-model-governance-harness.jpg" alt="Engineering Models — governed automation harness" width="100%">
 </p>
 
 # Engineering Models
