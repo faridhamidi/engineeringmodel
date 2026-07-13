@@ -7,6 +7,7 @@ These case studies are sanitized and evidence-tagged. They show both adoption an
 - [`GOVERNED_CLOUD_MONITORING.md`](GOVERNED_CLOUD_MONITORING.md) — a system where durable authority, broad mutation scope, and recovery risk justify the complete layer.
 - [`COMMITTED_STATUS_REPORTING.md`](COMMITTED_STATUS_REPORTING.md) — a system that uses selected models without adopting the complete authority chain.
 - [`NON_ADOPTION_LOCAL_AUDIT_DASHBOARD.md`](NON_ADOPTION_LOCAL_AUDIT_DASHBOARD.md) — a local application where core hygiene is sufficient and the governed layer would add state without controlling meaningful authority risk.
+- [`MANIFEST_BACKED_CONFORMANCE_HARNESS.md`](MANIFEST_BACKED_CONFORMANCE_HARNESS.md) — one operational system where accumulated architecture checks justified a manifest-backed Core Hygiene escalation.
 
 ## Evidence format
 

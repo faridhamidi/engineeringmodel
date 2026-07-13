@@ -1,0 +1,2 @@
+import integrations
+integrations.VendorClient()

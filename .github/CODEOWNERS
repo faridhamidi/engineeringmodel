@@ -1,0 +1,11 @@
+# Public repository ownership for conformance-harness policy and enforcement files.
+/core/CONFORMANCE_HARNESS.md @faridhamidi
+/examples/conformance_harness_python/harness_manifest.json @faridhamidi
+/examples/conformance_harness_python/harness.py @faridhamidi
+/examples/conformance_harness_python/check_manifest.py @faridhamidi
+/examples/conformance_harness_python/check_contracts.py @faridhamidi
+/examples/conformance_harness_python/run_audit.py @faridhamidi
+/examples/conformance_harness_python/tests/ @faridhamidi
+/.github/workflows/executable-witnesses.yml @faridhamidi
+/CONTRIBUTING.md @faridhamidi
+/.github/CODEOWNERS @faridhamidi

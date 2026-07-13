@@ -31,10 +31,13 @@ governed-automation/     gated authority and shared-state models
 case-studies/             evidence-tagged adoption and non-adoption cases
 examples/                 dependency-free executable witnesses
 .github/workflows/        CI for the executable witnesses
+AGENTS.md                 concise contributor and agent navigation
 CONTRIBUTING.md           evidence, ownership, writing, and confidentiality rules
 ```
 
 The examples are deliberately small. They prove selected constraints can be enforced; they are not production templates or claims that Python is the preferred implementation language.
+
+Repositories with several stable, cross-cutting constraints may optionally escalate direct structural tests into a [manifest-backed conformance harness](core/CONFORMANCE_HARNESS.md). This is an optional Core Hygiene mechanism, not a third adoption layer.
 
 ## Canonical document ownership
 

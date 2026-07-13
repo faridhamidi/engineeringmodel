@@ -62,6 +62,33 @@ Add small tests or static checks for the boundaries that matter most, such as:
 
 When a boundary cannot be completed immediately, lock the current violation set so it cannot grow. Improve it later without allowing regression in the meantime.
 
+## Enforcement escalation
+
+Use the lightest mechanism that protects the actual seam:
+
+```text
+Level 1 — direct test
+Level 2 — structural ratchet
+Level 3 — manifest-backed conformance harness
+Level 4 — protected admission or authority control
+```
+
+### Level 1 — direct test
+
+Use one small executable test for a real boundary.
+
+### Level 2 — structural ratchet
+
+When a valid boundary has existing violations, enumerate the current set, fail on growth, shrink it as cleanup lands, and convert to zero violations when complete.
+
+### Level 3 — manifest-backed conformance harness
+
+Escalate when several rules need stable identifiers, common discovery, lifecycle, ratchet state, ownership declarations, paired evidence, historical lineage, and audit aggregation. See [`CONFORMANCE_HARNESS.md`](CONFORMANCE_HARNESS.md).
+
+### Level 4 — protected admission or authority control
+
+Repository-host controls govern actual merge admission. If an automated actor can add or weaken blocking rules, approve itself, merge, deploy, override failed checks, or mutate shared systems, complete the [Governed Automation adoption check](../governed-automation/ADOPTION_CHECK.md).
+
 ## Proportional adoption
 
 The smallest useful starting point may be:

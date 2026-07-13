@@ -1,0 +1,45 @@
+{
+  "manifest_version": 1,
+  "rules": [
+    {
+      "id": "CORE998",
+      "lifecycle": "active",
+      "enforcement_mode": "ratchet",
+      "known_violations": [
+        "legacy_a.py",
+        "legacy_b.py"
+      ],
+      "statement": "Fixture constructor sites remain ratcheted.",
+      "rationale_ref": "../../../../core/CONFORMANCE_HARNESS.md#enforcement-modes",
+      "owners": [
+        "@fixture-owner"
+      ],
+      "approval_control_ref": "../../../../CONTRIBUTING.md#conformance-rule-approval",
+      "kind": "exclusive_constructor_owner",
+      "severity": "error",
+      "scope": [
+        "."
+      ],
+      "config": {
+        "constructor": "VendorClient",
+        "allowed_owners": [
+          "integrations.py"
+        ]
+      },
+      "positive_test": "fixture.positive",
+      "refutation_test": "fixture.refutation"
+    }
+  ],
+  "audit": {
+    "report_path_default": "audit.md",
+    "checks": [
+      {
+        "name": "fixture",
+        "command": [
+          "{python}",
+          "fixture.py"
+        ]
+      }
+    ]
+  }
+}
