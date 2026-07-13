@@ -21,6 +21,12 @@ A small repository should be able to answer:
 
 No prescribed folder layout is required. A function parameter, wrapper, module seam, or protocol is enough when it makes ownership and testing clear.
 
+## Optional escalation
+
+When several structural constraints have stable identities, multiple contributors depend on them, or architectural intent is repeatedly reconstructed, consider escalating direct checks into a [`Repository Conformance Harness`](CONFORMANCE_HARNESS.md).
+
+This mechanism is optional. It adds rule lifecycle, ratchets, ownership binding, historical lineage, generic engine tests, and audit reporting. Do not adopt it when two or three direct tests remain clearer.
+
 ## What this layer does not imply
 
 Using the core layer does not mean the system needs:

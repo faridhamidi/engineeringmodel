@@ -56,6 +56,49 @@ It should:
 
 Do not label a witness `deployed` or `operationally used`. It is evidence that a constraint is executable, not that it has an operating history.
 
+## Conformance harness contributions
+
+A repository conformance harness is an optional Core Hygiene escalation. Product-specific rule sets remain in product repositories; this repository accepts generalized lessons and sanitized executable witnesses.
+
+A new or changed harness rule should include:
+
+- a canonical rationale reference;
+- a stable rule identifier;
+- lifecycle and enforcement mode;
+- an exact known-violation set when ratcheted;
+- exact public owner principals;
+- CODEOWNERS correspondence;
+- an approval-policy reference;
+- a deterministic checker adapter;
+- one positive conformance test;
+- one minimal falsifier;
+- generic fixture coverage when harness mechanics change;
+- CI execution;
+- an evidence boundary;
+- adoption cost and a skip condition;
+- historical lineage when retired or superseded.
+
+Naming conventions, directory placement, and agent instructions are not executable evidence by themselves. Do not weaken a rule, checker, and falsifier together merely to restore a passing build; state which architectural decision changed.
+
+## Conformance-rule approval
+
+Adding, activating, weakening, expanding, narrowing, ratcheting, retiring, or superseding a rule requires review through the repository's protected change process by the declared owners.
+
+This includes changes to:
+
+- lifecycle or enforcement mode;
+- known-violation sets;
+- scope, checker kind, severity, or checker configuration;
+- owners or approval references;
+- positive tests or falsifiers;
+- historical lineage;
+- CODEOWNERS coverage;
+- the workflow that executes the harness.
+
+The manifest validates ownership declarations and approval-policy references. The executable witness does not prove that the hosting platform requires code-owner review, enables branch protection, or prevents administrative bypass. Record that hosting-platform evidence separately before claiming enforced review.
+
+Historical rule identifiers are immutable and never reused. Retired and superseded records remain visible with equivalent fidelity across manifest versions. Any deliberate weakening of that retention requires a separate architecture decision whose explicit subject is lineage reduction.
+
 ## Evidence tags
 
 Use these tags explicitly in case studies and material conclusions:
@@ -115,9 +158,12 @@ Do not include:
 - proprietary source code;
 - unapproved adoption metrics;
 - incident details that identify affected parties;
-- screenshots, logs, prompts, or generated artifacts containing personal or operational metadata.
+- screenshots, logs, prompts, or generated artifacts containing personal or operational metadata;
+- private organization handles, internal team names, or unapproved email addresses in ownership configuration.
 
 Sanitize the example while preserving the decision, state model, failure mode, and evidence class. Public source material may still contain details that should not be repeated in a generalized case study.
+
+Before adding a CODEOWNERS principal, confirm that the identity is already public and deliberately approved for association with this repository. Do not introduce employer, customer, private-organization, or internal-team identifiers solely to demonstrate ownership.
 
 ## Revision rule
 

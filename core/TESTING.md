@@ -121,6 +121,37 @@ When an existing boundary cannot be completed immediately:
 3. shrink the allowed set as cleanup lands;
 4. convert the ratchet to a zero-violation rule when complete.
 
+## Test the checker
+
+For an important architectural rule, test both the repository and the mechanism claiming to protect it.
+
+Each active rule in a conformance harness should declare:
+
+```text
+Rule ID:
+Canonical rationale:
+Lifecycle:
+Enforcement mode:
+Known violation set:
+Checker adapter:
+Positive conformance test:
+Minimal falsifier:
+Owners:
+Ownership binding:
+Approval-policy reference:
+Evidence boundary:
+```
+
+The responsibilities are distinct:
+
+- the **positive conformance test** proves the live repository satisfies the rule's declared mode;
+- the **minimal falsifier** introduces one prohibited new violation and proves the intended rule rejects it;
+- **generic fixture-driven tests** prove ratchet, lifecycle, ownership-binding, and audit mechanics once, independently of live rule identifiers.
+
+For a zero-violation rule, the positive test expects an empty prohibited set. For a ratcheted rule, it expects the observed set to equal the exact declared set.
+
+A change that modifies a rule, checker, and falsifier must explain whether the protected architectural property changed. Weakening all three merely to restore a passing build is not conformance evidence.
+
 ## Minimal template
 
 ```text
@@ -136,4 +167,4 @@ Evidence boundary:
 
 ## Repository witness
 
-The examples under [`../examples/`](../examples/) run in CI with the Python standard library. They demonstrate structural call-site checks, runtime authority checks, fail-closed validation, idempotent reconciliation, and a boundary ratchet. They are deliberately smaller than a reference application so the tested property remains visible.
+The examples under [`../examples/`](../examples/) run in CI with the Python standard library. They demonstrate structural call-site checks, a manifest-backed conformance harness, runtime authority checks, fail-closed validation, idempotent reconciliation, and boundary ratchets. They are deliberately smaller than a reference application so the tested property remains visible.

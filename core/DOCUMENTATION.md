@@ -87,6 +87,27 @@ Last verified against:
 Supersedes / superseded by:
 ```
 
+## Human rationale and executable projection
+
+When a repository adopts a conformance harness, keep ownership explicit:
+
+| Artifact | Owns |
+|---|---|
+| Methodology document or ADR | Why the rule exists, trade-offs, scope, exceptions, cost, and security implications |
+| Harness manifest | Mechanically enforceable projection and lifecycle metadata |
+| Checker adapter | Detection implementation |
+| Positive conformance test | Evidence that the current repository satisfies the declared mode |
+| Minimal falsifier | Evidence that the checker rejects a prohibited new violation |
+| Generic engine tests | Evidence that lifecycle, ratchet, ownership-binding, and audit mechanics behave correctly |
+| Audit report | Point-in-time conformance, ownership-binding, and lineage result |
+| Repository-host controls | Actual review and merge enforcement |
+
+The manifest must point to rationale. It must not duplicate the rationale. A short rule statement may describe the mechanically checked property, but trade-offs and exceptions remain in the canonical document.
+
+Retired and superseded rule records remain visible with equivalent fidelity across manifest versions. Ordinary format migrations must preserve identifiers, lifecycle, successor relationships, retirement reasons, ownership, and audit continuity. Any deliberate lineage reduction requires a separate reviewed architecture decision focused explicitly on that evidence loss.
+
+An audit report is point-in-time evidence. It does not prove that hosting-platform branch protection or required-review settings are enabled unless those controls are verified separately.
+
 ## Boundary
 
 Documentation governance can become its own bureaucracy. Use the smallest lifecycle that prevents actual confusion. A solo or small project may keep all three record types as top-level files; the distinctions matter more than the directory structure.
