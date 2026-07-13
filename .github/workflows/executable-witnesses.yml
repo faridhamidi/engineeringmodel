@@ -1,0 +1,21 @@
+name: Executable witnesses
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  unittest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Test core boundary witness
+        run: python -m unittest discover -s examples/core_boundaries_python/tests -v
+      - name: Test governed authority witness
+        run: python -m unittest discover -s examples/governed_authority_python/tests -v

@@ -1,66 +1,66 @@
 # Plain-Language Decision Tree
 
-Use the trigger, not the term, to decide what the system needs.
+Use the trigger, not the term, to decide what the system needs. Full definitions live in [`MODELS.md`](MODELS.md).
 
 ## Boundaries and ownership
 
-**Does decision code directly construct or call databases, provider SDKs, queues, files, clocks, or network clients?**
+**Do observed facts, human intent, derived policy, and real effects legitimately diverge?**
 
-- No → keep the current structure.
-- Yes → add one named seam at the external dependency. The seam may be a function parameter, wrapper, module, or protocol.
+- No → keep one state model.
+- Yes → consider [Fact, decision, and effect separation](MODELS.md#1-fact-decision-and-effect-separation).
 
-**Can two components change the same authoritative field or external resource?**
+**Can two components perform the same consequential write?**
 
-- No → no sole-writer rule is required.
-- Yes, but they own disjoint fields → declare field ownership.
-- Yes, and their writes can conflict → designate one logical mutation authority.
+- No → no sole-writer model is required.
+- Yes, but ownership is disjoint → declare field ownership.
+- Yes, and writes can conflict → consider [Sole-writer authority](MODELS.md#4-sole-writer-authority) and [Authority-component security](MODELS.md#10-authority-component-security).
 
 ## State and commitment
 
-**Can a proposed edit be incomplete, reviewed, rejected, or corrected before it becomes authoritative?**
+**Must an edit be reviewed or corrected before becoming authoritative?**
 
 - No → write directly with validation.
-- Yes → separate proposal state from committed state.
+- Yes → consider [Draft-to-canonical promotion](MODELS.md#2-draft-to-canonical-promotion).
 
-**Can requested intent remain valid while policy temporarily blocks execution?**
+**Can requested intent remain valid while policy blocks current execution?**
 
-- No → store the direct state.
-- Yes → retain requested intent and derive effective state with a classified reason.
+- No → store direct state.
+- Yes → consider [Derived effective state](MODELS.md#3-derived-effective-state).
 
 ## Execution and repair
 
-**Can the managed system drift from valid committed intent?**
+**Can shared external state drift from valid committed intent?**
 
 - No → do not add reconciliation.
-- Yes → compare desired and observed state, then apply idempotent corrections.
+- Yes → consider [Policy-driven reconciliation](MODELS.md#5-policy-driven-reconciliation).
 
-**Could incomplete observation cause an unsafe repair?**
+**Could incomplete observation make repair unsafe?**
 
 - No → ordinary retry may be enough.
-- Yes → observe first, block repair on unknown evidence, and require the normal mutation path.
+- Yes → consider [Observe-then-repair](MODELS.md#6-observe-then-repair).
 
-**Could retry or restoration grant more authority than the original operation?**
+**Could retry or restoration gain stronger authority than the original path?**
 
-- No → ordinary retry semantics are enough.
-- Yes → require recovery to re-enter the original validation and mutation boundaries.
+- No → ordinary retry semantics may be enough.
+- Yes → consider [Recovery without privilege escalation](MODELS.md#7-recovery-without-privilege-escalation).
 
-## Evidence and explanation
+## Evidence and delivery
 
-**Can inferred data be confused with an authoritative fact or human judgment?**
+**Can inferred data be mistaken for authoritative fact?**
 
 - No → store the value normally.
-- Yes → store source and conflict status; add confidence only when its meaning is defined.
+- Yes → consider [Confidence-bearing knowledge](MODELS.md#8-confidence-bearing-knowledge).
 
-**Would an operator later need to explain who decided, why, and from which evidence?**
+**Must delivered output remain attributable to one committed source state?**
 
-- No → ordinary audit logging may be enough.
-- Yes → preserve decision provenance as system state.
+- No → regenerate directly.
+- Yes → consider [Committed snapshot delivery](MODELS.md#9-committed-snapshot-delivery).
 
-**Does work cross a process, queue, event, scheduled job, or remote call?**
+## Security and cost check
 
-- No → local logs are usually sufficient.
-- Yes → propagate a stable operation identifier and structured context across every hop. A tracing product is optional.
+**Does any selected model create a privileged component?**
 
-## Final check
+- No → apply the selected model proportionally.
+- Yes → [Authority-component security](MODELS.md#10-authority-component-security) is mandatory, not optional.
 
-A selected mechanism should remove a specific ambiguity or failure mode. If it only adds terminology, files, or transitions, skip it.
+Before adopting, complete the [cost declaration](ADOPTION_CHECK.md#adoption-cost-declaration). If the mechanism only adds terminology, states, or operational surface without reducing a consequential risk, skip it.

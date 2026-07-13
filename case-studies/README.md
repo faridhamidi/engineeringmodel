@@ -19,3 +19,9 @@ Each case separates:
 - **inferred** — a bounded conclusion drawn from the observed system.
 
 A lesson inferred from one system is not presented as universal proof.
+
+## Current evidence boundary
+
+All documented cases are operational-tooling or infrastructure-adjacent systems. The repository does not yet contain evidence-tagged cases from financial transaction processing, regulated data pipelines, ML governance, healthcare, identity platforms, or non-technical human approval workflows.
+
+Those domains should be added only when a real implementation or operational record can support the same evidence discipline. Hypothetical portability is not a case study.

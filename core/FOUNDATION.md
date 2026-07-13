@@ -94,3 +94,7 @@ Before the first substantial feature lands, answer:
 - Which two or three tests would prevent the architecture from silently collapsing?
 
 The objective is not architectural purity. It is to make the codebase difficult to misunderstand and cheap to change.
+
+## Executable witness
+
+The dependency-free [`core_boundaries_python`](../examples/core_boundaries_python/) specimen demonstrates three claims from this document: decision code remains independent of an external client, client construction is confined to one integration module, and an operation identifier crosses the service boundary. Its tests are examples of executable constraints, not a required project layout.

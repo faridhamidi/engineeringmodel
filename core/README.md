@@ -7,6 +7,7 @@ Adopt this layer independently. It is intended for any non-trivial operational c
 - [`FOUNDATION.md`](FOUNDATION.md) — name meaningful boundaries, declare important system language, and preserve execution context.
 - [`TESTING.md`](TESTING.md) — classify tests by intent, target, and input generation; use small structural checks to stop boundary decay.
 - [`DOCUMENTATION.md`](DOCUMENTATION.md) — separate non-binding direction, worked implementation plans, and durable decisions.
+- [`../examples/core_boundaries_python/`](../examples/core_boundaries_python/) — a dependency-free executable witness for boundary and context-propagation checks.
 
 ## Minimum adoption
 

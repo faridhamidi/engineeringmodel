@@ -16,18 +16,45 @@ A contribution belongs in **Governed Automation** only when it addresses consequ
 
 Do not place a specialized authority mechanism in the core layer merely because it improved one complex system.
 
+## Canonical concept ownership
+
+A concept is explained fully in one place and referenced elsewhere.
+
+- `governed-automation/MODELS.md` owns model definitions, triggers, mechanisms, invariants, costs, security implications, and skip conditions.
+- `DECISION_TREE.md` may ask trigger questions and link to models, but should not restate full mechanisms.
+- `VOCABULARY.md` may define a term in one or two sentences and link to its model.
+- `PRINCIPLES.md` contains cross-cutting positions, not a second model catalog.
+- `AUTOMATED_AUTHORITY.md` owns composition of the seven powers, not duplicate per-model guidance.
+
 ## Required model structure
 
-A new model should state:
+A new or revised model should state:
 
 - trigger condition;
-- problem;
+- definition and problem;
 - mechanism;
 - invariant;
-- failure and recovery behavior;
+- adoption cost;
+- security implications;
 - evidence;
-- boundary or rejection condition;
+- skip or rejection condition;
 - what was deliberately not built.
+
+## Executable witnesses
+
+An executable witness demonstrates a narrow property without becoming a product template.
+
+It should:
+
+- use no credentials, network calls, or organization-specific data;
+- depend only on standard tooling where practical;
+- state the exact claims it demonstrates;
+- include a known-bad or bypass case that the test rejects;
+- run in repository CI;
+- remain small enough to read in one sitting;
+- avoid implying that its language, framework, or directory structure is mandatory.
+
+Do not label a witness `deployed` or `operationally used`. It is evidence that a constraint is executable, not that it has an operating history.
 
 ## Evidence tags
 
@@ -61,7 +88,7 @@ A negative or non-adoption case must be one of:
 - an observed misapplication with evidence of its cost; or
 - a clearly labelled counterfactual analysis grounded in a real system.
 
-Never present a constructed counterexample as an operational failure.
+Never present a constructed counterexample as an operational failure. Do not manufacture examples in untested domains merely to imply portability.
 
 ## Writing rules
 

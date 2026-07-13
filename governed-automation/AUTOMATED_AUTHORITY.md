@@ -8,91 +8,69 @@ The engineering problem becomes:
 
 > How can a machine act repeatedly and quickly without silently acquiring the authority to decide what should be true?
 
-## Model
+Complete the [`ADOPTION_CHECK.md`](ADOPTION_CHECK.md) before applying the full model. The individual mechanisms and their costs are canonical in [`MODELS.md`](MODELS.md).
 
-Split the workflow into seven powers.
+## Seven powers
 
 ### 1. Discover
 
-Read facts from an upstream authority.
-
-Examples include account lifecycle, identity, tags, inventory, or current managed-resource state.
-
-Discovery may refresh fields it owns. It may create a proposal. It may not convert existence into admission.
+Read facts from an upstream authority. Discovery may refresh fields it owns or create a proposal. It may not convert existence into admission.
 
 ### 2. Propose
 
-Create mutable draft state representing a possible decision.
-
-The proposal may originate from an operator or from a narrow system policy. It remains non-authoritative until promoted.
+Create mutable, non-authoritative state representing a possible decision. A proposal may originate from an operator or a bounded system rule.
 
 ### 3. Validate
 
-Evaluate the proposal against a versioned contract:
-
-- required fields;
-- allowed values;
-- field ownership;
-- transition rules;
-- evidence freshness;
-- concurrency token;
-- prohibited combinations.
-
-Reject unknown fields rather than carrying them silently.
+Evaluate the proposal against a versioned contract: required fields, field ownership, transitions, evidence freshness, concurrency, and prohibited combinations.
 
 ### 4. Commit
 
-Use one designated authority to write canonical state atomically.
-
-The commit gate records the decision and its provenance. It does not directly mutate the managed resource.
+Use one designated logical authority to write canonical state atomically and record provenance. Commitment does not directly mutate the managed resource.
 
 ### 5. Derive
 
-Compute effective desired state from canonical intent and current policy.
-
-For example:
-
-```text
-requested enablement
-+ active lifecycle
-+ appropriate approval
-+ resolved classification
-+ valid evidence
-- explicit exclusions
-= effective enablement
-```
-
-The result should be derived, not manually maintained as another mutable truth.
+Compute effective desired state from canonical intent and current policy. The result is reproducible, classified, and not maintained as an independent mutable truth.
 
 ### 6. Execute
 
-Use one designated reconciler to compare effective desired state with observed resource state and apply idempotent corrections.
-
-The reconciler does not decide policy. It executes policy already committed elsewhere.
+Use one designated reconciler to compare effective desired state with observed state and apply idempotent corrections. Execution does not originate policy.
 
 ### 7. Recover
 
-Detect interrupted or inconsistent flows and re-drive them through the same gates.
-
-Recovery may restore a known snapshot or retry a committed decision. It must not infer a more permissive decision from failure.
+Re-drive a committed decision, restore a known version, or escalate when proof is insufficient. Recovery does not infer a more permissive decision from failure.
 
 ## Authority matrix
 
-| Capability | Discovery | Operator UI | Commit authority | Reconciler | Recovery |
+| Capability | Discovery | Operator interface | Commit authority | Reconciler | Recovery |
 |---|---:|---:|---:|---:|---:|
 | Refresh externally owned facts | Yes | No | No | No | No |
-| Edit draft proposal | Limited | Yes | No | No | Limited |
-| Write canonical decision | No | No | Yes | No | Restore-only, bounded |
+| Edit proposal state | Limited | Yes | No | No | Limited |
+| Write canonical decision | No | No | Yes | No | Restore-only through commit path |
 | Derive effective state | Advisory only | Advisory only | Validate | Yes | No |
 | Mutate managed resource | No | No | No | Yes | No |
 | Invent new governance authority | No | No | No | No | No |
 
-The matrix should be enforced in code and tests. A table alone does not create a boundary.
+A table alone does not create a boundary.
+
+## Technical enforcement
+
+Each protected power should map to an enforceable identity and permission set:
+
+- discovery credentials can read upstream facts but cannot commit or mutate;
+- commit credentials can write canonical state but cannot mutate the managed substrate;
+- reconciler credentials can mutate the defined resource class but cannot create governance decisions;
+- recovery credentials can request bounded re-entry but cannot impersonate commit or reconciliation identities;
+- authority-boundary messages are authenticated, schema-validated, and replay-safe;
+- privileged actions emit independently retained audit evidence;
+- break-glass access is separate from normal service identity and does not masquerade as ordinary recovery.
+
+See [Authority-component security](MODELS.md#10-authority-component-security) for the canonical model.
 
 ## Core invariants
 
 1. Discovery cannot enable a governed capability merely by finding a resource.
-2. Draft state cannot cause downstream mutation.
+2. Proposal state cannot cause downstream mutation.
 3. Only the commit authority can create or change canonical governance state.
 4. Only the reconciler can mutate the managed resource.
 5. Effective state is derived from canonical data and policy.
@@ -101,26 +79,15 @@ The matrix should be enforced in code and tests. A table alone does not create a
 8. Recovery reuses normal authority gates.
 9. Every mutation is attributable to a canonical decision.
 10. Reapplying an already converged operation is a no-op.
+11. No weaker component can obtain or reuse credentials that exercise a stronger power.
+12. Direct substrate permissions do not contradict the logical authority matrix.
 
 ## Why this is not merely a workflow
 
-A workflow describes order. An authority model describes who may exercise each power, which evidence is required, and which bypasses are forbidden.
+A workflow describes order. An authority model describes who may exercise each power, which evidence is required, which technical identity is allowed, and which bypasses are forbidden.
 
-The distinction matters during failure. A workflow engine may happily resume at the next step. An authority-aware system must establish whether the next step is still permitted.
+The distinction matters during failure. A workflow engine may resume at the next step. An authority-aware system must establish whether the next step is still permitted and whether the caller is technically authorized to perform it.
 
-## When to use this model
+## Executable witness
 
-Use it when automation:
-
-- affects many resources;
-- changes access, monitoring, security, lifecycle, or compliance state;
-- acts on behalf of operators or governance bodies;
-- must preserve human approval;
-- must be auditable and recoverable;
-- can cause broad damage through one incorrect default.
-
-## When not to use it
-
-Do not build this machinery for a small, reversible, low-risk task with one owner and no durable governance decision.
-
-A script with explicit input, dry-run output, idempotency, and clear ownership may be enough. The model should reduce risk, not manufacture architecture.
+The dependency-free [`governed_authority_python`](../examples/governed_authority_python/) specimen demonstrates draft isolation, fail-closed validation, sole canonical writing, sole external mutation, runtime role enforcement, idempotent reconciliation, recovery re-entry, and static bypass checks. It is a proof that these constraints are executable, not a production reference architecture.
