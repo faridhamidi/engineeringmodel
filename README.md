@@ -12,7 +12,7 @@ Reusable engineering tradecraft extracted from operational software, organized b
 >
 > **Governed Automation is deliberately exceptional.** It is for systems that exercise consequential authority over shared or external state. It is not a maturity level, an advanced architecture tier, or the expected destination for an ordinary application.
 
-This repository is a governing seed, not a framework or mandatory starter template. Its central rule is mechanical proportionality: add only the machinery justified by the failure mode and authority involved.
+This repository is a governing seed, not a framework or mandatory starter template. Its central rule is mechanical proportionality: broadly useful hygiene is separated from specialized authority machinery so a team does not have to infer the boundary from prose caveats.
 
 ## Choose the layer in 30 seconds
 
