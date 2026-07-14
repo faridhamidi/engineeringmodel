@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="docs/assets/engineering-model-governance-harness.jpg" alt="Engineering Models — governed automation harness" width="100%">
+</p>
+
 # Engineering Models
 
 Reusable engineering tradecraft extracted from operational software, organized by adoption cost and problem scope.
@@ -36,10 +40,6 @@ The fact that software is an API, service, worker, CLI, internal tool, data pipe
 Repositories with several stable, cross-cutting structural constraints may optionally escalate direct tests into a [`Repository Conformance Harness`](core/CONFORMANCE_HARNESS.md). That remains a Core Hygiene mechanism, not a third adoption layer.
 
 ## Governed Automation — the exception path
-
-<p align="center">
-  <img src="docs/assets/engineering-model-governance-harness.jpg" alt="Governed automation authority pipeline" width="100%">
-</p>
 
 Consider [`governed-automation/`](governed-automation/README.md) only after the need gate is crossed.
 
