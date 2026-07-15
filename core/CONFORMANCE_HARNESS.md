@@ -165,6 +165,20 @@ The executable witness demonstrates detection, CI-executable results, CODEOWNERS
 
 The manifest must point to rationale. It must not duplicate the rationale.
 
+## Optional semantic-consistency domain
+
+The rationale for shared states, actions, transitions, reasons, outcomes, and recovery semantics belongs in [`SEMANTIC_CONSISTENCY.md`](SEMANTIC_CONSISTENCY.md). A harness rule in this domain must link to that reference or to a more specific product decision; it must not restate the category definitions in the manifest or checker documentation.
+
+Possible rule families include:
+
+- declared vocabulary agrees with implementation;
+- important transitions are complete;
+- shared reason and outcome values are single-sourced;
+- call sites do not recreate competing semantic catalogs;
+- generated semantic references agree with their declarations.
+
+These remain Core rules while they protect legibility and coherence. If actor identity, policy applicability, evidence, or operating conditions determine permission for a consequential effect, apply the Governed Automation adoption check and use governed controls rather than relabelling authorization as semantic consistency.
+
 ## Lifecycle
 
 Lifecycle and enforcement completeness are independent.
