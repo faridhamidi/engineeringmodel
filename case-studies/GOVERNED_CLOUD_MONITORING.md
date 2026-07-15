@@ -62,6 +62,18 @@ Discovery cannot approve monitoring. Drafts cannot trigger external mutation. On
 **Scope:** protected storage and provider-call seams  
 **Conclusion:** static checks are justified where one bypass would invalidate the operating model.
 
+### Controls should follow action meaning
+
+**Evidence:** implemented, tested, deployed, operationally used  
+**Scope:** protected admission and relationship-management operations in one authority-bearing cloud-monitoring system  
+**Conclusion:** a protected operation inherited an inappropriate control because control selection followed implementation placement rather than the operation's declared meaning. Declaring the action and deriving its control set corrected the classification and reduced future duplication.
+
+### Governed non-action must remain visible
+
+**Evidence:** implemented, tested, deployed, operationally used  
+**Scope:** classification-dependent admission and monitoring decisions  
+**Conclusion:** a held operation that was neither completed nor visibly refused created an operational blind spot. A stable classification reason surfaced at the operator boundary made the non-action explainable without granting additional authority.
+
 ### External generality is bounded
 
 **Evidence:** inferred  
