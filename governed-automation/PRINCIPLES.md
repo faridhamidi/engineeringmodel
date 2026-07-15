@@ -20,7 +20,7 @@ A diagrammed separation is false when components share credentials or permission
 
 ## Uncertainty cannot authorize
 
-Incomplete, stale, malformed, conflicting, or unreadable evidence must not authorize a privileged action. Refusal should be classified, visible, and recoverable.
+Incomplete, stale, malformed, conflicting, or unreadable evidence must not authorize a privileged action. Refusal should be classified, visible, and recoverable. A deliberate governed hold must carry a stable machine-readable reason, operator presentation should derive from that canonical reason rather than reconstructing it independently, and the reason should remain visible until the condition is resolved or superseded.
 
 ## Recovery cannot gain authority
 
