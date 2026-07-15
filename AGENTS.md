@@ -9,6 +9,10 @@ This file is a navigation map, not a second methodology document.
 3. Read [`CONTRIBUTING.md`](CONTRIBUTING.md) for evidence, ownership, writing, and confidentiality rules.
 4. Read the canonical document for the concept being changed.
 
+## Optional semantic consistency
+
+Read [`core/SEMANTIC_CONSISTENCY.md`](core/SEMANTIC_CONSISTENCY.md) when a change introduces or modifies shared states, actions, transitions, reasons, outcomes, or recovery semantics.
+
 ## Optional conformance harness
 
 Read [`core/CONFORMANCE_HARNESS.md`](core/CONFORMANCE_HARNESS.md) only when changing the harness, its rules, or a product repository that has adopted this escalation.
