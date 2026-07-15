@@ -58,6 +58,11 @@ Use the trigger, not the term, to decide what the system needs. Full definitions
 
 ## Security and cost check
 
+**Do protected actions receive different controls depending on where their code lives rather than what they are?**
+
+- No → direct tests on the affected call sites may be enough.
+- Yes → consider [Declared protected actions and derived controls](MODELS.md#11-declared-protected-actions-and-derived-controls).
+
 **Does any selected model create a privileged component?**
 
 - No → apply the selected model proportionally.
