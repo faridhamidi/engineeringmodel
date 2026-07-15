@@ -5,6 +5,7 @@ Adopt this layer independently. It is intended for any non-trivial operational c
 ## What it provides
 
 - [`FOUNDATION.md`](FOUNDATION.md) — name meaningful boundaries, declare important system language, and preserve execution context.
+- [`SEMANTIC_CONSISTENCY.md`](SEMANTIC_CONSISTENCY.md) — optionally name shared states, actions, transitions, reasons, outcomes, and recovery semantics when local code and direct tests stop being sufficient.
 - [`TESTING.md`](TESTING.md) — classify tests by intent, target, and input generation; use small structural checks to stop boundary decay.
 - [`DOCUMENTATION.md`](DOCUMENTATION.md) — separate non-binding direction, worked implementation plans, and durable decisions.
 - [`../examples/core_boundaries_python/`](../examples/core_boundaries_python/) — a dependency-free executable witness for boundary and context-propagation checks.
@@ -22,6 +23,8 @@ A small repository should be able to answer:
 No prescribed folder layout is required. A function parameter, wrapper, module seam, or protocol is enough when it makes ownership and testing clear.
 
 ## Optional escalation
+
+Use [`SEMANTIC_CONSISTENCY.md`](SEMANTIC_CONSISTENCY.md) when repeated or interacting system language has become load-bearing. Keep direct tests as the default until several stable semantic or structural rules need common discovery and lifecycle.
 
 When several structural constraints have stable identities, multiple contributors depend on them, or architectural intent is repeatedly reconstructed, consider escalating direct checks into a [`Repository Conformance Harness`](CONFORMANCE_HARNESS.md).
 

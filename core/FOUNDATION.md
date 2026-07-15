@@ -31,7 +31,7 @@ A useful declaration has three properties:
 2. **Behavioral lock** — tests prove the declaration agrees with the implementation.
 3. **Derived use** — validation, gating, logging, documentation, or operator presentation is derived from the declaration where practical.
 
-Start with the vocabulary that is already causing branching or ambiguity. Do not design a complete ontology before the system earns it.
+Start with the vocabulary that is already causing branching or ambiguity. Do not design a complete ontology before the system earns it. See [`SEMANTIC_CONSISTENCY.md`](SEMANTIC_CONSISTENCY.md) when repeated or interacting system language needs a more explicit Core treatment.
 
 ### 3. Preserve execution context across every hop
 
