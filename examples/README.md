@@ -59,7 +59,10 @@ This witness does not prescribe a project layout, manifest schema, language, hos
 - repeated reconciliation is idempotent;
 - recovery re-enters through an authenticated request boundary instead of receiving a privileged reconciler object or identity;
 - stale proposal versions cannot overwrite newer canonical decisions;
-- structural checks reject new protected call sites.
+- protected actions select controls from one declared registry;
+- runtime control evaluation remains separate from selection;
+- unknown protected actions fail closed with visible canonical reasons;
+- structural checks reject new protected call sites and direct registry access.
 
 Run:
 
