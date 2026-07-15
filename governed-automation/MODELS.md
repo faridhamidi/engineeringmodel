@@ -16,6 +16,7 @@ Select models by trigger. Do not copy the complete set as a starter template.
 | Inference must not be confused with authoritative fact | [Confidence-bearing knowledge](#8-confidence-bearing-knowledge) |
 | Delivered output must be reproducible from one committed state | [Committed snapshot delivery](#9-committed-snapshot-delivery) |
 | A component holds privileged commit, mutation, or recovery capability | [Authority-component security](#10-authority-component-security) |
+| Protected actions inherit controls from code placement or repeated call-site logic | [Declared protected actions and derived controls](#11-declared-protected-actions-and-derived-controls) |
 
 ## 1. Fact, decision, and effect separation
 
@@ -186,3 +187,19 @@ Select models by trigger. Do not copy the complete set as a starter template.
 **Security implications:** this model is the security implication. Its failure invalidates the authority matrix even if application tests pass.
 
 **Skip when:** the system has no protected authority or consequential external effect. Ordinary application authentication may still be required, but it is outside this model.
+
+## 11. Declared protected actions and derived controls
+
+**Trigger:** protected actions receive inconsistent controls, inherit authorization behavior from code placement, or duplicate control-selection logic across call sites.
+
+**Definition:** a protected action has one declared semantic classification from which its required control categories are selected. Runtime evidence evaluates those controls but does not determine which controls should exist.
+
+**Mechanism:** declare every protected action using only the attributes needed to distinguish its authority, effect, execution role, and safety requirements. Derive the required control set from that declaration. Evaluate mutable runtime inputs separately. Reject unknown protected actions safely and prohibit call sites from reconstructing control selection.
+
+**Invariant:** every consequential action is declared; control selection is single-sourced; selection is independent of mutable runtime state; evaluation cannot remove a selected control; executor paths cannot invent decision authority; and blocked actions produce a stable reason.
+
+**Adoption cost:** an action registry, migration of existing actions, completeness tests, classification review, contributor concepts, and maintenance whenever protected behavior changes.
+
+**Security implications:** registry integrity becomes security-sensitive. An attacker or weak component must not be able to misclassify an action, omit it from completeness checks, supply its own required-control set, or convert an unknown action into an allowed one. Control selection must not depend on untrusted request fields.
+
+**Skip when:** the system has only a few low-risk operations and direct tests make their behavior and permissions clearer than a registry.
