@@ -1,6 +1,6 @@
 <!--
 Type: Observation report (behavioral evidence)
-Status: complete (single-runtime, n=5)
+Status: complete (single runtime; Round 1 = behaviour n=5, Round 2 = quality n=5+5)
 Origin: clean-room observation following ADR-002-share-ready-seed.md and the seed generator
 Owner: repository maintainer (assign on adoption)
 Last verified against: builder layer + seed generator on local main, 2026-07-16
@@ -143,6 +143,74 @@ persona outcome rather than a behavioural one.
   quoting the rule, and by Agent 5's cite-but-ignore counter-example).
 - **proposed / not demonstrated:** cross-runtime reliability, quantified lift versus a
   negative control, and operational efficacy for the target persona.
+
+## Round 2 — Does the seed steer work *quality*?
+
+Round 1 (above) measured *behaviour*. Round 2 asks whether the seed makes an agent's
+*code* better — and, to attribute any difference to the seed rather than the base model,
+adds a **matched control**.
+
+### Method
+
+- **Ten independent agents, identical task:** build a robust JSON-backed task-tracker CLI
+  (`add` / `list` / `done`), get it working, save with git. **No priming** — no mention
+  of steering, the skill, tests, or quality.
+- **Five treatment** (seeded directories) versus **five control** (identical directories
+  with the steering and skill removed).
+- **Every output was executed:** each tool's smoke path (`add`/`list`/`done`) and its unit
+  tests were run. **Pass = runs flawlessly.**
+- A sample of the actual `tasks.py` from both arms was code-reviewed to confirm quality
+  rather than trust self-reports.
+
+### Test results — 10/10 pass
+
+| Arm | Pass (smoke + unit tests) | Wrote unit tests | Test-count range |
+|---|---|---|---|
+| Treatment (5) | **5 / 5** | 5 / 5 | 17–20 |
+| Control (5) | **5 / 5** | 5 / 5 | 15–21 |
+
+Every agent in both arms produced a working tool with a passing suite, **atomic writes**
+(temp file + `os.replace`), **corrupt-JSON handling that fails loud** instead of losing
+data, input validation, distinct exit codes, and seam logging. Code review confirmed this
+is real, not merely self-reported.
+
+### Finding: no measurable quality difference — and why
+
+On this task, in this harness, **the seed produced no detectable lift in code quality.**
+Treatment and control were equivalent on every axis measured.
+
+This is a **confounded null, not a clean one.** The test harness applies its own always-on
+*code-quality* steering (unit tests for every implementation, logging at every seam,
+self-audit before shipping) to **both** arms — one control agent explicitly attributed its
+seam logging "per code-quality steering." The engineering-model skill's quality guidance
+overlaps almost entirely with that baseline, so its marginal effect is unmeasurable here:
+both arms were already held to a high bar by the environment.
+
+### What remains attributable to the seed
+
+The seed's distinct, reproducible effect stays **behavioural, not quality**: treatment
+agents excluded the agent scaffold from what they committed, citing the steering (controls
+had no scaffold to exclude). Round 1's fingerprint holds; Round 2 shows the *quality* was
+driven by the ambient baseline, not by the seed.
+
+### Honest verdict on quality
+
+- **Proven:** all ten outputs run flawlessly — the behavioural claim "does not break
+  things" holds across both arms.
+- **Not shown:** that the seed *raises* code quality. It added no measurable lift over the
+  control — but the control was not truly un-steered (harness quality steering applied to
+  both), so this neither confirms nor refutes a quality effect. Isolating it needs a
+  runtime with **no competing quality steering** (e.g. a bare Codex/Claude with only the
+  seed versus nothing).
+
+### Evidence tags (Round 2)
+
+- **tested:** 10/10 agent tools executed — smoke + unit tests pass.
+- **observed:** quality parity between seeded and control arms (n=5 each, one task, one runtime).
+- **inferred:** the parity is driven by the harness's global code-quality steering applying
+  to both arms (supported by a control agent citing it).
+- **not shown:** any quality lift attributable to the seed; a clean quality test needs a
+  runtime without competing steering.
 
 ## Appendix — ground-truth published trees
 
