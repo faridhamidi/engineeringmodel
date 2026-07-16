@@ -31,6 +31,7 @@ status, provenance, and freshness are greppable.
 | [`share-ready-seed.design.md`](share-ready-seed.design.md) | Design document | completed, historical |
 | [`ADR-002-share-ready-seed.md`](ADR-002-share-ready-seed.md) | ADR | accepted |
 | [`seed-cleanroom-observation.md`](seed-cleanroom-observation.md) | Observation report (evidence) | complete (n=5, single runtime) |
+| [`seed-codex-cleanroom.md`](seed-codex-cleanroom.md) | Observation report (Codex, real runtime) | complete (gpt-5.5, n=2+2) |
 
 ## Reading order for a newcomer
 
