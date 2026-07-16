@@ -17,6 +17,8 @@ jobs:
           python-version: "3.12"
       - name: Test core boundary witness
         run: python -m unittest discover -s examples/core_boundaries_python/tests -v
+      - name: Test builder line witness
+        run: python -m unittest discover -s builders/_witness/tests -v
       - name: Test conformance harness witness
         run: python -m unittest discover -s examples/conformance_harness_python/tests -v
       - name: Run conformance harness audit
