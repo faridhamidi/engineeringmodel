@@ -46,6 +46,11 @@ maintainers never edit either projection directly.
 - A new project can start with steering and the skill already discoverable; no first-use
   installation is required.
 - Generated projects carry two hidden skill copies when both runtimes are supported.
+- A distributed seed can verify internal file integrity against its embedded manifest
+  without access to this repository. Because that manifest is unsigned, this is not an
+  authenticity claim.
+- Canonical parity includes source revision and state, so a seed generated from an older
+  commit is intentionally stale even when its own manifest remains internally coherent.
 - Template users receive a point-in-time version. Updating an existing project requires
   a later managed update interface; GitHub template creation alone does not propagate
   updates.
@@ -56,7 +61,8 @@ maintainers never edit either projection directly.
 
 **Implemented, tested locally:** deterministic generation, exact dual-runtime skill
 projection, native steering parity, managed-file hashes, minimal top-level output,
-non-empty destination refusal, and drift detection.
+non-empty destination refusal, projection-junk rejection, source-independent manifest
+verification, git identity adaptation, and canonical drift detection.
 
 **Proposed / not demonstrated:** maintainer ratification, remote template creation,
 reviewed publication automation, installation from the template, update behavior in a

@@ -12,6 +12,17 @@ from typing import Any, Mapping, Sequence
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SPEC_PATH = Path(__file__).with_name("manifest.json")
 OUTPUT_MANIFEST = PurePosixPath(".engineering-model/manifest.json")
+FORBIDDEN_TREE_DIRECTORIES = {
+    ".git",
+    ".hg",
+    ".mypy_cache",
+    ".pytest_cache",
+    ".ruff_cache",
+    ".svn",
+    "__pycache__",
+}
+FORBIDDEN_TREE_FILES = {".DS_Store", "Thumbs.db"}
+FORBIDDEN_TREE_SUFFIXES = {".pyc", ".pyo"}
 
 
 class SeedError(ValueError):
@@ -95,10 +106,17 @@ def _copy_tree(source: Path, target: Path) -> None:
     if source.is_symlink() or not source.is_dir():
         raise SeedError(f"seed source tree is invalid: {source}")
     for path in sorted(source.rglob("*")):
+        relative = path.relative_to(source)
+        if (
+            any(part in FORBIDDEN_TREE_DIRECTORIES for part in relative.parts)
+            or path.name in FORBIDDEN_TREE_FILES
+            or path.suffix in FORBIDDEN_TREE_SUFFIXES
+        ):
+            raise SeedError(f"seed source tree contains projection junk: {path}")
         if path.is_symlink():
             raise SeedError(f"seed source must not contain symlinks: {path}")
         if path.is_file():
-            _write_file(path, target / path.relative_to(source))
+            _write_file(path, target / relative)
 
 
 def _file_hash(path: Path) -> str:
@@ -120,6 +138,70 @@ def _validate_top_level(output: Path, expected: Sequence[str]) -> None:
             "generated top-level paths differ from the manifest: "
             f"expected {sorted(expected)!r}, observed {actual!r}"
         )
+
+
+def _load_output_manifest(output: Path) -> Mapping[str, Any]:
+    manifest_path = output / Path(*OUTPUT_MANIFEST.parts)
+    try:
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise SeedError(f"cannot read generated seed manifest: {exc}") from exc
+
+    required = {
+        "format_version",
+        "managed_files",
+        "runtime_adapters",
+        "source",
+    }
+    if not isinstance(manifest, dict) or set(manifest) != required:
+        raise SeedError("generated seed manifest fields do not match the contract")
+    if manifest["format_version"] != 1:
+        raise SeedError("unsupported generated seed manifest format")
+
+    source = manifest["source"]
+    if not isinstance(source, dict) or set(source) != {
+        "repository",
+        "revision",
+        "state",
+    }:
+        raise SeedError("generated seed source identity is invalid")
+    if not all(isinstance(source[key], str) and source[key] for key in source):
+        raise SeedError("generated seed source identity values must be non-empty strings")
+    if source["state"] not in {"clean", "modified"}:
+        raise SeedError("generated seed source state must be clean or modified")
+
+    managed_files = manifest["managed_files"]
+    if not isinstance(managed_files, dict):
+        raise SeedError("generated seed managed_files must be an object")
+    for relative, digest in managed_files.items():
+        if not isinstance(relative, str):
+            raise SeedError("generated seed managed file paths must be strings")
+        path = _relative_path(relative)
+        if PurePosixPath(path.as_posix()) == OUTPUT_MANIFEST:
+            raise SeedError("generated seed manifest must not hash itself")
+        if (
+            not isinstance(digest, str)
+            or len(digest) != 64
+            or any(character not in "0123456789abcdef" for character in digest)
+        ):
+            raise SeedError(f"generated seed digest is invalid: {relative}")
+
+    runtime_adapters = manifest["runtime_adapters"]
+    if not isinstance(runtime_adapters, dict) or set(runtime_adapters) != {
+        "claude",
+        "codex",
+    }:
+        raise SeedError("generated seed runtime adapters are invalid")
+    for adapter, locations in runtime_adapters.items():
+        if not isinstance(locations, dict) or set(locations) != {"instructions", "skill"}:
+            raise SeedError(f"generated seed {adapter} adapter is invalid")
+        for location in locations.values():
+            if not isinstance(location, str):
+                raise SeedError(f"generated seed {adapter} paths must be strings")
+            relative = _relative_path(location).as_posix()
+            if relative not in managed_files:
+                raise SeedError(f"generated seed {adapter} path is not managed: {relative}")
+    return manifest
 
 
 def generate_seed(
@@ -214,6 +296,41 @@ def generate_seed(
     return output
 
 
+def verify_seed(output: Path) -> dict[str, str]:
+    output = output.resolve()
+    if not output.is_dir():
+        raise SeedError(f"seed output directory is unavailable: {output}")
+    manifest = _load_output_manifest(output)
+    expected_top_level = {
+        PurePosixPath(relative).parts[0]
+        for relative in manifest["managed_files"]
+    }
+    expected_top_level.add(OUTPUT_MANIFEST.parts[0])
+    actual_top_level = {path.name for path in output.iterdir()}
+    drift = {
+        relative: "missing"
+        for relative in sorted(expected_top_level - actual_top_level)
+    }
+    drift.update(
+        {
+            relative: "unexpected"
+            for relative in sorted(actual_top_level - expected_top_level)
+        }
+    )
+
+    managed_files = manifest["managed_files"]
+    actual = _files_below(output)
+    actual.pop(OUTPUT_MANIFEST.as_posix(), None)
+    for relative in sorted(managed_files.keys() | actual.keys()):
+        if relative not in actual:
+            drift[relative] = "missing"
+        elif relative not in managed_files:
+            drift[relative] = "unexpected"
+        elif _file_hash(actual[relative]) != managed_files[relative]:
+            drift[relative] = "changed"
+    return drift
+
+
 def seed_drift(
     output: Path,
     *,
@@ -248,7 +365,16 @@ def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     operation = parser.add_mutually_exclusive_group(required=True)
     operation.add_argument("--output", type=Path, help="write a new seed directory")
-    operation.add_argument("--check", type=Path, help="verify an existing seed directory")
+    operation.add_argument(
+        "--check",
+        type=Path,
+        help="compare an existing seed with current canonical sources",
+    )
+    operation.add_argument(
+        "--verify",
+        type=Path,
+        help="verify an existing seed against its embedded manifest",
+    )
     return parser
 
 
@@ -260,15 +386,20 @@ def main(argv: Sequence[str] | None = None) -> int:
             print(f"Generated seed: {output}")
             return 0
 
-        drift = seed_drift(args.check)
+        if args.check is not None:
+            drift = seed_drift(args.check)
+            success = f"Seed matches canonical sources: {args.check.resolve()}"
+        else:
+            drift = verify_seed(args.verify)
+            success = f"Seed matches its embedded manifest: {args.verify.resolve()}"
         if drift:
             for relative, reason in drift.items():
                 print(f"{reason}: {relative}")
             return 1
-        print(f"Seed matches canonical sources: {args.check.resolve()}")
+        print(success)
         return 0
     except SeedError as exc:
-        print(f"Seed generation failed: {exc}")
+        print(f"Seed operation failed: {exc}")
         return 2
 
 

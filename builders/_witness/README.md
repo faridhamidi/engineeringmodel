@@ -26,7 +26,8 @@ behavior, and substrate enforcement are not demonstrated.
    engine document. Missing, stale, and extra references are rejected.
 8. The share-ready seed contains only its declared minimal surface, installs exact
    skill projections for both supported runtimes, records hashes for every managed
-   file, is deterministic, and detects missing, changed, or unexpected output.
+   file, rejects projection junk, is deterministic, verifies without its source
+   checkout, and detects missing, changed, unexpected, or canonically stale output.
 
 ## Run
 

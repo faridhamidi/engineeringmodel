@@ -38,12 +38,17 @@ orientation, and no source-only top-level directory is admitted.
 
 ```bash
 python seed/generate.py --output dist/engineeringmodel-seed
+python seed/generate.py --verify dist/engineeringmodel-seed
 python seed/generate.py --check dist/engineeringmodel-seed
 ```
 
 Generation requires a new or empty destination and never initializes git or contacts a
-remote system. Check mode regenerates expected output in a temporary directory and
-reports missing, changed, or unexpected files without modifying the target.
+remote system. Verify mode checks managed-file hashes and the top-level surface implied
+by the output's embedded manifest without consulting the canonical checkout. Check mode
+regenerates expected output from the current canonical checkout in a temporary directory
+and reports missing, changed, or unexpected files without modifying the target. Because
+source revision and state are part of that projection, a new source commit intentionally
+makes an older seed stale in check mode.
 
 [`seed/manifest.json`](../seed/manifest.json) is the structured projection spec. It
 declares source-to-target mappings, runtime destinations, format version, source
@@ -59,7 +64,10 @@ The output manifest records:
 
 The manifest creates an ownership envelope for future update and removal operations. It
 does not claim that a dirty source tree equals its recorded commit; the explicit source
-state preserves that distinction.
+state preserves that distinction. Manifest verification proves internal consistency,
+not provenance authenticity: the local manifest is intentionally unsigned and could be
+changed together with its files. Canonical check mode provides the stronger comparison
+when the source repository is available.
 
 ## 5. Runtime Adapters
 
@@ -85,11 +93,15 @@ Direct witnesses prove:
 6. repeated generation with the same source identity is deterministic;
 7. missing, changed, and unexpected output is detected;
 8. a non-empty destination is rejected without changing user work;
-9. the project README does not become methodology documentation.
+9. the project README does not become methodology documentation;
+10. VCS, OS, and cache artifacts below projected source trees are rejected;
+11. source identity reports clean and modified worktrees and wraps git failures;
+12. manifest verification does not inspect the source checkout;
+13. canonical check mode treats a different source revision as stale.
 
-CI generates and checks a fresh seed in runner-local temporary storage. These witnesses
-do not prove remote publication, client behavior, agent adherence, or safe updates to an
-already-diverged product repository.
+CI generates, verifies, and checks a fresh seed in runner-local temporary storage. These
+witnesses do not prove manifest authenticity, remote publication, client behavior,
+agent adherence, or safe updates to an already-diverged product repository.
 
 ## 7. Publication Boundary
 

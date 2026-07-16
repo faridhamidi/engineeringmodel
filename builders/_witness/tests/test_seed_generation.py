@@ -2,15 +2,23 @@ from __future__ import annotations
 
 import hashlib
 import json
+import subprocess
 import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(REPO_ROOT))
 
-from seed.generate import SeedError, generate_seed, seed_drift  # noqa: E402
+from seed.generate import (  # noqa: E402
+    SeedError,
+    generate_seed,
+    seed_drift,
+    source_identity,
+    verify_seed,
+)
 
 SKILL_ROOT = REPO_ROOT / "skills" / "engineering-model"
 REVISION = "test-source-revision"
@@ -118,6 +126,78 @@ class SeedGenerationTests(unittest.TestCase):
             self.assertEqual(drift["CLAUDE.md"], "missing")
             self.assertEqual(drift["unexpected.txt"], "unexpected")
 
+    def test_manifest_verification_is_independent_of_the_source_checkout(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            output = self.generate(Path(tmp) / "seed")
+            with patch(
+                "seed.generate.source_identity",
+                side_effect=AssertionError("verification must not inspect git"),
+            ):
+                self.assertEqual(verify_seed(output), {})
+
+    def test_manifest_verification_detects_managed_and_unexpected_changes(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            output = self.generate(Path(tmp) / "seed")
+            (output / "AGENTS.md").write_text("changed\n", encoding="utf-8")
+            (output / "CLAUDE.md").unlink()
+            (output / "unexpected.txt").write_text("extra\n", encoding="utf-8")
+            drift = verify_seed(output)
+            self.assertEqual(drift["AGENTS.md"], "changed")
+            self.assertEqual(drift["CLAUDE.md"], "missing")
+            self.assertEqual(drift["unexpected.txt"], "unexpected")
+
+    def test_manifest_verification_rejects_an_invalid_digest(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            output = self.generate(Path(tmp) / "seed")
+            manifest_path = output / ".engineering-model" / "manifest.json"
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            manifest["managed_files"]["AGENTS.md"] = "not-a-sha256-digest"
+            manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+            with self.assertRaisesRegex(SeedError, "digest is invalid"):
+                verify_seed(output)
+
+    def test_canonical_check_treats_a_different_source_revision_as_stale(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            output = self.generate(Path(tmp) / "seed")
+            drift = seed_drift(
+                output,
+                revision="new-source-revision",
+                source_state=SOURCE_STATE,
+            )
+            self.assertEqual(
+                drift,
+                {".engineering-model/manifest.json": "changed"},
+            )
+
+    def test_source_identity_reports_clean_and_modified_worktrees(self) -> None:
+        repo_root = Path("/example/repo")
+        for status, expected_state in (("", "clean"), (" M seed/generate.py\n", "modified")):
+            with self.subTest(expected_state=expected_state):
+                completed = (
+                    subprocess.CompletedProcess([], 0, stdout="abc123\n", stderr=""),
+                    subprocess.CompletedProcess([], 0, stdout=status, stderr=""),
+                )
+                with patch("seed.generate.subprocess.run", side_effect=completed) as run:
+                    self.assertEqual(source_identity(repo_root), ("abc123", expected_state))
+                self.assertEqual(run.call_count, 2)
+                self.assertEqual(run.call_args_list[0].args[0], ["git", "rev-parse", "HEAD"])
+                self.assertEqual(
+                    run.call_args_list[1].args[0],
+                    ["git", "status", "--porcelain", "--untracked-files=all"],
+                )
+                self.assertEqual(run.call_args_list[0].kwargs["cwd"], repo_root)
+
+    def test_source_identity_wraps_git_execution_failures(self) -> None:
+        failures = (
+            FileNotFoundError("git"),
+            subprocess.CalledProcessError(1, ["git", "rev-parse", "HEAD"]),
+        )
+        for failure in failures:
+            with self.subTest(failure=type(failure).__name__):
+                with patch("seed.generate.subprocess.run", side_effect=failure):
+                    with self.assertRaisesRegex(SeedError, "identity is unavailable"):
+                        source_identity(Path("/example/repo"))
+
     def test_generation_refuses_a_nonempty_destination(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             output = Path(tmp) / "seed"
@@ -152,6 +232,35 @@ class SeedGenerationTests(unittest.TestCase):
                     source_state=SOURCE_STATE,
                 )
             self.assertFalse(output.exists())
+
+    def test_generation_rejects_projection_junk_in_a_source_tree(self) -> None:
+        junk_paths = (".DS_Store", ".git/config", "__pycache__/module.pyc")
+        for junk_path in junk_paths:
+            with self.subTest(junk_path=junk_path), tempfile.TemporaryDirectory() as tmp:
+                repo_root = Path(tmp) / "repo"
+                source = repo_root / "package"
+                source.mkdir(parents=True)
+                (source / "SKILL.md").write_text("skill\n", encoding="utf-8")
+                junk = source / junk_path
+                junk.parent.mkdir(parents=True, exist_ok=True)
+                junk.write_text("junk\n", encoding="utf-8")
+                spec = {
+                    "format_version": 1,
+                    "source_repository": "https://example.invalid/source",
+                    "files": [],
+                    "trees": [{"source": "package", "targets": ["installed"]}],
+                    "expected_top_level": [".engineering-model", "installed"],
+                }
+                spec_path = repo_root / "manifest.json"
+                spec_path.write_text(json.dumps(spec), encoding="utf-8")
+                with self.assertRaisesRegex(SeedError, "projection junk"):
+                    generate_seed(
+                        Path(tmp) / "output",
+                        repo_root=repo_root,
+                        spec_path=spec_path,
+                        revision=REVISION,
+                        source_state=SOURCE_STATE,
+                    )
 
     def test_generated_readme_does_not_turn_the_seed_into_methodology_docs(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

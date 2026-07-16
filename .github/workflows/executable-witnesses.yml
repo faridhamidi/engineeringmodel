@@ -24,6 +24,7 @@ jobs:
       - name: Generate and verify share-ready seed
         run: |
           python seed/generate.py --output "${RUNNER_TEMP}/engineeringmodel-seed"
+          python seed/generate.py --verify "${RUNNER_TEMP}/engineeringmodel-seed"
           python seed/generate.py --check "${RUNNER_TEMP}/engineeringmodel-seed"
       - name: Test conformance harness witness
         run: python -m unittest discover -s examples/conformance_harness_python/tests -v

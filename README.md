@@ -50,6 +50,7 @@ project seed instead:
 
 ```bash
 python seed/generate.py --output dist/engineeringmodel-seed
+python seed/generate.py --verify dist/engineeringmodel-seed
 python seed/generate.py --check dist/engineeringmodel-seed
 ```
 
@@ -57,6 +58,8 @@ The output contains only root `AGENTS.md` and `CLAUDE.md` steering, project-loca
 copies for Codex and Claude, a provenance manifest, and minimal project placeholders.
 It excludes this repository's methodology directories, examples, meta records,
 contributor instructions, and CI. See [`seed/README.md`](seed/README.md).
+Use `--verify` for source-independent manifest integrity and `--check` for parity with
+the current canonical checkout.
 
 ## Choose your layer
 
