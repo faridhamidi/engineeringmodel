@@ -11,6 +11,9 @@ Classify each intended action before performing it:
   install the packaged skill before continuing.
 - If it touches shared ground, is hard to undo, or is uncertain, fail closed and load
   the installed `engineering-model` skill for the depth the decision earns.
+- Before editing, inspect how the repository handles the same concern. Before
+  completion, self-audit changed code for dead or fragile constructs and divergence
+  from those patterns; fix findings in the same pass.
 - Protect changed load-bearing behavior with the lightest test that would fail on a
   realistic defect. Add diagnostic context at external, asynchronous, or persistence
   seams only when failure would otherwise be silent; never silently discard or corrupt

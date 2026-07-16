@@ -59,19 +59,30 @@ every rejected mechanism left out.
 
 ## 3. Protect The Load-Bearing Seams
 
+Before editing, inspect how the repository already handles the same concern, including
+configuration, error handling, logging, parsing, dependencies, and test structure.
+Preserve those patterns unless the task deliberately changes them. Before completion,
+self-audit modified code for unused or misplaced imports, dead parameters or
+dependencies, unsafe collection access, fragile parsing, and accidental inconsistency;
+fix findings in the same pass or record why a departure is intentional.
+
 Implement the selected controls in the product repository. Protect each changed
-load-bearing behavior with the lightest test that would fail on a realistic defect.
-Treat a test as enforcement only when an existing executable artifact names the
-protected behavior and has run successfully in the current increment. Prefer a direct
-test before a ratchet, a ratchet before a manifest-backed harness, and repository-host
-or substrate controls when actual admission or authority must be enforced.
+load-bearing behavior with the lightest test that would fail on a realistic defect. For
+new or changed branching business logic, cover the intended path and the
+failure, fallback, or guard paths whose outcomes carry material risk. Replace external
+services with test doubles unless the test explicitly targets their integration. Treat
+a test as enforcement only when an existing executable artifact names the protected
+behavior and has run successfully in the current increment. Prefer a direct test before
+a ratchet, a ratchet before a manifest-backed harness, and repository-host or substrate
+controls when actual admission or authority must be enforced.
 
 Add diagnostic context at external, asynchronous, or persistence seams when an
 otherwise silent failure would impede detection or recovery. Preserve operation
 identifiers and meaningful outcome or reason fields where they exist. Do not log every
-function, duplicate telemetry already supplied by the runtime, or expose secrets. For
-data mutation, prove that failures cannot silently discard or corrupt accepted data;
-choose validation, atomicity, and recovery mechanisms in proportion to that risk.
+function, duplicate telemetry already supplied by the runtime, or expose secrets.
+Record an exception before intentionally swallowing it. For data mutation, prove that
+failures cannot silently discard or corrupt accepted data; choose validation, atomicity,
+and recovery mechanisms in proportion to that risk.
 
 Do not claim an authority boundary unless distinct identities and permissions prevent
 weaker components from exercising stronger powers. Do not let missing, stale,
@@ -82,7 +93,8 @@ through the normal authority path.
 every changed load-bearing behavior has either an executed test artifact or a recorded
 reason that no test is proportionate; every claimed enforcement level maps to an
 existing artifact and observed result; every new checker rejects a realistic known-bad
-case; and relevant silent-failure seams carry enough context to diagnose and recover.
+case; relevant silent-failure seams carry enough context to diagnose and recover; and
+the self-audit leaves no unexplained dead, fragile, or pattern-divergent code.
 
 ## 4. Operate Inside The Envelope
 

@@ -5,11 +5,12 @@ Origin: clean-room observation following ADR-002-share-ready-seed.md and the see
 Owner: repository maintainer (assign on adoption)
 Last verified against: builder layer + seed generator on local main, 2026-07-16
 Revision note: corrected after review. The subagent harness inherits the operator's
-global Kiro steering (code-quality.md, security-best-practices.md, collaboration-style.md
-— all inclusion: always) for every agent in both arms. "Clean room" therefore means
-isolated from the methodology repo, NOT from operator steering. Round 2's quality parity
-is explained by that global steering (unit tests, seam logging, self-audit, input
-validation), not by the seed.
+global Kiro steering (code-quality.md, security-best-practices.md,
+collaboration-style.md, project-conventions.md — all inclusion: always) for every agent
+in both arms. "Clean room" therefore means
+isolated from the methodology repo, NOT from operator steering. Round 2's tests, logging,
+self-audit, and input-validation parity is explained by that global steering, not by the
+seed; atomic-write parity remains observed but unattributed.
 -->
 
 # Clean-Room Behavioral Observation — Does the Seed Steer an Independent Agent?
@@ -121,10 +122,12 @@ from earlier review.
 
 - **The harness was not free of operator steering — applies to *both* rounds.** Every
   agent inherited the operator's global Kiro steering (`code-quality.md`,
-  `security-best-practices.md`, `collaboration-style.md`), all `inclusion: always`. So
+  `security-best-practices.md`, `collaboration-style.md`, `project-conventions.md`), all
+  `inclusion: always`. So
   "clean room" here means *isolated from the methodology repo*, **not** isolated from
-  operator steering. This is the direct cause of the Round 2 quality parity, and it is a
-  caveat on every finding. The commit-scope / scaffold-exclusion fingerprint survives as
+  operator steering. It directly supplied the shared tests and logging requirements but
+  does not establish the cause of every observed practice. This is a caveat on every
+  finding. The commit-scope / scaffold-exclusion fingerprint survives as
   seed-attributable only because no global steering rule covers commit scope — and the
   agents quoted the seed's own phrase for it.
 - **Single model / runtime.** All five were the same agent implementation in one harness;
@@ -191,7 +194,7 @@ Every agent in both arms produced a working tool with a passing suite, **atomic 
 data, input validation, distinct exit codes, and seam logging. Code review confirmed this
 is real, not merely self-reported.
 
-### Finding: the quality was the operator's global steering, not the seed
+### Finding: the test and logging parity came from global steering, not the seed
 
 On this task, **the seed produced no detectable lift in code quality** — treatment and
 control were equivalent on every axis. But this is not an ambiguous null; the cause is
@@ -199,16 +202,20 @@ confirmed. Every agent in both arms ran under the operator's **global Kiro steer
 which is `inclusion: always` and applies to every agent in this environment:
 
 - `code-quality.md` mandates *"Unit Tests for Every New Implementation,"* *"Logging at
-  Every Seam,"* and *"Self-Audit Before Shipping"* (guards on dict/array access, etc.);
+  Every Seam,"* *"Self-Audit Before Shipping,"* and consistency with existing patterns;
 - `security-best-practices.md` mandates *"Validate all user inputs"* and *"Never hardcode
-  secrets."*
+  secrets"*;
+- `collaboration-style.md` governs conversation rather than implementation quality;
+- `project-conventions.md` supplies project-specific infrastructure defaults that were
+  present but irrelevant to this local task-tracker task.
 
-That set **is** the quality observed — the unit tests, seam logging, input validation,
-atomic-write robustness, and secret-ignoring hygiene appeared in both arms because the
-global steering required them, not because of the seed. One control agent said so
-outright ("logging at function seams per code-quality steering"). The engineering-model
-skill's quality guidance overlaps this baseline, so **Round 2 measured the operator's
-global steering, not the seed, and can say nothing about whether the seed steers quality.**
+The unit tests, seam logging, self-audit, pattern consistency, input validation, and
+secret hygiene map directly to that ambient steering. One control agent said so outright
+("logging at function seams per code-quality steering"). Atomic writes appeared in both
+arms but are not required by any of the four files, so their cause is unproven. The
+engineering-model skill's quality guidance overlaps this baseline, so **Round 2 measured
+the operator's ambient condition, not the seed, and can say nothing about whether the
+seed steers quality.**
 
 ### What remains attributable to the seed
 
@@ -221,9 +228,10 @@ driven by the ambient baseline, not by the seed.
 
 - **Proven:** all ten outputs run flawlessly.
 - **Void as a seed test:** the control was not un-steered — both arms carried the operator's
-  always-on `code-quality` / `security` steering, which *is* the quality observed. So Round 2
-  does not measure the seed at all. A valid quality test needs a runtime with **no operator
-  global steering**, seed versus nothing. **That follow-up was run on Codex —
+  always-on `code-quality` / `security` steering, which explicitly required the shared
+  tests, logging, and input-validation behavior. So Round 2 does not measure the seed's
+  incremental effect. A valid quality test needs a runtime with **no operator global
+  steering**, seed versus nothing. **That follow-up was run on Codex —
   see [`seed-codex-cleanroom.md`](seed-codex-cleanroom.md), which found bare Codex wrote no
   tests/logging and the tested pre-change seed did not add them.**
 
@@ -231,9 +239,12 @@ driven by the ambient baseline, not by the seed.
 
 - **tested:** 10/10 agent tools executed — smoke + unit tests pass.
 - **observed:** quality parity between seeded and control arms (n=5 each, one task, one runtime).
-- **confirmed:** the parity is caused by the operator's global Kiro steering applying to
-  both arms — verified by reading `code-quality.md` / `security-best-practices.md`
-  (`inclusion: always`), and corroborated by a control agent citing it.
+- **confirmed:** both arms carried the same four-file Kiro steering bundle; tests and
+  logging are explicitly required by `code-quality.md` and corroborated by a control
+  agent citing it. Input validation and secret hygiene are explicit in
+  `security-best-practices.md`.
+- **unattributed:** atomic writes appeared in both arms but are not explicitly required
+  by any of the four steering files.
 - **not shown:** any quality lift attributable to the seed; a clean quality test needs a
   runtime without competing steering.
 

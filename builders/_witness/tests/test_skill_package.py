@@ -71,10 +71,20 @@ class SkillPackageTests(unittest.TestCase):
             (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8").split()
         )
         required = (
+            "inspect how the repository already handles the same concern",
+            "unused or misplaced imports",
+            "dead parameters or dependencies",
+            "unsafe collection access",
+            "fragile parsing",
+            "fix findings in the same pass or record why a departure is intentional",
             "lightest test that would fail on a realistic defect",
+            "cover the intended path",
+            "failure, fallback, or guard paths whose outcomes carry material risk",
+            "Replace external services with test doubles",
             "existing executable artifact",
             "has run successfully in the current increment",
             "Do not log every function",
+            "Record an exception before intentionally swallowing it",
             "failures cannot silently discard or corrupt accepted data",
             "executed test artifact or a recorded reason that no test is proportionate",
             "every named test or check was actually run",

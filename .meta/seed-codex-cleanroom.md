@@ -19,8 +19,9 @@ Revision note: ADR-003 implements the proposed quality, skill-loading, and const
 ## Why this run exists
 
 The earlier [clean-room observation](seed-cleanroom-observation.md) ran through the Kiro
-subagent harness, which inherits the operator's global Kiro steering
-(`code-quality.md` etc., all `inclusion: always`). That confound **voided** its quality
+subagent harness, which inherits the operator's four-file global Kiro steering bundle
+(`code-quality.md`, `security-best-practices.md`, `collaboration-style.md`, and
+`project-conventions.md`, all `inclusion: always`). That confound **voided** its quality
 round — the tests and seam-logging seen there came from operator steering, not the seed.
 
 This run removes that confound by using **Codex CLI**, the seed's real target runtime:
@@ -181,12 +182,12 @@ seed's always-on front — but not the operator's absolutist standard.**
   them was always-on operator steering (Kiro, 10/10). So if the seed is meant to steer
   quality for someone on a bare runtime — the whole point of a shareable seed — **it must
   carry that steering itself, always-on.** This is now replicated on two independent runtimes.
-- **Do not import `code-quality.md` verbatim.** It is absolutist ("log at *every* seam,"
-  "tests for *every* implementation"), which conflicts with the engine's proportionality
-  ("the lightest mechanism that protects the actual risk"); it contains operator/org-specific
-  bits; and it re-introduces "how to build" prescription that the design deliberately keeps
-  out of the steering. Add a **short, proportionate** line that points at the engine's own
-  `TESTING.md`/`FOUNDATION.md`, not the operator's house standard.
+- **Do not import the Kiro bundle verbatim.** `code-quality.md` is absolutist ("log at
+  *every* seam," "tests for *every* implementation"), which conflicts with the engine's
+  proportionality ("the lightest mechanism that protects the actual risk"). The bundle
+  also includes project-specific conventions that do not belong in a reusable seed. Keep
+  the portable self-audit and pattern-consistency behavior, then point at the engine's
+  own `TESTING.md`/`FOUNDATION.md` for proportionate depth.
 - **Open question to settle:** whether the quality nudge is unconditional or gated (e.g.
   only for non-trivial or above-the-line work), to preserve proportionality for throwaway
   scripts.

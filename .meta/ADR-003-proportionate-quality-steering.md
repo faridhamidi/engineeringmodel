@@ -17,9 +17,14 @@ criteria and progressively disclosed testing depth.
 
 - Every non-trivial implementation loads the installed skill before editing. This is a
   direct always-on instruction, not a hoped-for result of model invocation metadata.
+- Before editing, the agent inspects existing repository patterns for the same concern.
+  Before completion, it self-audits modified code for dead or fragile constructs and
+  fixes findings in the same pass.
 - Changed load-bearing behavior gets the lightest executable test that would fail on a
   realistic defect. A test is claimed as enforcement only when its artifact exists and
-  it ran successfully for the increment.
+  it ran successfully for the increment. Risk-bearing business-logic branches cover
+  their intended, failure, fallback, and guard outcomes with external services replaced
+  by test doubles unless integration is the explicit target.
 - External, asynchronous, and persistence seams get diagnostic context only when an
   important failure would otherwise be silent or difficult to recover. Logging every
   function is explicitly rejected.
@@ -42,9 +47,18 @@ block.
 ## Rationale
 
 The Kiro observation produced tests, seam logging, validation, and atomic writes in all
-ten runs, but both arms inherited the operator's always-on quality rules. That round
-therefore demonstrates the strength of an always-on quality channel, not a quality lift
-from this seed.
+ten runs, but both arms inherited four always-on operator files. `code-quality.md`
+directly required self-audit, existing-pattern consistency, function logging, and unit
+tests; `security-best-practices.md` required input validation and secret hygiene.
+`collaboration-style.md` governed dialogue rather than implementation quality, while
+`project-conventions.md` carried project-specific infrastructure defaults that do not
+belong in a reusable seed.
+
+The tests and logging are directly connected to `code-quality.md`, including one
+control agent citing it. Atomic writes were observed in all ten outputs but are not
+required by any of the four files, so their cause remains unproven. The Kiro round
+therefore demonstrates an ambient always-on quality condition, not that every observed
+practice came from steering and not a quality lift from this seed.
 
 The follow-up removed that confound across Codex and Claude. Bare and seeded runs wrote
 no tests and no seam logging in all eight executions. The on-demand skill was also
@@ -61,15 +75,15 @@ front and the skill aligned without duplicating the full testing model.
 
 ## Consequences
 
-- The always-on block is longer because quality, skill loading, and recovery
-  availability are now load-bearing instructions.
+- The always-on block is longer because self-audit, pattern inspection, quality, skill
+  loading, and recovery availability are now load-bearing instructions.
 - Small edits and throwaway artifacts remain light: the quality mechanism is gated by
   non-trivial implementation and by changed load-bearing behavior.
 - A direct-test claim now requires an artifact and observed execution result. Prose-only
   confidence is reported as no enforcement.
-- The seed does not mandate the Kiro operator's house standard. It preserves the useful
-  outcomes while rejecting universal tests, universal logging, and implementation
-  prescriptions that ignore cost of error.
+- The seed does not mandate the Kiro operator's house standard. It retains portable
+  self-audit, pattern consistency, branch evidence, and silent-failure diagnostics while
+  rejecting universal tests, universal logging, and project-specific conventions.
 - Structural witnesses can prove block parity and required wording, but cannot prove
   runtime obedience or quality improvement. A new matched clean-room run is required
   before claiming behavioral efficacy for this revision.
@@ -81,9 +95,10 @@ completion criteria, impact-record evidence fields, constrained-git reporting, a
 minimal falsifiers that detect removal of each new load-bearing norm.
 
 **Observed:** the pre-change Kiro condition produced tests and logging in 10/10 runs
-under ambient always-on quality steering; the pre-change bare Codex and Claude
-conditions produced neither in 0/8 runs; skill consultation and its impact ritual were
-inconsistent.
+under the four-file ambient always-on steering bundle; the pre-change bare Codex and
+Claude conditions produced neither in 0/8 runs; skill consultation and its impact
+ritual were inconsistent. Atomic writes appeared in 10/10 Kiro outputs, but their cause
+is not established by the steering text.
 
 **Not demonstrated:** post-change runtime adherence, a measured quality lift, effects
 beyond the tested models and task, or operational defect reduction.
