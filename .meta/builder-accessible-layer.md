@@ -1,28 +1,30 @@
 <!--
 Type: Forward document (meta-operation)
-Status: draft (promoted — the design document is authoritative for the plan)
+Status: realized (historical direction retained for provenance)
 Origin: exploration of whether the seed is usable by AI-fluent builders without a software-engineering background
 Owner: repository maintainer (assign on adoption)
-Last verified against: repository state at commit acf34b9 (main)
+Last verified against: builder-layer implementation dated 2026-07-16
 Revision note: (1) scope was first narrowed to translation; an earlier deterministic
 "subsystem / harness" and two-tier enforcement model were removed. (2) The direction
 then evolved (delivery, git, human approval, autonomy) and was promoted to
 builder-accessible-layer.design.md, which now owns the worked plan. This document was
 reconciled to state the current direction and defers all "how" detail to the design
 document.
-Supersedes / superseded by: —
+Supersedes / superseded by: realized through builder-accessible-layer.design.md; durable rules in ADR-001-builder-accessible-layer.md
 -->
 
 # Forward Document — A Builder-Accessible Translation
 
-**Non-binding direction.** This document proposes where the repository could go and
-in what order. It commits to nothing. See [`core/DOCUMENTATION.md`](../core/DOCUMENTATION.md).
+**Historical non-binding direction.** This document records where the repository chose
+to go and in what order. The implementation is complete and approved; durable rules
+live in [ADR-001](ADR-001-builder-accessible-layer.md). See
+[`core/DOCUMENTATION.md`](../core/DOCUMENTATION.md).
 
 The single idea: **translate the interface, leave the engine untouched.**
 
-**Promoted to:** [`builder-accessible-layer.design.md`](builder-accessible-layer.design.md)
-— the worked design document. It is authoritative for architecture, deliverables,
-verification, and the resolved decisions. This document states *direction* only.
+**Realized through:**
+[`builder-accessible-layer.design.md`](builder-accessible-layer.design.md), the
+historical worked design. This document states direction and provenance only.
 
 ---
 
@@ -34,10 +36,11 @@ Each is specified in the design document; stated here at direction level:
 1. **Delivery is decided (no longer deferred).** The translation reaches the moment of
    work as **always-on steering** — front matter, whole-workflow, no keyword triggers —
    that calls the **engine as an on-demand skill** in the open
-   [Agent Skills format](https://agentskills.io/specification). The **steering is
-   packaged with the skill**; consuming agents self-install and place it per platform
-   (reference runtimes Kiro, Codex, Claude). How the skill is built is the creator's
-   job, not fixed here.
+   [Agent Skills format](https://agentskills.io/specification). The reusable
+   `engineering-model` package carries parity-checked engine projections and steering
+   templates. Consuming agents install the skill and place the marked steering block
+   in native always-on surfaces; this repository exercises both `AGENTS.md` and
+   `CLAUDE.md`.
 2. **Git is the revertibility substrate.** Git is a requirement; the agent commits
    generously *for* the user (undo + audit + provenance in one). This is what lets the
    agent act autonomously and still be safe.
@@ -162,10 +165,12 @@ above the line).
 ## How the pieces relate
 
 - **The engine** — `core/` and `governed-automation/`. The source of truth,
-  **unchanged**, exposed to the agent as an on-demand **skill**.
+  **unchanged**, delivered to the agent through generated, parity-checked references in
+  the on-demand `engineering-model` skill.
 - **The steering front matter** — always adhered, whole-workflow: draws the line, acts
   below it, commits every change, asks a human before external effects, and calls the
-  engine skill for depth.
+  engine skill for depth. The package owns the canonical block; native `AGENTS.md` and
+  `CLAUDE.md` surfaces carry exact checked copies.
 - **The human front door** — [`builders/START_HERE.md`](../builders/START_HERE.md): the
   same line in plain language for the person.
 - **Git** — the required revertibility substrate the agent operates *for* the user.
@@ -213,11 +218,12 @@ The worked deliverables, phased order, and verification plan now live in the
 [design document](builder-accessible-layer.design.md) (§3–§6). At direction level:
 
 - human front door — `builders/START_HERE.md` — *implemented, tested*;
-- the "safe operation" floor — `builders/SAFE_OPERATION.md` — *proposed*;
-- always-on steering front matter — *proposed*;
-- engine-as-skill packaging — *proposed*;
-- git-prerequisite README (install across macOS / Windows / Ubuntu / Fedora) — *proposed*;
-- executable witnesses for each load-bearing property, run in CI — *partly implemented*.
+- the safe-operation floor — `builders/SAFE_OPERATION.md` — *implemented, structurally tested*;
+- cross-platform git prerequisite — `builders/GIT_SETUP.md` — *implemented; platform installation not demonstrated*;
+- always-on steering in `AGENTS.md` and `CLAUDE.md` — *implemented, parity-tested*;
+- reusable `skills/engineering-model/` package — *implemented, structurally tested*;
+- generated standalone engine references — *implemented, parity-tested*;
+- executable witnesses for each load-bearing property, run in CI — *implemented*.
 
 Candidate durable rules are tracked in the design document (§9).
 
@@ -227,10 +233,10 @@ Candidate durable rules are tracked in the design document (§9).
 
 | Repository rule | How this plan complies |
 |---|---|
-| Engine untouched | The engine layers are read, never modified |
+| Engine untouched | Canonical engine layers are unchanged; generated skill copies are byte-parity checked |
 | Proportionality | Translate/guard above the line; leave the low-risk case light |
 | Canonical concept ownership | Surfaces link to the engine; detail lives in the design document |
-| Evidence tags | Claims are **proposed** / **inferred** except the implemented, tested witness |
+| Evidence tags | Implemented/tested claims stay separate from runtime and operational claims that remain unproven |
 | Confidentiality | Persona and substrates are generalised; no organisational detail |
 | Writing rules | Plain language; no "production-ready" or framework comparisons as value claims |
 
@@ -242,13 +248,14 @@ Candidate durable rules are tracked in the design document (§9).
 — without a real control behind it. The layer must state plainly when a genuine control
 is required and that it lives in the substrate, not in these words.
 
-**Open questions.** The direction's original open questions (surface placement, AI
-packaging, whether the line is a first-class check) were **resolved** in the design
-document (§5). Any remaining open items are tracked there.
+**Resolved questions.** Surface placement, AI packaging, and executable treatment of
+the blast-radius line were resolved in the design document and promoted to ADR-001.
 
-**Evidence boundary.** Only `builders/START_HERE.md` and its witness are implemented and
-tested. Everything else is a direction to be tested, not a result, and should not
-inherit the confidence of the engine's existing tested witnesses.
+**Evidence boundary.** The builder surfaces, native steering files, skill package, and
+their structural/oracle witnesses are implemented and tested. This proves document
+shape, deterministic routing, reference parity, and the presence of load-bearing
+norms. It does not prove runtime obedience across every agent, installation behavior on
+every client, substrate enforcement, or operational risk reduction.
 
 ---
 
@@ -269,8 +276,9 @@ Plain-language definitions for readers without a software-engineering background
 - **Steering** — always-on instructions the AI reads every time, shaping how it works
   without the person having to manage them.
 - **Skill** — a package that gives the AI the engine's depth on demand, loaded only when
-  relevant, in the open [Agent Skills format](https://agentskills.io/specification) so
-  any compatible agent can install it itself.
+  relevant, in the open [Agent Skills format](https://agentskills.io/specification).
+  The skill does not make steering always-on by itself; its marked block must also be
+  placed in the runtime's native instruction file, such as `AGENTS.md` or `CLAUDE.md`.
 - **Revertible envelope** — the zone where anything done can be undone (via git save
   points); the agent acts freely inside it and stops at its edge.
 - **Ergonomics** — how easy something is to use. The AI's job is ergonomics: making the

@@ -2,6 +2,23 @@
 
 This file is a navigation map, not a second methodology document.
 
+<!-- engineering-model-steering:start -->
+## Revertible Envelope
+
+Classify each intended action before performing it:
+
+- If it is local and reversible in one step, continue autonomously.
+- If it touches shared ground, is hard to undo, or is uncertain, fail closed and use
+  `$engineering-model` for the depth the decision earns. If the skill is unavailable,
+  install the packaged skill before continuing.
+- Keep authoring recoverable with focused git commits. Never commit secrets, generated
+  junk, or unrelated user changes.
+- Before any external-substrate effect, stop and obtain explicit human approval for the
+  exact target, consequence, and action. Do not treat approval for one effect as
+  approval for a broader effect.
+- Git can undo authoring; it cannot undo an external effect.
+<!-- engineering-model-steering:end -->
+
 ## Read first
 
 1. Read [`README.md`](README.md) for repository scope and adoption layers.
@@ -22,14 +39,18 @@ Read [`core/CONFORMANCE_HARNESS.md`](core/CONFORMANCE_HARNESS.md) only when chan
 - [`examples/core_boundaries_python/`](examples/core_boundaries_python/) — direct structural checks and a boundary ratchet.
 - [`examples/conformance_harness_python/`](examples/conformance_harness_python/) — manifest-backed conformance, ratchets, lineage, ownership binding, and audit output.
 - [`examples/governed_authority_python/`](examples/governed_authority_python/) — bounded authority, execution, and recovery.
+- [`builders/_witness/`](builders/_witness/) — builder-line, steering, native-surface,
+  and installable-skill checks.
 
 ## Required checks
 
 ```bash
 python -m unittest discover -s examples/core_boundaries_python/tests -v
+python -m unittest discover -s builders/_witness/tests -v
 python -m unittest discover -s examples/conformance_harness_python/tests -v
 python -m unittest discover -s examples/governed_authority_python/tests -v
-python -m compileall -q examples
+python builders/_witness/sync_skill_references.py --check
+python -m compileall -q examples builders
 ```
 
 ## Change discipline

@@ -8,4 +8,9 @@
 /examples/conformance_harness_python/tests/ @faridhamidi
 /.github/workflows/executable-witnesses.yml @faridhamidi
 /CONTRIBUTING.md @faridhamidi
+/AGENTS.md @faridhamidi
+/CLAUDE.md @faridhamidi
+/.meta/ @faridhamidi
+/builders/ @faridhamidi
+/skills/engineering-model/ @faridhamidi
 /.github/CODEOWNERS @faridhamidi

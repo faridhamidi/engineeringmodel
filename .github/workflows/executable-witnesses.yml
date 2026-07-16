@@ -19,6 +19,8 @@ jobs:
         run: python -m unittest discover -s examples/core_boundaries_python/tests -v
       - name: Test builder line witness
         run: python -m unittest discover -s builders/_witness/tests -v
+      - name: Check installable skill reference parity
+        run: python builders/_witness/sync_skill_references.py --check
       - name: Test conformance harness witness
         run: python -m unittest discover -s examples/conformance_harness_python/tests -v
       - name: Run conformance harness audit
@@ -26,3 +28,5 @@ jobs:
         run: python run_audit.py --report-path artifacts/conformance-audit.md
       - name: Test governed authority witness
         run: python -m unittest discover -s examples/governed_authority_python/tests -v
+      - name: Compile Python witnesses
+        run: python -m compileall -q examples builders

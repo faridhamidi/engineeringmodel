@@ -13,14 +13,34 @@ This repository is a governing seed: a source of reusable constraints, questions
 ```text
 core/                    normal starting point for application repositories
 governed-automation/     gated exception for authority-bearing systems
+builders/                plain-language front door and safe-operation guidance
+skills/                  reusable Agent Skills package for the methodology
 case-studies/            evidence-tagged adoption and non-adoption cases
 examples/                dependency-free executable witnesses
 .github/workflows/       CI for the executable witnesses
 AGENTS.md                concise contributor and agent navigation
+CLAUDE.md                Claude-native always-on steering surface
 CONTRIBUTING.md          evidence, ownership, writing, and confidentiality rules
 ```
 
 Examples demonstrate individual constraints, mechanisms, and models in isolation, while case studies record bounded evidence about adoption and non-adoption. Neither constitutes a starter template, architectural prescription, or automatic precedent for another repository.
+
+## Builder access
+
+Start with [`builders/START_HERE.md`](builders/START_HERE.md) when directing work
+through an AI agent without needing the methodology's engineering vocabulary. Before
+publishing, deploying, applying, granting, deleting, or sending anything outside the
+local workspace, follow [`builders/SAFE_OPERATION.md`](builders/SAFE_OPERATION.md).
+
+The reusable [`engineering-model` skill](skills/engineering-model/SKILL.md) carries the
+same engine for on-demand agent use. Its always-on steering must also be installed in
+the runtime's native instruction surface; this repository exercises both `AGENTS.md`
+and `CLAUDE.md` forms.
+
+Git supplies the local save points required by this builder layer. Install and verify
+it using [`builders/GIT_SETUP.md`](builders/GIT_SETUP.md), then initialize the project
+with `git init` when it is not already a repository. Git can restore authoring changes;
+it cannot reverse an effect already applied to an external system.
 
 ## Choose your layer
 

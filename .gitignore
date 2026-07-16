@@ -1,6 +1,7 @@
 # Python
 __pycache__/
 *.py[cod]
+examples/conformance_harness_python/artifacts/
 
 # macOS
 .DS_Store

@@ -11,15 +11,30 @@ from check_references import referenced_paths, unresolved_references  # noqa: E4
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
 START_HERE = REPO_ROOT / "builders" / "START_HERE.md"
+SURFACES = (
+    START_HERE,
+    REPO_ROOT / "builders" / "SAFE_OPERATION.md",
+    REPO_ROOT / "builders" / "GIT_SETUP.md",
+    REPO_ROOT / "skills" / "engineering-model" / "SKILL.md",
+    REPO_ROOT / "CLAUDE.md",
+    REPO_ROOT / "README.md",
+    REPO_ROOT / "AGENTS.md",
+    REPO_ROOT / ".meta" / "README.md",
+    REPO_ROOT / ".meta" / "builder-accessible-layer.md",
+    REPO_ROOT / ".meta" / "builder-accessible-layer.design.md",
+    REPO_ROOT / ".meta" / "ADR-001-builder-accessible-layer.md",
+)
 
 
 class ReferenceIntegrityTests(unittest.TestCase):
     def test_start_here_exists(self) -> None:
         self.assertTrue(START_HERE.exists(), f"missing {START_HERE}")
 
-    def test_all_engine_references_resolve(self) -> None:
+    def test_all_builder_surface_references_resolve(self) -> None:
         # Zero-violation ratchet: no broken repo-relative links are allowed.
-        self.assertEqual(unresolved_references(START_HERE), [])
+        for surface in SURFACES:
+            with self.subTest(surface=surface.name):
+                self.assertEqual(unresolved_references(surface), [])
 
     def test_surface_actually_links_to_engine(self) -> None:
         # Canonical ownership: the surface must point at the engine, so it must

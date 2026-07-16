@@ -1,18 +1,19 @@
 <!--
 Type: Design document
-Status: active (binding while active)
+Status: completed (historical; archived in place to preserve stable links)
 Origin: promoted from .meta/builder-accessible-layer.md (forward document)
 Owner: repository maintainer (assign on adoption)
-Last verified against: repository state at commit acf34b9 (main)
-Supersedes / superseded by: —
+Last verified against: builder-layer implementation dated 2026-07-16
+Supersedes / superseded by: durable rules promoted to ADR-001-builder-accessible-layer.md
 -->
 
 # Design Document — Builder-Accessible Layer
 
-**Binding while active** (per [`core/DOCUMENTATION.md`](../core/DOCUMENTATION.md)).
-This specifies *how* the builder-accessible layer is built and verified. Direction
-lives in the [forward document](builder-accessible-layer.md). This document links to
-the engine; it does not restate it.
+**Historical worked plan** (per [`core/DOCUMENTATION.md`](../core/DOCUMENTATION.md)).
+This records how the builder-accessible layer was built and verified. Durable rules now
+live in [ADR-001](ADR-001-builder-accessible-layer.md). Direction lives in the
+[forward document](builder-accessible-layer.md). This document remains at its stable
+path because the implemented package and earlier records link to its skill outline.
 
 ---
 
@@ -62,9 +63,9 @@ One line:
   │   - ALWAYS asks approval before external-substrate effects  │
   │   - calls the engine skill when depth/judgment is needed    │
   ├───────────────────────────────────────────────────────────┤
-  │ ENGINE (skill, on-demand)   core/ + governed-automation/    │  the depth
+  │ ENGINE (skill, on-demand)   generated engine projection      │  the depth
   │   - loaded when the steering calls for it                   │
-  │   - references engine files; never duplicates them          │
+  │   - carries parity-checked copies for standalone install    │
   ├───────────────────────────────────────────────────────────┤
   │ GIT (required substrate)   the revertible envelope           │  the safety net
   │   - installed + repo initialized; agent commits for the user │
@@ -89,36 +90,69 @@ One line:
   e. Call the engine skill when depth or judgment is required.
 - Must reference the engine skill and the [human front door](../builders/START_HERE.md);
   must **not** restate engine rationale (canonical concept ownership).
+- The canonical block is
+  [`skills/engineering-model/assets/steering.md`](../skills/engineering-model/assets/steering.md).
+  Installation places the exact marked block in the runtime's native always-on surface.
+  This repository exercises both [`AGENTS.md`](../AGENTS.md) and
+  [`CLAUDE.md`](../CLAUDE.md); packaged templates keep both forms installable.
 
 ### 3.2 Engine as a skill — on-demand depth
 
-**Intent.** The engine is packaged as a skill in the open **Agent Skills format**
-([agentskills.io/specification](https://agentskills.io/specification)) so an agent can
-pull the full methodology in on demand.
+The reusable [`engineering-model` skill](../skills/engineering-model/SKILL.md) follows
+the open [Agent Skills specification](https://agentskills.io/specification). The
+package applies a predictability-first skill structure: one model-invoked entry point,
+checkable completion criteria, progressive disclosure, one-level context pointers, and
+no auxiliary skill README or duplicated rationale.
 
-- **What it is for:** giving the agent the engine's depth when a situation calls for it,
-  without putting that depth in front of the human.
-- **How it is used:** the always-on steering invokes the skill when depth or judgment is
-  needed. The engine stays the **single source of truth** for the methodology — the
-  skill delivers that methodology, it does not fork it into a divergent copy. (Whether
-  the skill references or carries the engine, and how it stays faithful, is a build
-  concern, decided at creation time.)
-- **By whom, and where it lives:** consuming agents install it themselves. A skill lives
-  in a platform-specific location, and the installing agent knows where to place it.
-  Reference runtimes are Kiro, Codex, and Claude; a runtime without skill support uses
-  the steering's native instruction-file form instead.
-- **The steering is packaged *with* the skill** — they ship as one unit, so installing
-  the package brings both the always-on front and the on-demand engine.
+**Invocation.** The skill is model-invoked because the always-on steering must reach it
+without relying on the human to remember a command. Its description carries one trigger
+per branch: non-trivial system change, shared or external state, and authority/evidence/
+recovery risk. **Revertible envelope** is the leading phrase shared by steering and
+execution.
 
-*How the skill is built, and where its files are placed, is decided when the skill is
-created — by whoever creates it. This document fixes intent, use, and audience, not the
-build.*
+**Information hierarchy.** `SKILL.md` contains only the ordered process and routing
+conditions. Each of its five steps ends in a checkable completion criterion:
+
+1. classify every intended action;
+2. record Core-only, selected-model, or complete-layer adoption;
+3. protect every load-bearing seam with paired positive and known-bad evidence;
+4. keep local authoring recoverable and gate each exact external effect;
+5. report semantic, enforcement, authority, external-effect, and residual-risk impact.
+
+Canonical methodology is disclosed only when its branch fires. The package layout is:
+
+```text
+skills/engineering-model/
+  SKILL.md                       model-invoked process and context pointers
+  agents/openai.yaml             optional Codex UI metadata
+  assets/steering.md             canonical always-on steering block
+  assets/AGENTS.md               Codex-compatible placement template
+  assets/CLAUDE.md               Claude placement template
+  references/core-*.md           generated Core engine projection
+  references/governed-*.md       generated Governed Automation projection
+```
+
+**Standalone installation and canonicality.** An installed package cannot depend on
+paths in its source repository, so it carries generated copies of the engine. The
+source of truth remains `core/` and `governed-automation/`.
+[`sync_skill_references.py`](../builders/_witness/sync_skill_references.py) owns the
+source-to-package mapping; CI rejects missing, extra, or byte-different projections.
+This is generated delivery, not a second methodology.
+
+**Installation.** Consuming agents place the skill in their platform-specific skill
+location and merge the appropriate packaged steering template into every native
+always-on instruction file they use. For the reference runtimes, that includes
+`AGENTS.md` for Codex-compatible agents and `CLAUDE.md` for Claude. Another runtime
+requires its own placement template and parity evidence before this repository claims
+support. A runtime without always-on instructions may use the skill on demand, but must
+disclose that the external-effect pause is not continuously steered.
 
 ### 3.3 Git — the required revertibility substrate
 
 - **Git is a hard prerequisite.** Git must be installed **and** the project must be a
   git repository (`git init`). Without a repo, the revertible envelope does not exist.
-- The project README documents install + verify across operating systems:
+- The project README links to [`builders/GIT_SETUP.md`](../builders/GIT_SETUP.md), which
+  documents install + verify across operating systems:
   - macOS (`xcode-select --install` or Homebrew `brew install git`);
   - Windows (winget `winget install --id Git.Git -e`, or the Git for Windows installer);
   - Linux — Ubuntu/Debian (`sudo apt install git`) and Fedora (`sudo dnf install git`);
@@ -132,9 +166,11 @@ build.*
 ### 3.4 Human-facing surface
 
 - [`builders/START_HERE.md`](../builders/START_HERE.md): the blast-radius line as one
-  plain-language question. *Implemented.*
-- `builders/SAFE_OPERATION.md`: the plain-language "safe operation" floor — what
-  publish/deploy/apply/send does, making an undo point, least privilege. *Proposed.*
+  plain-language question. *Implemented, tested.*
+- [`builders/SAFE_OPERATION.md`](../builders/SAFE_OPERATION.md): the plain-language
+  safe-operation floor. *Implemented, structurally tested.*
+- [`builders/GIT_SETUP.md`](../builders/GIT_SETUP.md): the cross-platform revertibility
+  prerequisite. *Implemented; platform installation is not demonstrated.*
 
 ## 4. Workflow discipline (behavior)
 
@@ -160,28 +196,26 @@ non-negotiable pause is an irreversible external effect.
 | # | Decision | Residual / trade-off |
 |---|---|---|
 | 1 | Triggering lives in always-on steering across the whole workflow; **no keyword set**. Conditions are semantic and model-evaluated. | Relies on model judgment; mitigated by the **fail-closed** default. |
-| 2 | The engine is packaged as an **Agent Skills spec-compatible skill**, with the **steering packaged alongside it**; consuming agents **self-install** and place it per their platform. Reference runtimes: Kiro, Codex, Claude. Build and placement are decided at creation time, not here. | Coupling is to an **open standard**, not one vendor; non-skill runtimes use the steering's native instruction-file form. |
+| 2 | The engine is packaged as the model-invoked, Agent Skills-compatible `engineering-model` skill. It carries parity-checked engine projections and steering templates for `AGENTS.md` and `CLAUDE.md`; consumers place both the skill and the native steering surface. | Coupling is to an open standard, while always-on placement remains runtime-specific. Generated copies add maintenance cost controlled by parity checks. |
 | 3 | External-substrate effects stay under **explicit human approval**, steered as a standing norm; no wall is built here. | **Procedural** safety, not a hard wall. The seed *recommends* a substrate control for hard guarantees. |
 | 4 | **Git is required** and the repo must be initialized; README documents install across OSes. | Adds a prerequisite; justified because it is the revertibility substrate. |
 
 ## 6. Verification plan (walk the talk)
 
-**Already implemented and in CI** (`.github/workflows/executable-witnesses.yml`):
+**Implemented and in CI** (`.github/workflows/executable-witnesses.yml`):
 
 - decision-oracle witness — both signals load-bearing, uncertainty fails closed;
-- reference-integrity ratchet on `START_HERE.md` — zero-violation, with a known-bad case.
-
-**To add (each: stdlib only, no credentials, a known-bad case, runs in CI):**
-
-- keep reference-integrity on any in-repo builder surface that links to the engine
-  (today `START_HERE.md`; the steering content once it is authored here) — every such
-  link must resolve (zero-violation). The skill's own internal integrity is validated
-  when the skill is created, not mandated here;
-- a structural presence check that the steering front matter carries its load-bearing
-  norms — the external-approval rule, the auto-commit rule, and the fail-closed
-  default are present; removing any one is the minimal falsifier;
-- the two-case falsification: one clearly-below case continues autonomously; one
-  clearly-above case (an external effect) triggers the approval pause.
+- reference-integrity ratchet across every builder and skill surface, with a missing
+  reference as the known-bad case;
+- structural presence checks for fail-closed classification, skill invocation, git
+  checkpoints, exact external-effect approval, and git's limit, with each removed norm
+  acting as a minimal falsifier;
+- parity checks proving the canonical block is present in `AGENTS.md`, `CLAUDE.md`, and
+  both packaged templates, with a changed block as the known-bad case;
+- the action oracle: below-line work continues, above-line local work pauses for review,
+  an external effect requires approval, and uncertainty fails closed;
+- Agent Skills frontmatter, one-level reference, and canonical engine-projection checks,
+  with missing, stale, and extra references as known-bad cases.
 
 A change that weakens a norm, its checker, and its falsifier together to make CI pass
 is not evidence of safety; it must state which protected property changed.
@@ -195,39 +229,38 @@ not on these witnesses.
 
 - **Procedural, not enforced, safety for external effects.** Rests on the steering
   norm holding. Recommend a real substrate control for anyone needing hard guarantees.
-- **Skill coupling → open standard.** The skill targets the open Agent Skills spec
-  rather than one vendor, and agents self-install; non-skill runtimes use the
-  `AGENTS.md` fallback. Residual: the spec is young and client support varies.
+- **Skill coupling → open standard.** The skill targets the open Agent Skills spec.
+  Native always-on surfaces still vary, so `AGENTS.md` and `CLAUDE.md` are explicit
+  templates and other runtimes require their own placement. The spec is young and
+  client support varies.
+- **Generated engine projection.** Standalone installation requires carried reference
+  files. Byte-parity checks prevent repository drift, but a separately installed copy
+  remains a point-in-time package until upgraded.
 - **Steering is non-deterministic.** The fail-closed default, the human-approval pause,
   and the git envelope are mitigations — none is a guarantee. The layer is honest that
   it *helps decide*; it is not the wall.
 
 ## 8. Evidence boundary and status
 
-- **Implemented / tested** (commits `037112a`, `acf34b9`): `builders/START_HERE.md`
-  and `builders/_witness/`.
-- **Proposed** (this document): the steering front matter, the engine-as-skill
-  packaging, the git-prerequisite README, and the extended verification.
+- **Implemented / tested:** the human front door, safe-operation and git surfaces,
+  native `AGENTS.md` and `CLAUDE.md` steering, the reusable skill package, generated
+  engine projection, and the structural/oracle verification described in section 6.
+- **Not demonstrated:** behavior across every agent runtime, automatic installation or
+  upgrade in Codex or Claude, other native instruction formats, substrate-side
+  enforcement, and operational risk reduction.
 
-No proposed item should inherit the confidence of the implemented, tested witnesses.
+## 9. Promoted Decisions
 
-## 9. Candidate ADRs (promote after implementation)
-
-- The AI is never the enforcement layer.
-- The builder surface translates the engine; it never restates or weakens it.
-- Steering references the engine; drift is checked mechanically.
-- Keep everything in the revertible envelope: the agent commits automatically; it
-  pauses only at irreversible external effects.
-- No harness in the builder-facing layer.
-- The engine is packaged as an **Agent Skills spec-compatible** skill with the steering
-  packaged alongside it; consuming agents self-install and place it per platform;
-  reference runtimes are Kiro, Codex, and Claude. The design fixes intent and use, not
-  the build.
+The durable rules were promoted to
+[ADR-001](ADR-001-builder-accessible-layer.md) after implementation, verification, and
+maintainer approval.
 
 ## 10. Promotion record
 
 - **Origin:** [forward document](builder-accessible-layer.md). (An interim synthesis
   note was folded into this document and removed; it remains in git history.)
-- **On completion:** archive this design document, promote the durable rules in §9 to
-  ADRs, and update the forward document (per the promotion loop in
-  [`core/DOCUMENTATION.md`](../core/DOCUMENTATION.md)).
+- **Completion:** implementation, verification, and maintainer approval completed on
+  2026-07-16. The forward document was reconciled, this design was archived in place,
+  and durable rules were promoted to
+  [ADR-001](ADR-001-builder-accessible-layer.md) using the promotion loop in
+  [`core/DOCUMENTATION.md`](../core/DOCUMENTATION.md).

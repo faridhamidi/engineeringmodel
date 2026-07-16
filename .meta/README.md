@@ -25,12 +25,14 @@ status, provenance, and freshness are greppable.
 
 | File | Type | Status |
 |---|---|---|
-| [`builder-accessible-layer.md`](builder-accessible-layer.md) | Forward document | draft |
-| [`builder-accessible-layer.design.md`](builder-accessible-layer.design.md) | Design document | active |
+| [`builder-accessible-layer.md`](builder-accessible-layer.md) | Forward document | realized, historical |
+| [`builder-accessible-layer.design.md`](builder-accessible-layer.design.md) | Design document | completed, historical |
+| [`ADR-001-builder-accessible-layer.md`](ADR-001-builder-accessible-layer.md) | ADR | accepted |
 
 ## Reading order for a newcomer
 
 1. Read the top-level [`README.md`](../README.md) to understand what the seed is.
-2. Read the forward document here to understand where it is proposed to go.
-3. Follow its links into `core/` and `governed-automation/` for the mechanisms
-   it references. This folder does not restate them; it points to them.
+2. Read ADR-001 for the durable builder-layer decision.
+3. Read the forward and design documents only when the direction or implementation
+   history is relevant.
+4. Follow their links into `core/` and `governed-automation/` for canonical mechanisms.

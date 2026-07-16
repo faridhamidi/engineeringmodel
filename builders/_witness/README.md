@@ -1,11 +1,11 @@
-# Builder-line witness
+# Builder-layer witnesses
 
-A small, dependency-free witness for the plain-language blast-radius line in
-[`../START_HERE.md`](../START_HERE.md). It is **not** a runtime tool a builder
-operates and it is not a reference layout — it demonstrates that the translation is
-precise and stays honest.
+Small, dependency-free witnesses for the builder-accessible layer. They are **not**
+runtime tools a builder operates and do not claim that an agent will always obey prose
+steering.
 
-**Evidence:** implemented, tested. The underlying methodology claim is *proposed*.
+**Evidence:** implemented, tested. Runtime agent adherence, native-client installation
+behavior, and substrate enforcement are not demonstrated.
 
 ## Exact claims demonstrated
 
@@ -17,13 +17,22 @@ precise and stays honest.
 4. The builder surface links into the engine and every repo-relative link resolves
    (a zero-violation ratchet), and the checker reports a missing reference
    (the known-bad case).
+5. A clearly local and reversible action continues, an above-line local action pauses
+   for review, and an external effect requires explicit human approval.
+6. The canonical steering block and its `AGENTS.md` and `CLAUDE.md` forms contain every
+   load-bearing norm and remain byte-for-byte equivalent.
+7. The `engineering-model` skill meets the local Agent Skills package contract, keeps
+   references one level deep, and carries exact generated copies of every canonical
+   engine document. Missing, stale, and extra references are rejected.
 
 ## Run
 
 ```bash
 python -m unittest discover -s builders/_witness/tests -v
+python builders/_witness/sync_skill_references.py --check
 ```
 
-This witness does not prescribe a language, project layout, or that a builder run
-any of this code. It exists so the translation cannot silently become vague or link
-to engine text that no longer exists.
+To refresh the carried engine references after an approved canonical engine change,
+run `python builders/_witness/sync_skill_references.py`, review the generated diff, and
+rerun the checks. Generated copies are projections; `core/` and
+`governed-automation/` remain canonical.

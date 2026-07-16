@@ -1,10 +1,10 @@
 <!--
 Type: Builder surface (translation)
-Status: draft
+Status: implemented
 Origin: .meta/builder-accessible-layer.md (Phase 1 — "translate the line")
 Owner: repository maintainer (assign on adoption)
 Evidence: this document is implemented and its routing rule is tested
-  (builders/_witness/); the underlying methodology claim is proposed.
+  (builders/_witness/); runtime adherence and substrate enforcement are not demonstrated.
 -->
 
 # Start Here — Before You Build or Change Something
@@ -57,6 +57,8 @@ effort. So:
 That is the whole of it below the line. When your work starts becoming something
 several people depend on, come back and answer the question again.
 
+Set up local save points with [Git Setup](GIT_SETUP.md).
+
 The fuller version of this "just enough structure" idea is
 [the Core Hygiene foundation](../core/FOUNDATION.md).
 
@@ -85,6 +87,7 @@ Two honest warnings:
 The precise questions engineers ask here are
 [the adoption gates](../governed-automation/ADOPTION_CHECK.md), and a step-by-step
 version is [the plain-language decision tree](../governed-automation/DECISION_TREE.md).
+Before acting outside your workspace, follow [Safe Operation](SAFE_OPERATION.md).
 
 ---
 
