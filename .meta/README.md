@@ -26,6 +26,7 @@ status, provenance, and freshness are greppable.
 | File | Type | Status |
 |---|---|---|
 | [`builder-accessible-layer.md`](builder-accessible-layer.md) | Forward document | draft |
+| [`synthesis.md`](synthesis.md) | Synthesis note (conclusions + candidate ADRs) | draft |
 
 ## Reading order for a newcomer
 
