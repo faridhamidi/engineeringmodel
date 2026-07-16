@@ -1,6 +1,6 @@
 <!--
 Type: Architecture decision record
-Status: proposed (implemented locally; awaiting maintainer ratification)
+Status: accepted
 Origin: share-readiness review following ADR-001-builder-accessible-layer.md
 Owner: repository maintainer (assign on adoption)
 Last verified against: local seed generator implementation dated 2026-07-16
@@ -64,6 +64,6 @@ projection, native steering parity, managed-file hashes, minimal top-level outpu
 non-empty destination refusal, projection-junk rejection, source-independent manifest
 verification, git identity adaptation, and canonical drift detection.
 
-**Proposed / not demonstrated:** maintainer ratification, remote template creation,
-reviewed publication automation, installation from the template, update behavior in a
-real product repository, and runtime adherence.
+**Not demonstrated:** remote template creation, reviewed publication automation,
+installation from the template, update behavior in a real product repository, and
+runtime adherence.

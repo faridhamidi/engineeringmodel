@@ -1,13 +1,18 @@
 <!--
 Type: Design document
-Status: active (local implementation ready for review; publication not started)
+Status: completed (historical; publication remains a separate approved action)
 Origin: ADR-002-share-ready-seed.md
 Owner: repository maintainer (assign on adoption)
 Last verified against: local seed generator implementation dated 2026-07-16
-Supersedes / superseded by: durable direction proposed in ADR-002-share-ready-seed.md
+Supersedes / superseded by: durable direction accepted in ADR-002-share-ready-seed.md
 -->
 
 # Design Document: Share-Ready Project Seed
+
+**Historical worked plan** (per [`core/DOCUMENTATION.md`](../core/DOCUMENTATION.md)).
+The local generator and verification surface are complete. Remote publication remains
+a separate external effect governed by the accepted ADR and this document's publication
+boundary.
 
 ## 1. Scope
 

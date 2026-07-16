@@ -28,13 +28,13 @@ status, provenance, and freshness are greppable.
 | [`builder-accessible-layer.md`](builder-accessible-layer.md) | Forward document | realized, historical |
 | [`builder-accessible-layer.design.md`](builder-accessible-layer.design.md) | Design document | completed, historical |
 | [`ADR-001-builder-accessible-layer.md`](ADR-001-builder-accessible-layer.md) | ADR | accepted |
-| [`share-ready-seed.design.md`](share-ready-seed.design.md) | Design document | active, local implementation ready for review |
-| [`ADR-002-share-ready-seed.md`](ADR-002-share-ready-seed.md) | ADR | proposed, awaiting maintainer ratification |
+| [`share-ready-seed.design.md`](share-ready-seed.design.md) | Design document | completed, historical |
+| [`ADR-002-share-ready-seed.md`](ADR-002-share-ready-seed.md) | ADR | accepted |
 
 ## Reading order for a newcomer
 
 1. Read the top-level [`README.md`](../README.md) to understand what the seed is.
-2. Read ADR-001 for the durable builder-layer decision and proposed ADR-002 for its
+2. Read ADR-001 for the durable builder-layer decision and accepted ADR-002 for its
    share-ready distribution projection.
 3. Read the forward and design documents only when the direction or implementation
    history is relevant.
