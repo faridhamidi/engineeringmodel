@@ -30,14 +30,15 @@ status, provenance, and freshness are greppable.
 | [`ADR-001-builder-accessible-layer.md`](ADR-001-builder-accessible-layer.md) | ADR | accepted |
 | [`share-ready-seed.design.md`](share-ready-seed.design.md) | Design document | completed, historical |
 | [`ADR-002-share-ready-seed.md`](ADR-002-share-ready-seed.md) | ADR | accepted |
+| [`ADR-003-proportionate-quality-steering.md`](ADR-003-proportionate-quality-steering.md) | ADR | accepted |
 | [`seed-cleanroom-observation.md`](seed-cleanroom-observation.md) | Observation report (evidence) | complete (n=5, single runtime) |
 | [`seed-codex-cleanroom.md`](seed-codex-cleanroom.md) | Observation report (Codex + Claude, real runtimes) | complete (gpt-5.5 + sonnet-4.6, n=2+2 each) |
 
 ## Reading order for a newcomer
 
 1. Read the top-level [`README.md`](../README.md) to understand what the seed is.
-2. Read ADR-001 for the durable builder-layer decision and accepted ADR-002 for its
-   share-ready distribution projection.
+2. Read ADR-001 for the durable builder-layer decision, ADR-002 for its share-ready
+   distribution projection, and ADR-003 for the evidence-backed quality floor.
 3. Read the forward and design documents only when the direction or implementation
    history is relevant.
 4. Follow their links into `core/` and `governed-automation/` for canonical mechanisms.

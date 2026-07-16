@@ -224,8 +224,8 @@ driven by the ambient baseline, not by the seed.
   always-on `code-quality` / `security` steering, which *is* the quality observed. So Round 2
   does not measure the seed at all. A valid quality test needs a runtime with **no operator
   global steering**, seed versus nothing. **That follow-up was run on Codex —
-  see [`seed-codex-cleanroom.md`](seed-codex-cleanroom.md), which found bare Codex writes no
-  tests/logging and the current seed does not add them.**
+  see [`seed-codex-cleanroom.md`](seed-codex-cleanroom.md), which found bare Codex wrote no
+  tests/logging and the tested pre-change seed did not add them.**
 
 ### Evidence tags (Round 2)
 

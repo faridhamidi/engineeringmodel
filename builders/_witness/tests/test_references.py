@@ -23,6 +23,7 @@ SURFACES = (
     REPO_ROOT / ".meta" / "builder-accessible-layer.md",
     REPO_ROOT / ".meta" / "builder-accessible-layer.design.md",
     REPO_ROOT / ".meta" / "ADR-001-builder-accessible-layer.md",
+    REPO_ROOT / ".meta" / "ADR-003-proportionate-quality-steering.md",
 )
 
 

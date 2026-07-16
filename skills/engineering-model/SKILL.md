@@ -59,29 +59,44 @@ every rejected mechanism left out.
 
 ## 3. Protect The Load-Bearing Seams
 
-Implement the selected controls in the product repository. Prefer a direct test before
-a ratchet, a ratchet before a manifest-backed harness, and repository-host or substrate
-controls when actual admission or authority must be enforced.
+Implement the selected controls in the product repository. Protect each changed
+load-bearing behavior with the lightest test that would fail on a realistic defect.
+Treat a test as enforcement only when an existing executable artifact names the
+protected behavior and has run successfully in the current increment. Prefer a direct
+test before a ratchet, a ratchet before a manifest-backed harness, and repository-host
+or substrate controls when actual admission or authority must be enforced.
+
+Add diagnostic context at external, asynchronous, or persistence seams when an
+otherwise silent failure would impede detection or recovery. Preserve operation
+identifiers and meaningful outcome or reason fields where they exist. Do not log every
+function, duplicate telemetry already supplied by the runtime, or expose secrets. For
+data mutation, prove that failures cannot silently discard or corrupt accepted data;
+choose validation, atomicity, and recovery mechanisms in proportion to that risk.
 
 Do not claim an authority boundary unless distinct identities and permissions prevent
 weaker components from exercising stronger powers. Do not let missing, stale,
 conflicting, or unreadable evidence authorize a consequential action. Route recovery
 through the normal authority path.
 
-**Complete when:** every consequential decision and external effect has a named owner,
-the current implementation satisfies its declared enforcement level, and a known-bad
-case proves each new checker detects the prohibited behavior.
+**Complete when:** every consequential decision and external effect has a named owner;
+every changed load-bearing behavior has either an executed test artifact or a recorded
+reason that no test is proportionate; every claimed enforcement level maps to an
+existing artifact and observed result; every new checker rejects a realistic known-bad
+case; and relevant silent-failure seams carry enough context to diagnose and recover.
 
 ## 4. Operate Inside The Envelope
 
 Inspect `git status` before editing and distinguish pre-existing user work from the task
-baseline. After a coherent increment satisfies its declared completion criterion and
-relevant checks, stage only task-owned changes using explicit paths or selective hunks,
-then commit with a focused message. Never commit secrets, generated junk, unrelated
-changes, or pre-existing user work. Do not rewrite existing history automatically. If
-verification fails unexpectedly, preserve the work without reporting the increment as
-complete. If task-owned changes cannot be isolated safely, leave the work uncommitted
-and report why.
+baseline. Confirm that git is available, the project is a repository, and a checkpoint
+can be created before relying on git as recovery. If it cannot, do not create a shadow
+repository merely to satisfy the ritual or claim that the envelope exists; preserve the
+local changes and report the constraint. After a coherent increment satisfies its
+declared completion criterion and relevant checks, stage only task-owned changes using
+explicit paths or selective hunks, then commit with a focused message. Never commit
+secrets, generated junk, unrelated changes, or pre-existing user work. Do not rewrite
+existing history automatically. If verification fails unexpectedly, preserve the work
+without reporting the increment as complete. If task-owned changes cannot be isolated
+safely, leave the work uncommitted and report why.
 
 Treat push, pull-request creation, deployment, release, and every other
 external-substrate effect as a separate action. Stop, state its target, consequence,
@@ -100,13 +115,16 @@ Include this impact record in the final change summary:
 Layer: core only | selected governed models | complete governed layer
 Semantic impact: none | local | shared
 Enforcement: none | direct test | ratchet | harness rule | protected control
+Quality evidence: artifacts and observed results | none with reason
+Recovery: checkpointed | uncommitted with reason
 Authority impact: none | governed review required
 External effects: none | approved and performed | approval required
 Residual risk:
 ```
 
-**Complete when:** each field reflects the implemented behavior and evidence without
-promoting structural checks into claims of runtime enforcement.
+**Complete when:** each field reflects the implemented behavior and observed evidence,
+every named test or check was actually run, and no structural check is promoted into a
+claim of runtime enforcement.
 
 ## Install The Steering
 

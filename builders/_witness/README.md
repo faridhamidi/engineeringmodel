@@ -20,10 +20,12 @@ behavior, and substrate enforcement are not demonstrated.
 5. A clearly local and reversible action continues, an above-line local action pauses
    for review, and an external effect requires explicit human approval.
 6. The canonical steering block and its `AGENTS.md` and `CLAUDE.md` forms contain every
-   load-bearing norm and remain byte-for-byte equivalent.
-7. The `engineering-model` skill meets the local Agent Skills package contract, keeps
-   references one level deep, and carries exact generated copies of every canonical
-   engine document. Missing, stale, and extra references are rejected.
+   load-bearing safety, skill-loading, quality-evidence, data-integrity, and recovery
+   norm and remain byte-for-byte equivalent.
+7. The `engineering-model` skill meets the local Agent Skills package contract, makes
+   quality and recovery claims artifact-backed, keeps references one level deep, and
+   carries exact generated copies of every canonical engine document. Missing, stale,
+   and extra references are rejected.
 8. The share-ready seed contains only its declared minimal surface, installs exact
    skill projections for both supported runtimes, records hashes for every managed
    file, rejects projection junk, is deterministic, verifies without its source

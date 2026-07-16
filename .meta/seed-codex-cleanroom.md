@@ -3,11 +3,18 @@ Type: Observation report (behavioural + quality evidence)
 Status: complete (two real runtimes: Codex CLI gpt-5.5 medium + Claude Code sonnet-4.6 medium; n=2 control + 2 treatment each)
 Origin: follow-up to seed-cleanroom-observation.md, run on Codex then Claude to remove the operator-steering confound
 Owner: repository maintainer (assign on adoption)
-Last verified against: seed generator on local main; Codex CLI 0.144.5 (gpt-5.5) + Claude Code 2.1.211 (us.anthropic.claude-sonnet-4-6), 2026-07-16
-Related: seed-cleanroom-observation.md (Kiro rounds), ADR-001-builder-accessible-layer.md, ADR-002-share-ready-seed.md
+Last verified against: source revision 7929550; Codex CLI 0.144.5 (gpt-5.5) + Claude Code 2.1.211 (us.anthropic.claude-sonnet-4-6), 2026-07-16
+Related: seed-cleanroom-observation.md (Kiro rounds), ADR-001-builder-accessible-layer.md, ADR-002-share-ready-seed.md, ADR-003-proportionate-quality-steering.md
+Revision note: ADR-003 implements the proposed quality, skill-loading, and constrained-git changes after this observation. Its post-change behavioral effect has not yet been measured.
 -->
 
 # Clean-Room Report — Does the Seed Steer Behaviour and Quality on Bare Runtimes? (Codex + Claude)
+
+> **Version boundary:** every result below describes the seed at source revision
+> `7929550`, before the proportionate quality floor in
+> [ADR-003](ADR-003-proportionate-quality-steering.md). The current structural
+> implementation is tested, but a matched runtime rerun is still required before
+> claiming that it changes agent behavior or code quality.
 
 ## Why this run exists
 
@@ -70,7 +77,7 @@ the skill's impact record with **"Enforcement: direct test"** — yet wrote **no
 The seed's quality guidance lives in the *on-demand skill*, and even when the skill was
 read, it did not translate into the practice.
 
-**Conclusion: the seed does not currently steer code quality.**
+**Conclusion: the tested pre-change seed did not steer code quality.**
 
 ### 4. Behavioural (seed) signal: present but partial
 
@@ -135,7 +142,7 @@ front steers; the skill ritual does not.
 
 ## Cross-runtime synthesis (8 runs: Codex gpt-5.5 + Claude sonnet-4.6)
 
-- **Quality is not free, and the current seed does not add it — replicated on two
+- **Quality is not free, and the tested pre-change seed did not add it — replicated on two
   independent runtimes.** Tests: **0/8**. Seam-logging: **0/8**. Bare or seeded, Codex or
   Claude — no tests, no logging. The only condition that ever produced them was always-on
   operator steering (Kiro, 10/10). This is now a two-runtime replication, not a single
@@ -169,8 +176,8 @@ front steers; the skill ritual does not.
 **Evidence-based answer: yes — a proportionate quality baseline should be added to the
 seed's always-on front — but not the operator's absolutist standard.**
 
-- Neither bare runtime provides tests or logging (**0/8 across Codex + Claude**), and the
-  **current seed does not add them** (treatment 0/4). The only thing that reliably produced
+- Neither bare runtime provided tests or logging (**0/8 across Codex + Claude**), and the
+  **tested pre-change seed did not add them** (treatment 0/4). The only thing that reliably produced
   them was always-on operator steering (Kiro, 10/10). So if the seed is meant to steer
   quality for someone on a bare runtime — the whole point of a shareable seed — **it must
   carry that steering itself, always-on.** This is now replicated on two independent runtimes.
@@ -195,8 +202,9 @@ seed's always-on front — but not the operator's absolutist standard.**
   quality parity between arms on both runtimes.
 - **inferred:** the earlier Kiro quality came from operator steering (now corroborated by the
   bare-runtime absence on two runtimes).
-- **proposed / not demonstrated:** the four improvements above; the effect of adding an
-  always-on quality nudge (untested); results beyond n=2/arm/runtime, one task, one model each.
+- **implemented structurally / not behaviorally demonstrated:** the four improvements
+  above now live in ADR-003; their runtime effect remains untested, as do results beyond
+  n=2/arm/runtime, one task, and one model per runtime.
 
 ## Confounds and limits
 

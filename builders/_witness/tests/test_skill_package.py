@@ -66,6 +66,35 @@ class SkillPackageTests(unittest.TestCase):
             with self.subTest(phrase=phrase):
                 self.assertIn(phrase, text)
 
+    def test_skill_quality_claims_require_proportionate_executable_evidence(self) -> None:
+        text = " ".join(
+            (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8").split()
+        )
+        required = (
+            "lightest test that would fail on a realistic defect",
+            "existing executable artifact",
+            "has run successfully in the current increment",
+            "Do not log every function",
+            "failures cannot silently discard or corrupt accepted data",
+            "executed test artifact or a recorded reason that no test is proportionate",
+            "every named test or check was actually run",
+        )
+        for phrase in required:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, text)
+
+    def test_skill_impact_record_exposes_quality_and_recovery_evidence(self) -> None:
+        text = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
+        self.assertIn("Quality evidence:", text)
+        self.assertIn("Recovery:", text)
+
+    def test_skill_reports_when_git_cannot_supply_recovery(self) -> None:
+        text = " ".join(
+            (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8").split()
+        )
+        self.assertIn("a checkpoint can be created before relying on git as recovery", text)
+        self.assertIn("do not create a shadow repository merely to satisfy the ritual", text)
+
     def test_codex_interface_metadata_names_the_skill(self) -> None:
         text = (SKILL_ROOT / "agents" / "openai.yaml").read_text(encoding="utf-8")
         self.assertIn('display_name: "Engineering Model"', text)
