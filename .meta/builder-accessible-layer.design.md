@@ -92,13 +92,27 @@ One line:
 
 ### 3.2 Engine as a skill — on-demand depth
 
-- The engine (`core/`, `governed-automation/`) is exposed as a skill the steering
-  invokes. Its description is what causes it to load when the steering calls for it
-  (progressive disclosure).
-- The skill **references** the engine files as its resources; it does not duplicate
-  them.
-- **Accepted trade-off:** this ties the layer to agents that support skills. Graceful
-  degradation is an `AGENTS.md`-style instruction file for agents that do not.
+**Intent.** The engine is packaged as a skill in the open **Agent Skills format**
+([agentskills.io/specification](https://agentskills.io/specification)) so an agent can
+pull the full methodology in on demand.
+
+- **What it is for:** giving the agent the engine's depth when a situation calls for it,
+  without putting that depth in front of the human.
+- **How it is used:** the always-on steering invokes the skill when depth or judgment is
+  needed. The engine stays the **single source of truth** for the methodology — the
+  skill delivers that methodology, it does not fork it into a divergent copy. (Whether
+  the skill references or carries the engine, and how it stays faithful, is a build
+  concern, decided at creation time.)
+- **By whom, and where it lives:** consuming agents install it themselves. A skill lives
+  in a platform-specific location, and the installing agent knows where to place it.
+  Reference runtimes are Kiro, Codex, and Claude; a runtime without skill support uses
+  the steering's native instruction-file form instead.
+- **The steering is packaged *with* the skill** — they ship as one unit, so installing
+  the package brings both the always-on front and the on-demand engine.
+
+*How the skill is built, and where its files are placed, is decided when the skill is
+created — by whoever creates it. This document fixes intent, use, and audience, not the
+build.*
 
 ### 3.3 Git — the required revertibility substrate
 
@@ -115,10 +129,12 @@ One line:
   that caused an external effect, not the effect. External effects therefore still go
   through §3.1(d).
 
-### 3.4 Human front door — existing
+### 3.4 Human-facing surface
 
 - [`builders/START_HERE.md`](../builders/START_HERE.md): the blast-radius line as one
   plain-language question. *Implemented.*
+- `builders/SAFE_OPERATION.md`: the plain-language "safe operation" floor — what
+  publish/deploy/apply/send does, making an undo point, least privilege. *Proposed.*
 
 ## 4. Workflow discipline (behavior)
 
@@ -144,7 +160,7 @@ non-negotiable pause is an irreversible external effect.
 | # | Decision | Residual / trade-off |
 |---|---|---|
 | 1 | Triggering lives in always-on steering across the whole workflow; **no keyword set**. Conditions are semantic and model-evaluated. | Relies on model judgment; mitigated by the **fail-closed** default. |
-| 2 | The engine's home is a **skill**; steering (front matter) calls it. | Couples the layer to skill-supporting agents; `AGENTS.md` fallback exists. |
+| 2 | The engine is packaged as an **Agent Skills spec-compatible skill**, with the **steering packaged alongside it**; consuming agents **self-install** and place it per their platform. Reference runtimes: Kiro, Codex, Claude. Build and placement are decided at creation time, not here. | Coupling is to an **open standard**, not one vendor; non-skill runtimes use the steering's native instruction-file form. |
 | 3 | External-substrate effects stay under **explicit human approval**, steered as a standing norm; no wall is built here. | **Procedural** safety, not a hard wall. The seed *recommends* a substrate control for hard guarantees. |
 | 4 | **Git is required** and the repo must be initialized; README documents install across OSes. | Adds a prerequisite; justified because it is the revertibility substrate. |
 
@@ -157,8 +173,10 @@ non-negotiable pause is an irreversible external effect.
 
 **To add (each: stdlib only, no credentials, a known-bad case, runs in CI):**
 
-- extend reference-integrity to the steering front matter and the skill document —
-  every engine reference must resolve (zero-violation);
+- keep reference-integrity on any in-repo builder surface that links to the engine
+  (today `START_HERE.md`; the steering content once it is authored here) — every such
+  link must resolve (zero-violation). The skill's own internal integrity is validated
+  when the skill is created, not mandated here;
 - a structural presence check that the steering front matter carries its load-bearing
   norms — the external-approval rule, the auto-commit rule, and the fail-closed
   default are present; removing any one is the minimal falsifier;
@@ -168,11 +186,18 @@ non-negotiable pause is an irreversible external effect.
 A change that weakens a norm, its checker, and its falsifier together to make CI pass
 is not evidence of safety; it must state which protected property changed.
 
+These checks are structural and oracle-level, not behavioral: a green result shows the
+surface is well-formed and the norms are present, not that the agent will always obey
+them at runtime. Runtime adherence rests on the steering and the human-approval pause,
+not on these witnesses.
+
 ## 7. Accepted trade-offs and residual risks
 
 - **Procedural, not enforced, safety for external effects.** Rests on the steering
   norm holding. Recommend a real substrate control for anyone needing hard guarantees.
-- **Skill coupling.** Ties the layer to skill-supporting agents; `AGENTS.md` fallback.
+- **Skill coupling → open standard.** The skill targets the open Agent Skills spec
+  rather than one vendor, and agents self-install; non-skill runtimes use the
+  `AGENTS.md` fallback. Residual: the spec is young and client support varies.
 - **Steering is non-deterministic.** The fail-closed default, the human-approval pause,
   and the git envelope are mitigations — none is a guarantee. The layer is honest that
   it *helps decide*; it is not the wall.
@@ -194,7 +219,10 @@ No proposed item should inherit the confidence of the implemented, tested witnes
 - Keep everything in the revertible envelope: the agent commits automatically; it
   pauses only at irreversible external effects.
 - No harness in the builder-facing layer.
-- Engine-as-skill, with an `AGENTS.md` fallback for non-skill agents.
+- The engine is packaged as an **Agent Skills spec-compatible** skill with the steering
+  packaged alongside it; consuming agents self-install and place it per platform;
+  reference runtimes are Kiro, Codex, and Claude. The design fixes intent and use, not
+  the build.
 
 ## 10. Promotion record
 

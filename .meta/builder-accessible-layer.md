@@ -33,7 +33,11 @@ Each is specified in the design document; stated here at direction level:
 
 1. **Delivery is decided (no longer deferred).** The translation reaches the moment of
    work as **always-on steering** — front matter, whole-workflow, no keyword triggers —
-   that calls the **engine as an on-demand skill**.
+   that calls the **engine as an on-demand skill** in the open
+   [Agent Skills format](https://agentskills.io/specification). The **steering is
+   packaged with the skill**; consuming agents self-install and place it per platform
+   (reference runtimes Kiro, Codex, Claude). How the skill is built is the creator's
+   job, not fixed here.
 2. **Git is the revertibility substrate.** Git is a requirement; the agent commits
    generously *for* the user (undo + audit + provenance in one). This is what lets the
    agent act autonomously and still be safe.
@@ -264,8 +268,9 @@ Plain-language definitions for readers without a software-engineering background
   face of version control (git).
 - **Steering** — always-on instructions the AI reads every time, shaping how it works
   without the person having to manage them.
-- **Skill** — a package of deeper knowledge the AI loads only when relevant (here, the
-  full engine).
+- **Skill** — a package that gives the AI the engine's depth on demand, loaded only when
+  relevant, in the open [Agent Skills format](https://agentskills.io/specification) so
+  any compatible agent can install it itself.
 - **Revertible envelope** — the zone where anything done can be undone (via git save
   points); the agent acts freely inside it and stops at its edge.
 - **Ergonomics** — how easy something is to use. The AI's job is ergonomics: making the
