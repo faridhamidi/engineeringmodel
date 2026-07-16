@@ -42,14 +42,15 @@ Each is specified in the design document; stated here at direction level:
    in native always-on surfaces; this repository exercises both `AGENTS.md` and
    `CLAUDE.md`.
 2. **Git is the revertibility substrate.** Git is a requirement; the agent commits
-   generously *for* the user (undo + audit + provenance in one). This is what lets the
-   agent act autonomously and still be safe.
+   coherent, verified, task-owned increments *for* the user (undo + audit + provenance
+   in one). Ambiguous ownership remains uncommitted. This is what lets the agent act
+   autonomously and still be safe.
 3. **External effects need a human.** The agent is steered to **always ask for explicit
    human approval before any external-substrate effect.** This is a procedural norm,
    not a technical wall; a real wall is recommended and lives in the substrate.
 4. **Autonomy below the line, a hard stop above it.** Below the line the agent acts
    freely and the user reverts anything they dislike; the only non-negotiable pause is
-   an irreversible external effect.
+   an external-substrate effect.
 
 ---
 
@@ -97,8 +98,8 @@ Not a simpler methodology — the same methodology, reached through a different 
    billing system, a content platform, or a messaging system. The plan names several
    only as examples; it privileges none.
 4. **Not a technical wall.** This layer translates, guides, and steers the agent to ask
-   a human before irreversible external effects. It does not itself *prevent* those
-   effects — a real control for that lives in the system that owns the state
+   a human before external-substrate effects. It does not itself *prevent* those effects
+   — a real control for that lives in the system that owns the state
    (recommended, out of scope here).
 
 ---
@@ -120,13 +121,14 @@ Not a simpler methodology — the same methodology, reached through a different 
    human never reads is inert; always-adhered steering brings the right plain-language
    question when it matters, and pulls in the engine (an on-demand skill) for depth.
    *(Decided; specified in the design document.)*
-6. **Irreversible external effects require a human, not a wall in this layer.** The
+6. **External effects require a human, not a wall in this layer.** The
    agent is steered to always ask for explicit approval before an external effect; the
    un-bypassable wall, if wanted, lives in the substrate, set up once by someone
    competent. This layer helps decide and pauses; it does not pretend to be the wall.
-7. **Keep work inside a revertible envelope.** The agent commits generously (git is the
-   substrate) so anything below the line can be undone; that is what licenses acting
-   without asking.
+7. **Keep work inside a revertible envelope.** The agent commits at coherent, verified
+   task boundaries and includes only task-owned changes. Git is the substrate that lets
+   work below the line be undone; ambiguous ownership fails closed to an uncommitted
+   report.
 8. **The operation obeys the repository's own rules.** Proportionality; canonical
    concept ownership (link to the engine, do not restate it); evidence tags;
    confidentiality; plain writing.
@@ -168,9 +170,9 @@ above the line).
   **unchanged**, delivered to the agent through generated, parity-checked references in
   the on-demand `engineering-model` skill.
 - **The steering front matter** — always adhered, whole-workflow: draws the line, acts
-  below it, commits every change, asks a human before external effects, and calls the
-  engine skill for depth. The package owns the canonical block; native `AGENTS.md` and
-  `CLAUDE.md` surfaces carry exact checked copies.
+  below it, commits coherent, verified, task-owned increments, asks a human before
+  external effects, and calls the engine skill for depth. The package owns the canonical
+  block; native `AGENTS.md` and `CLAUDE.md` surfaces carry exact checked copies.
 - **The human front door** — [`builders/START_HERE.md`](../builders/START_HERE.md): the
   same line in plain language for the person.
 - **Git** — the required revertibility substrate the agent operates *for* the user.

@@ -35,8 +35,8 @@ provisioning any substrate-side control; a builder-operated conformance harness.
   the human reading engine documents.
 - Works identically for technical and non-technical builders — it steers the agent,
   not the person.
-- Every autonomous change stays revertible; irreversible external effects require
-  explicit human approval.
+- Every autonomous authoring change stays revertible; external-substrate effects
+  require explicit human approval.
 - The layer references the engine and never restates or weakens it.
 
 **Non-goals.**
@@ -59,7 +59,7 @@ One line:
   │ STEERING (front matter)   always in context, whole workflow │  the front
   │   - draws the blast-radius line (semantic, fail-closed)     │
   │   - acts autonomously below the line                        │
-  │   - commits every change (undo + audit + provenance)        │
+  │   - commits coherent, verified, task-owned increments       │
   │   - ALWAYS asks approval before external-substrate effects  │
   │   - calls the engine skill when depth/judgment is needed    │
   ├───────────────────────────────────────────────────────────┤
@@ -83,8 +83,10 @@ One line:
   a. Draw the blast-radius line — *does it touch shared/external ground?* and *can you
      undo it yourself in one step?*
   b. **Below the line:** act autonomously.
-  c. **Auto-commit discipline:** ensure each change is committed (undo stack + audit
-     trail + provenance in one); never commit secrets or junk.
+  c. **Checkpoint discipline:** at coherent, verified task boundaries, commit only
+     task-owned changes (undo stack + audit trail + provenance in one). Never commit
+     secrets, junk, unrelated changes, or pre-existing user work. When ownership cannot
+     be isolated safely, leave the work uncommitted and report why.
   d. **External-substrate rule:** always ask for explicit human approval before any
      external-substrate involvement; do not proceed without it.
   e. Call the engine skill when depth or judgment is required.
@@ -158,7 +160,9 @@ disclose that the external-effect pause is not continuously steered.
   - Linux — Ubuntu/Debian (`sudo apt install git`) and Fedora (`sudo dnf install git`);
   - verify with `git --version`.
 - The agent **operates git for the user** (hidden from the non-technical persona):
-  commit generously and automatically.
+  inspect the existing worktree, then commit autonomously at coherent, verified task
+  boundaries using only task-owned changes. It does not rewrite existing history
+  automatically.
 - **Honest limit:** git reverts *authoring*, not *acting* — a commit undoes the code
   that caused an external effect, not the effect. External effects therefore still go
   through §3.1(d).
@@ -178,18 +182,22 @@ The whole-sequence rule: **keep everything inside the revertible envelope; hard-
 only at the edge.**
 
 ```text
-1. Ensure the project is a git repository.
-2. Make the change.
-3. Commit it automatically, with a clear message. Never commit secrets or junk.
-4. Is the next action an external-substrate effect (deploy, delete shared data,
+1. Ensure the project is a git repository and inspect its existing worktree.
+2. Make one coherent change without absorbing pre-existing user work.
+3. Run the checks that define completion for that increment.
+4. Stage only task-owned changes with explicit paths or selective hunks, then commit
+   with a clear message. If ownership cannot be isolated, leave the work uncommitted
+   and report why. Never rewrite existing history automatically.
+5. Is the next action an external-substrate effect (push, open a pull request, deploy,
+   delete shared data,
    grant access, send to others, mutate a live service)?
      - Yes -> STOP. Ask the human for explicit approval. Do not proceed without it.
      - No  -> continue autonomously; the user can revert any result they dislike.
-5. Repeat.
+6. Repeat.
 ```
 
-Below the line, autonomy is the default and asking is the exception. The only
-non-negotiable pause is an irreversible external effect.
+Below the line, autonomy is the default and asking is the exception. The
+non-negotiable pause is an external-substrate effect.
 
 ## 5. Decisions (resolved open questions)
 

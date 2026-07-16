@@ -70,5 +70,13 @@ directory should own the history. Before the first commit, exclude credentials,
 private runtime data, generated output, and other material that should not enter
 version history.
 
+## Keep Focused Checkpoints
+
+Before editing, inspect the existing worktree so pre-existing user work remains
+distinguishable from the current task. Create a commit only when a coherent increment
+satisfies its declared checks. Include only task-owned changes, using explicit paths or
+selective hunks when needed. Do not rewrite existing history automatically. If the work
+cannot be isolated safely, leave it uncommitted and explain why.
+
 Git protects local authoring. It does not reverse an effect already applied to a shared
 or external system; follow [Safe Operation](SAFE_OPERATION.md) before such an action.

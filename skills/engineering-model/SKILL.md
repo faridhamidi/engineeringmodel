@@ -74,14 +74,23 @@ case proves each new checker detects the prohibited behavior.
 
 ## 4. Operate Inside The Envelope
 
-Use git for local authoring checkpoints. Never commit secrets, generated junk, or
-unrelated user changes. Before any external-substrate effect, stop, state the target,
-consequence, reversibility, and proposed action, then obtain explicit human approval.
-Approval for one described effect does not authorize a broader or materially different
-effect.
+Inspect `git status` before editing and distinguish pre-existing user work from the task
+baseline. After a coherent increment satisfies its declared completion criterion and
+relevant checks, stage only task-owned changes using explicit paths or selective hunks,
+then commit with a focused message. Never commit secrets, generated junk, unrelated
+changes, or pre-existing user work. Do not rewrite existing history automatically. If
+verification fails unexpectedly, preserve the work without reporting the increment as
+complete. If task-owned changes cannot be isolated safely, leave the work uncommitted
+and report why.
 
-**Complete when:** local changes are recoverable, verification results are recorded,
-and no external effect occurred without approval for that exact effect.
+Treat push, pull-request creation, deployment, release, and every other
+external-substrate effect as a separate action. Stop, state its target, consequence,
+reversibility, and proposed action, then obtain explicit human approval. Approval for
+one described effect does not authorize a broader or materially different effect.
+
+**Complete when:** the baseline is known, every new commit is coherent, verified, and
+limited to task-owned changes, unresolved work is represented honestly, and no external
+effect occurred without approval for that exact effect.
 
 ## 5. Report The Result
 

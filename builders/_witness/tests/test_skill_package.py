@@ -51,6 +51,21 @@ class SkillPackageTests(unittest.TestCase):
         lines = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8").splitlines()
         self.assertLess(len(lines), 500)
 
+    def test_skill_defines_bounded_commit_protocol(self) -> None:
+        text = " ".join(
+            (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8").split()
+        )
+        required = (
+            "Inspect `git status` before editing",
+            "explicit paths or selective hunks",
+            "Do not rewrite existing history automatically",
+            "leave the work uncommitted",
+            "without reporting the increment as complete",
+        )
+        for phrase in required:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, text)
+
     def test_codex_interface_metadata_names_the_skill(self) -> None:
         text = (SKILL_ROOT / "agents" / "openai.yaml").read_text(encoding="utf-8")
         self.assertIn('display_name: "Engineering Model"', text)

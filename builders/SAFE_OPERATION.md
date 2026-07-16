@@ -30,10 +30,11 @@ broader or materially different effect.
 ## Keep An Undo Point
 
 Use git to keep local authoring recoverable. The setup steps are in
-[Git Setup](GIT_SETUP.md). A commit can restore files and explain what changed, but it
-cannot unsend a message, restore every deleted shared record, or reverse a live service
-change. For those effects, use controls provided by the system itself: limited roles,
-backups, deletion protection, review gates, previews, or dry runs.
+[Git Setup](GIT_SETUP.md). Keep each commit to one coherent, checked increment and do not
+mix it with someone else's existing work. A commit can restore files and explain what
+changed, but it cannot unsend a message, restore every deleted shared record, or reverse
+a live service change. For those effects, use controls provided by the system itself:
+limited roles, backups, deletion protection, review gates, previews, or dry runs.
 
 ## Where To Go Next
 

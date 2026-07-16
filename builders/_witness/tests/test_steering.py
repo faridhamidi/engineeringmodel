@@ -26,6 +26,11 @@ class SteeringContractTests(unittest.TestCase):
     def test_packaged_steering_contains_every_load_bearing_norm(self) -> None:
         self.assertEqual(missing_norms(STEERING.read_text(encoding="utf-8")), set())
 
+    def test_packaged_steering_does_not_require_per_change_commits(self) -> None:
+        text = STEERING.read_text(encoding="utf-8").lower()
+        self.assertNotIn("commit every change", text)
+        self.assertNotIn("ensure each change is committed", text)
+
     def test_removing_any_norm_is_detected(self) -> None:
         source = STEERING.read_text(encoding="utf-8")
         for name, phrase in REQUIRED_NORMS.items():
