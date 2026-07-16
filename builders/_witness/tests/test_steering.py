@@ -31,6 +31,11 @@ class SteeringContractTests(unittest.TestCase):
         self.assertNotIn("commit every change", text)
         self.assertNotIn("ensure each change is committed", text)
 
+    def test_packaged_steering_uses_runtime_neutral_skill_invocation(self) -> None:
+        text = STEERING.read_text(encoding="utf-8")
+        self.assertNotIn("$engineering-model", text)
+        self.assertNotIn("/engineering-model", text)
+
     def test_removing_any_norm_is_detected(self) -> None:
         source = STEERING.read_text(encoding="utf-8")
         for name, phrase in REQUIRED_NORMS.items():

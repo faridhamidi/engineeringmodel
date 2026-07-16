@@ -114,10 +114,12 @@ When installing this skill, place [the steering block](assets/steering.md) in th
 runtime's always-on instruction surface. Use the packaged
 [AGENTS.md template](assets/AGENTS.md) for Codex-compatible runtimes and the packaged
 [CLAUDE.md template](assets/CLAUDE.md) for Claude. Preserve the marked block verbatim so
-package validation can detect drift. If the runtime has no always-on instruction
-surface, tell the user that the skill remains on-demand and the external-effect pause
-is not continuously steered.
+package validation can detect drift. Keep runtime-specific command syntax outside the
+shared block: invoke the skill as `$engineering-model` in Codex and
+`/engineering-model` in Claude. If the runtime has no always-on instruction surface,
+tell the user that the skill remains on-demand and the external-effect pause is not
+continuously steered.
 
 **Complete when:** every native instruction file used by the runtime loads the steering
-on every turn, the skill can be invoked as `$engineering-model`, and each installed
-block is identical to the packaged canonical block.
+on every turn, the skill is discoverable and invocable through the runtime's native
+form, and each installed block is identical to the packaged canonical block.

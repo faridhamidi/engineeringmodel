@@ -4,7 +4,7 @@ Status: accepted
 Origin: .meta/builder-accessible-layer.design.md sections 5 and 9
 Owner: repository maintainer (assign on adoption)
 Last verified against: builder-layer implementation dated 2026-07-16
-Supersedes / superseded by: —
+Supersedes / superseded by: distribution extended by ADR-002-share-ready-seed.md
 -->
 
 # ADR-001: Deliver The Engine Through Native Steering And A Skill
@@ -53,6 +53,9 @@ preserves canonical ownership while avoiding broken paths after installation.
   or operational risk reduction.
 - New native runtimes require a placement template and parity evidence before being
   claimed as supported.
+- Share-ready project distribution is a generated projection governed separately by
+  [ADR-002](ADR-002-share-ready-seed.md); it does not make this canonical source
+  repository a product starter tree.
 
 ## Evidence
 

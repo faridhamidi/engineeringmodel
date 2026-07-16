@@ -24,6 +24,9 @@ behavior, and substrate enforcement are not demonstrated.
 7. The `engineering-model` skill meets the local Agent Skills package contract, keeps
    references one level deep, and carries exact generated copies of every canonical
    engine document. Missing, stale, and extra references are rejected.
+8. The share-ready seed contains only its declared minimal surface, installs exact
+   skill projections for both supported runtimes, records hashes for every managed
+   file, is deterministic, and detects missing, changed, or unexpected output.
 
 ## Run
 

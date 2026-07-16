@@ -1,0 +1,40 @@
+{
+  "format_version": 1,
+  "source_repository": "https://github.com/faridhamidi/engineeringmodel",
+  "files": [
+    {
+      "source": "skills/engineering-model/assets/AGENTS.md",
+      "target": "AGENTS.md"
+    },
+    {
+      "source": "skills/engineering-model/assets/CLAUDE.md",
+      "target": "CLAUDE.md"
+    },
+    {
+      "source": "seed/templates/README.md",
+      "target": "README.md"
+    },
+    {
+      "source": "seed/templates/gitignore",
+      "target": ".gitignore"
+    }
+  ],
+  "trees": [
+    {
+      "source": "skills/engineering-model",
+      "targets": [
+        ".agents/skills/engineering-model",
+        ".claude/skills/engineering-model"
+      ]
+    }
+  ],
+  "expected_top_level": [
+    ".agents",
+    ".claude",
+    ".engineering-model",
+    ".gitignore",
+    "AGENTS.md",
+    "CLAUDE.md",
+    "README.md"
+  ]
+}

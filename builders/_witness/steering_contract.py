@@ -7,7 +7,7 @@ REQUIRED_NORMS: Mapping[str, str] = {
     "start_marker": "<!-- engineering-model-steering:start -->",
     "end_marker": "<!-- engineering-model-steering:end -->",
     "fail_closed": "fail closed",
-    "skill_invocation": "$engineering-model",
+    "skill_invocation": "installed `engineering-model` skill",
     "skill_install_fallback": "install the packaged skill before continuing",
     "git_checkpoint_boundary": "coherent, verified task boundaries",
     "git_checkpoint_scope": "only task-owned changes",

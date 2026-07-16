@@ -6,9 +6,9 @@
 Classify each intended action before performing it:
 
 - If it is local and reversible in one step, continue autonomously.
-- If it touches shared ground, is hard to undo, or is uncertain, fail closed and use
-  `$engineering-model` for the depth the decision earns. If the skill is unavailable,
-  install the packaged skill before continuing.
+- If it touches shared ground, is hard to undo, or is uncertain, fail closed and load
+  the installed `engineering-model` skill for the depth the decision earns. If the
+  skill is unavailable, install the packaged skill before continuing.
 - Keep agent-authored work recoverable. At coherent, verified task boundaries, commit
   only task-owned changes with a focused message. Never commit secrets, generated junk,
   unrelated changes, or pre-existing user work. If the task cannot be isolated safely,

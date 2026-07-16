@@ -15,6 +15,7 @@ core/                    normal starting point for application repositories
 governed-automation/     gated exception for authority-bearing systems
 builders/                plain-language front door and safe-operation guidance
 skills/                  reusable Agent Skills package for the methodology
+seed/                    deterministic generator for a minimal project template
 case-studies/            evidence-tagged adoption and non-adoption cases
 examples/                dependency-free executable witnesses
 .github/workflows/       CI for the executable witnesses
@@ -41,6 +42,21 @@ Git supplies the local save points required by this builder layer. Install and v
 it using [`builders/GIT_SETUP.md`](builders/GIT_SETUP.md), then initialize the project
 with `git init` when it is not already a repository. Git can restore authoring changes;
 it cannot reverse an effect already applied to an external system.
+
+## Share-ready project seed
+
+This repository is the canonical source, not the project shell. Generate the quiet
+project seed instead:
+
+```bash
+python seed/generate.py --output dist/engineeringmodel-seed
+python seed/generate.py --check dist/engineeringmodel-seed
+```
+
+The output contains only root `AGENTS.md` and `CLAUDE.md` steering, project-local skill
+copies for Codex and Claude, a provenance manifest, and minimal project placeholders.
+It excludes this repository's methodology directories, examples, meta records,
+contributor instructions, and CI. See [`seed/README.md`](seed/README.md).
 
 ## Choose your layer
 
@@ -69,11 +85,16 @@ It adds proportionate testing and documentation guidance without imposing archit
 
 ## How product repositories use this seed
 
-1. Adopt the Core Hygiene questions and only the checks that protect real seams, using the smallest direct test, ratchet, or local convention that controls the identified risk.
-2. If the authority gate above is crossed, complete the adoption and cost check and select only the governed models whose triggers are present.
-3. Keep product contracts, runbooks, decisions, and local rule sets in the product repository; contribute a reusable lesson here only after implementation or operational evidence exists.
+1. Start a new project from the generated share-ready seed, or adopt the skill and
+   marked steering block into an existing repository. Do not use this canonical source
+   repository as the product shell.
+2. Adopt the Core Hygiene questions and only the checks that protect real seams, using the smallest direct test, ratchet, or local convention that controls the identified risk.
+3. If the authority gate above is crossed, complete the adoption and cost check and select only the governed models whose triggers are present.
+4. Keep product contracts, runbooks, decisions, and local rule sets in the product repository; contribute a reusable lesson here only after implementation or operational evidence exists.
 
-**For most repositories, step 1 is the complete adoption.** Do not copy every file mechanically — the objective is to prevent specific ambiguity and failure modes, not to reproduce this repository's shape.
+**For most repositories, Core Hygiene in step 2 is the complete adoption.** Do not copy
+every file mechanically: the objective is to prevent specific ambiguity and failure
+modes, not to reproduce this repository's shape.
 
 ## Evidence boundary
 
