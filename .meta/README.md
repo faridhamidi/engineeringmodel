@@ -30,6 +30,7 @@ status, provenance, and freshness are greppable.
 | [`ADR-001-builder-accessible-layer.md`](ADR-001-builder-accessible-layer.md) | ADR | accepted |
 | [`share-ready-seed.design.md`](share-ready-seed.design.md) | Design document | completed, historical |
 | [`ADR-002-share-ready-seed.md`](ADR-002-share-ready-seed.md) | ADR | accepted |
+| [`seed-cleanroom-observation.md`](seed-cleanroom-observation.md) | Observation report (evidence) | complete (n=5, single runtime) |
 
 ## Reading order for a newcomer
 
