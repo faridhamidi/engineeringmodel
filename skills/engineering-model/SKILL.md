@@ -61,7 +61,7 @@ every rejected mechanism left out.
 
 Before editing, inspect how the repository already handles the same concern, including
 configuration, error handling, logging, parsing, dependencies, and test structure.
-Preserve those patterns unless the task deliberately changes them. Before completion,
+Preserve those patterns unless the task deliberately changes them, except where preserving a pattern would let a failure corrupt or lose accepted data — then protect the data and note the intentional departure. Before completion,
 self-audit modified code for unused or misplaced imports, dead parameters or
 dependencies, unsafe collection access, fragile parsing, and accidental inconsistency;
 fix findings in the same pass or record why a departure is intentional.
