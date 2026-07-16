@@ -33,6 +33,8 @@ status, provenance, and freshness are greppable.
 | [`ADR-003-proportionate-quality-steering.md`](ADR-003-proportionate-quality-steering.md) | ADR | accepted |
 | [`seed-cleanroom-observation.md`](seed-cleanroom-observation.md) | Observation report (evidence) | complete (n=5, single runtime) |
 | [`seed-codex-cleanroom.md`](seed-codex-cleanroom.md) | Observation report (Codex + Claude, real runtimes) | complete (gpt-5.5 + sonnet-4.6, n=2+2 each) |
+| [`claude-new-steering-behavioral-tests.md`](claude-new-steering-behavioral-tests.md) | Observation report (new-steering Claude runs) | complete but partly confounded; superseded for the quality-floor question |
+| [`claude-quality-steering-cleanroom.design.md`](claude-quality-steering-cleanroom.design.md) | Design document | ready to execute (invocation validated) |
 
 ## Reading order for a newcomer
 

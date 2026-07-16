@@ -3,7 +3,8 @@ Type: Design document
 Status: ready to execute
 Origin: diagnosis of claude-new-steering-behavioral-tests.md
 Owner: repository maintainer (assign on adoption)
-Last verified against: commits 133001e and 145d9fb; Claude Code 2.1.211 help surface, 2026-07-16
+Last verified against: commits 133001e and 145d9fb; Claude Code 2.1.211; invocation
+validated by native-skill preflight (scratch-config isolation, not --bare), 2026-07-16
 Supersedes / superseded by: none
 -->
 
@@ -64,7 +65,9 @@ the matched control on the steering-specific process and evidence measures.**
 - Control contains no `AGENTS.md`, `CLAUDE.md`, `.agents/`, `.claude/`, or
   `.engineering-model/` paths.
 - No user settings, plugins, MCP servers, auto-memory, browser integration, or session
-  continuation.
+  continuation. Achieved with a scratch `CLAUDE_CONFIG_DIR` (provider `env` block only) plus
+  `--no-session-persistence` and `--no-chrome` — **not** `--bare`, which testing showed also
+  disables the native skill discovery this experiment measures.
 - No git remote. This makes every permitted action local and removes approval ambiguity.
 
 Report raw counts (`4/5`), not percentages or statistical significance. With this
@@ -176,12 +179,23 @@ agent cannot see or commit evaluator output.
 ```bash
 PROMPT_FILE="$ARTIFACT_DIR/prompt.txt"
 
-claude -p "$(<"$PROMPT_FILE")" \
-  --bare \
+# Clean-room isolation WITHOUT --bare. Testing (2026-07-16) proved --bare disables native
+# skill discovery, so /engineering-model never resolves and the preflight fails. Instead,
+# a scratch CLAUDE_CONFIG_DIR strips user plugins/marketplaces/memory/model/effort while
+# keeping Bedrock auth and native skill + CLAUDE.md discovery. AWS creds come from the
+# environment; never copy secrets into the trial or artifacts.
+SCRATCH_CFG="$ARTIFACT_DIR/claude-config"
+mkdir -p "$SCRATCH_CFG"
+cat > "$SCRATCH_CFG/settings.json" <<'JSON'
+{ "env": { "CLAUDE_CODE_USE_BEDROCK": "1", "AWS_REGION": "us-east-1", "AWS_PROFILE": "admin.aiops.prod" } }
+JSON
+
+env CLAUDE_CONFIG_DIR="$SCRATCH_CFG" claude -p "$(<"$PROMPT_FILE")" \
   --add-dir "$PWD" \
   --model us.anthropic.claude-sonnet-4-6 \
   --effort medium \
   --output-format stream-json \
+  --verbose \
   --permission-mode dontAsk \
   --tools "Bash,Edit,Write,Read,Glob,Grep,Skill" \
   --allowedTools "Read Edit Write Glob Grep Skill Bash(python3 *) Bash(git status*) Bash(git diff*) Bash(git log*) Bash(git add*) Bash(git commit*) Bash(git rev-parse*) Bash(git show*)" \
@@ -194,25 +208,37 @@ claude -p "$(<"$PROMPT_FILE")" \
 echo "$?" > "$ARTIFACT_DIR/claude.exit"
 ```
 
+**Harness validation (verified 2026-07-16, native-skill preflight):** `--output-format
+stream-json` requires `--verbose` under `--print`, or the process exits 1 with an empty
+trace. `--bare` was tested and **rejected**: it disables native skill discovery, so the
+agent cannot invoke `/engineering-model` and falls back to reading the embedded `CLAUDE.md`
+block — the preflight then fails. The scratch `CLAUDE_CONFIG_DIR` above reproduces `--bare`'s
+user-config stripping while preserving the native skill; with it the preflight passes
+(`Skill(engineering-model)` invoked, loads "1. Classify The Work"). A scratch config with no
+provider `env` block breaks auth ("Not logged in"), which is why the Bedrock keys are pinned.
+
 Why these arguments matter:
 
 | Argument | Purpose |
 |---|---|
-| `--bare` | Removes user customizations, plugins, memory, hooks, and implicit instruction discovery |
-| `--add-dir "$PWD"` | Explicitly supplies this trial's native project instructions in bare mode |
+| `env CLAUDE_CONFIG_DIR=<scratch>` | Clean-room isolation: strips user plugins, marketplaces, memory, model, and effort defaults while keeping Bedrock auth and native skill + `CLAUDE.md` discovery. Replaces `--bare`, which was tested and disables native skill discovery |
+| `--add-dir "$PWD"` | Grants tool access to the trial and supplies its project instructions |
 | `--tools ... Skill` | Makes the available tool set explicit and includes native skill invocation |
 | `--allowedTools ...` | Pre-authorizes only local file, test, and selected git operations |
 | `--permission-mode dontAsk` | Denies anything not pre-authorized instead of blocking for a human |
 | push/fetch/pull disallowed | Prevents the quality experiment from becoming an external-effect experiment |
-| stream JSON | Preserves action order needed to score pre-edit behavior |
+| `--output-format stream-json --verbose` | Preserves action order needed to score pre-edit behavior; `--verbose` is required or the command exits 1 |
 | no session persistence | Prevents cross-run memory and accidental continuation |
 
 Do not replace `--tools` with `--allowedTools`; they answer different questions. Do not
 use `acceptEdits`, because unspecified operations can then be handled differently from
 the clean-room permission contract.
 
-If the Bedrock provider requires environment configuration, supply it outside the
-trial. Never copy credentials or provider configuration into the trial or artifacts.
+Bedrock provider configuration is supplied via the scratch `CLAUDE_CONFIG_DIR`
+`settings.json` `env` block shown above (`CLAUDE_CODE_USE_BEDROCK`, `AWS_REGION`,
+`AWS_PROFILE`); AWS credentials resolve from the environment. Never copy raw credentials or
+secrets into the trial or artifacts. A scratch config with no `env` block fails with "Not
+logged in".
 
 ## 7. Randomization and run validity
 
