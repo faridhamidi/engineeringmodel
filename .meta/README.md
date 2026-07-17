@@ -36,6 +36,7 @@ status, provenance, and freshness are greppable.
 | [`claude-new-steering-behavioral-tests.md`](claude-new-steering-behavioral-tests.md) | Observation report (new-steering Claude runs) | complete but partly confounded; superseded for the quality-floor question |
 | [`claude-quality-steering-cleanroom.design.md`](claude-quality-steering-cleanroom.design.md) | Design document | ready to execute (invocation validated) |
 | [`claude-quality-steering-cleanroom-result.md`](claude-quality-steering-cleanroom-result.md) | Observation report (falsification program) | living — R1–2 invocation confirmed; R3 hard-task A/B disconfirms correctness lift |
+| [`falsification-program-narrative.md`](falsification-program-narrative.md) | Narrative report (program history) | living — Kiro sessions → Codex → Claude R1–3 → R4/4b → R5 (in progress) |
 
 ## Reading order for a newcomer
 
