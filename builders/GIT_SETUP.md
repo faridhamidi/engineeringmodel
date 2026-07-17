@@ -1,7 +1,7 @@
 <!--
 Type: Builder surface (prerequisite)
 Status: implemented
-Origin: .meta/builder-accessible-layer.design.md section 3.3
+Origin: .meta/DD-001-builder-accessible-layer.md section 3.3
 Owner: repository maintainer (assign on adoption)
 Evidence: commands are documented; installation on every platform is not demonstrated.
 -->

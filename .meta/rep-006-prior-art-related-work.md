@@ -1,7 +1,7 @@
 <!--
 Type: Related-work / prior-art note
 Status: living — external studies that bear on the falsification program
-Origin: web review 2026-07-17; companion to rep-005-falsification-program-narrative.md
+Origin: web review 2026-07-17; companion to REP-005-falsification-program-narrative.md
 Last updated: 2026-07-17
 -->
 

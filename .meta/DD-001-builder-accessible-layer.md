@@ -1,7 +1,7 @@
 <!--
 Type: Design document
 Status: completed (historical; archived in place to preserve stable links)
-Origin: promoted from .meta/builder-accessible-layer.md (forward document)
+Origin: promoted from .meta/FD-001-builder-accessible-layer.md (forward document)
 Owner: repository maintainer (assign on adoption)
 Last verified against: builder-layer implementation dated 2026-07-16
 Supersedes / superseded by: durable rules promoted to ADR-001-builder-accessible-layer.md
@@ -12,7 +12,7 @@ Supersedes / superseded by: durable rules promoted to ADR-001-builder-accessible
 **Historical worked plan** (per [`core/DOCUMENTATION.md`](../core/DOCUMENTATION.md)).
 This records how the builder-accessible layer was built and verified. Durable rules now
 live in [ADR-001](ADR-001-builder-accessible-layer.md). Direction lives in the
-[forward document](builder-accessible-layer.md). This document remains at its stable
+[forward document](FD-001-builder-accessible-layer.md). This document remains at its stable
 path because the implemented package and earlier records link to its skill outline.
 
 ---
@@ -265,7 +265,7 @@ maintainer approval.
 
 ## 10. Promotion record
 
-- **Origin:** [forward document](builder-accessible-layer.md). (An interim synthesis
+- **Origin:** [forward document](FD-001-builder-accessible-layer.md). (An interim synthesis
   note was folded into this document and removed; it remains in git history.)
 - **Completion:** implementation, verification, and maintainer approval completed on
   2026-07-16. The forward document was reconciled, this design was archived in place,

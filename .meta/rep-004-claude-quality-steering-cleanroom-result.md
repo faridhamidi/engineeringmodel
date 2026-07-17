@@ -1,11 +1,11 @@
 <!--
 Type: Observation report
 Status: living — falsification program (rounds 1–3). Round 3 (hard-task A/B) DISCONFIRMS a general quality/correctness lift; skill-invocation reliability stands.
-Origin: dd-001-claude-quality-steering-cleanroom.md
+Origin: DD-003-claude-quality-steering-cleanroom.md
 Owner: repository maintainer (assign on adoption)
 Last verified against: seed at commit 67bbd97 (objective-trigger steering); Claude Code 2.1.211;
                        us.anthropic.claude-sonnet-4-6 (effort medium); 2026-07-16
-Related: ADR-003-proportionate-quality-steering.md, rep-003-claude-new-steering-behavioral-tests.md
+Related: ADR-003-proportionate-quality-steering.md, REP-003-claude-new-steering-behavioral-tests.md
 -->
 
 # Claude Quality-Steering Clean-Room Result
@@ -143,7 +143,7 @@ invocation.
 ## Interpretation using pre-registered rules
 
 - **H1 (invocation) — confirmed.** Treatment skill-load 5/5 (≥4/5), control 0/5. Against the
-  prior subjective steering (0/4 on a routine task, `rep-003-claude-new-steering-behavioral-tests.md`),
+  prior subjective steering (0/4 on a routine task, `REP-003-claude-new-steering-behavioral-tests.md`),
   the objective trigger **flipped skill-loading from 0 to 5/5**. This is the fix's target and it
   worked.
 - **Pattern inspection / tests authored high in both arms → base-model behavior**, not a seed

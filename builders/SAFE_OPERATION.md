@@ -1,7 +1,7 @@
 <!--
 Type: Builder surface (translation)
 Status: implemented
-Origin: .meta/builder-accessible-layer.design.md section 3.4
+Origin: .meta/DD-001-builder-accessible-layer.md section 3.4
 Owner: repository maintainer (assign on adoption)
 Evidence: structural and decision-oracle checks in builders/_witness/; runtime agent
   adherence and substrate enforcement are not demonstrated.

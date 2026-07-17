@@ -1,7 +1,7 @@
 <!--
 Type: Architecture decision record
 Status: accepted
-Origin: .meta/builder-accessible-layer.design.md sections 5 and 9
+Origin: .meta/DD-001-builder-accessible-layer.md sections 5 and 9
 Owner: repository maintainer (assign on adoption)
 Last verified against: builder-layer implementation dated 2026-07-16
 Supersedes / superseded by: distribution extended by ADR-002-share-ready-seed.md

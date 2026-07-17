@@ -1,7 +1,7 @@
 <!--
 Type: Architecture decision record
 Status: accepted
-Origin: rep-001-seed-cleanroom-observation.md and rep-002-seed-codex-cleanroom.md
+Origin: REP-001-seed-cleanroom-observation.md and REP-002-seed-codex-cleanroom.md
 Owner: repository maintainer (assign on adoption)
 Last verified against: local implementation dated 2026-07-16
 Supersedes / superseded by: extends ADR-001-builder-accessible-layer.md and ADR-002-share-ready-seed.md

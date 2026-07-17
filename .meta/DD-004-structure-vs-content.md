@@ -1,7 +1,7 @@
 <!--
 Type: Experiment design (terminal measurement round)
 Status: proposed — ready to pre-register and run
-Origin: rep-005-falsification-program-narrative.md §10; rep-006-prior-art-related-work.md (borrowed controls)
+Origin: REP-005-falsification-program-narrative.md §10; REP-006-prior-art-related-work.md (borrowed controls)
 Last updated: 2026-07-17
 -->
 
@@ -11,7 +11,7 @@ Last updated: 2026-07-17
 
 Answer the single sharpest question left about the current seed, on the ground where it should be
 strongest: **does the seed's *content* do anything its *structure* does not?** Prior rounds tested
-*seed vs bare* and found no outcome lift; two 2026 studies (see `rep-006-prior-art-related-work.md`) show any
+*seed vs bare* and found no outcome lift; two 2026 studies (see `REP-006-prior-art-related-work.md`) show any
 effect is *scaffold structure*, not *content*. This round adds the controls those studies used
 (labels-only, length-matched placebo) so we can separate the two — uncontaminated, on the seed's
 home turf.
@@ -42,7 +42,7 @@ does not breach the task-design firewall — the tasks stay fixed and independen
 
 ## Tasks (the two ground-truth-validated probes)
 
-Use the probes already verified by ground truth (`rep-005-falsification-program-narrative.md` §8):
+Use the probes already verified by ground truth (`REP-005-falsification-program-narrative.md` §8):
 - **`shard-wake`** (r5) — conservation + recovery convergence; headroom on `replace_3`. Cleaner
   probe (2 controls). Freeze its current oracle.
 - **`orbit-slots`** (r4) — canonical input validation; headroom on the leading-zero clause. Use its

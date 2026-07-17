@@ -7,10 +7,10 @@ Last verified against: builder-layer implementation dated 2026-07-16
 Revision note: (1) scope was first narrowed to translation; an earlier deterministic
 "subsystem / harness" and two-tier enforcement model were removed. (2) The direction
 then evolved (delivery, git, human approval, autonomy) and was promoted to
-builder-accessible-layer.design.md, which now owns the worked plan. This document was
+DD-001-builder-accessible-layer.md, which now owns the worked plan. This document was
 reconciled to state the current direction and defers all "how" detail to the design
 document.
-Supersedes / superseded by: realized through builder-accessible-layer.design.md; durable rules in ADR-001-builder-accessible-layer.md
+Supersedes / superseded by: realized through DD-001-builder-accessible-layer.md; durable rules in ADR-001-builder-accessible-layer.md
 -->
 
 # Forward Document — A Builder-Accessible Translation
@@ -23,7 +23,7 @@ live in [ADR-001](ADR-001-builder-accessible-layer.md). See
 The single idea: **translate the interface, leave the engine untouched.**
 
 **Realized through:**
-[`builder-accessible-layer.design.md`](builder-accessible-layer.design.md), the
+[`DD-001-builder-accessible-layer.md`](DD-001-builder-accessible-layer.md), the
 historical worked design. This document states direction and provenance only.
 
 ---
@@ -178,7 +178,7 @@ above the line).
 - **Git** — the required revertibility substrate the agent operates *for* the user.
 
 Real prevention of irreversible effects is a substrate control (recommended), not part
-of this layer. The [design document](builder-accessible-layer.design.md) specifies each
+of this layer. The [design document](DD-001-builder-accessible-layer.md) specifies each
 piece and how it is verified.
 
 ---
@@ -217,7 +217,7 @@ Sits *below* Core Hygiene, in plain language:
 ## Deliverables and plan
 
 The worked deliverables, phased order, and verification plan now live in the
-[design document](builder-accessible-layer.design.md) (§3–§6). At direction level:
+[design document](DD-001-builder-accessible-layer.md) (§3–§6). At direction level:
 
 - human front door — `builders/START_HERE.md` — *implemented, tested*;
 - the safe-operation floor — `builders/SAFE_OPERATION.md` — *implemented, structurally tested*;

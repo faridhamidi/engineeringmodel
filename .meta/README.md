@@ -25,20 +25,21 @@ status, provenance, and freshness are greppable.
 
 | File | Type | Status |
 |---|---|---|
-| [`builder-accessible-layer.md`](builder-accessible-layer.md) | Forward document | realized, historical |
-| [`builder-accessible-layer.design.md`](builder-accessible-layer.design.md) | Design document | completed, historical |
+| [`FD-001-builder-accessible-layer.md`](FD-001-builder-accessible-layer.md) | Forward document | realized, historical |
+| [`DD-001-builder-accessible-layer.md`](DD-001-builder-accessible-layer.md) | Design document | completed, historical |
 | [`ADR-001-builder-accessible-layer.md`](ADR-001-builder-accessible-layer.md) | ADR | accepted |
-| [`share-ready-seed.design.md`](share-ready-seed.design.md) | Design document | completed, historical |
+| [`DD-002-share-ready-seed.md`](DD-002-share-ready-seed.md) | Design document | completed, historical |
 | [`ADR-002-share-ready-seed.md`](ADR-002-share-ready-seed.md) | ADR | accepted |
 | [`ADR-003-proportionate-quality-steering.md`](ADR-003-proportionate-quality-steering.md) | ADR | accepted |
-| [`rep-001-seed-cleanroom-observation.md`](rep-001-seed-cleanroom-observation.md) | Observation report (evidence) | complete (n=5, single runtime) |
-| [`rep-002-seed-codex-cleanroom.md`](rep-002-seed-codex-cleanroom.md) | Observation report (Codex + Claude, real runtimes) | complete (gpt-5.5 + sonnet-4.6, n=2+2 each) |
-| [`rep-003-claude-new-steering-behavioral-tests.md`](rep-003-claude-new-steering-behavioral-tests.md) | Observation report (new-steering Claude runs) | complete but partly confounded; superseded for the quality-floor question |
-| [`dd-001-claude-quality-steering-cleanroom.md`](dd-001-claude-quality-steering-cleanroom.md) | Design document | ready to execute (invocation validated) |
-| [`rep-004-claude-quality-steering-cleanroom-result.md`](rep-004-claude-quality-steering-cleanroom-result.md) | Observation report (falsification program) | living — R1–2 invocation confirmed; R3 hard-task A/B disconfirms correctness lift |
-| [`rep-005-falsification-program-narrative.md`](rep-005-falsification-program-narrative.md) | Narrative report (program history) | living — Kiro sessions → Codex → Claude R1–3 → R4/4b → R5 (in progress) |
-| [`rep-006-prior-art-related-work.md`](rep-006-prior-art-related-work.md) | Related-work / prior-art note | living — 2026 studies converge (process↑, outcome flat); controls to borrow |
-| [`dd-002-structure-vs-content.md`](dd-002-structure-vs-content.md) | Experiment design (terminal round) | proposed — 4-arm (bare/placebo/labels-only/full) pass-rate A/B; stopping rule |
+| [`REP-001-seed-cleanroom-observation.md`](REP-001-seed-cleanroom-observation.md) | Observation report (evidence) | complete (n=5, single runtime) |
+| [`REP-002-seed-codex-cleanroom.md`](REP-002-seed-codex-cleanroom.md) | Observation report (Codex + Claude, real runtimes) | complete (gpt-5.5 + sonnet-4.6, n=2+2 each) |
+| [`REP-003-claude-new-steering-behavioral-tests.md`](REP-003-claude-new-steering-behavioral-tests.md) | Observation report (new-steering Claude runs) | complete but partly confounded; superseded for the quality-floor question |
+| [`DD-003-claude-quality-steering-cleanroom.md`](DD-003-claude-quality-steering-cleanroom.md) | Design document | ready to execute (invocation validated) |
+| [`DD-005-cleanroom-task-design-methodology.md`](DD-005-cleanroom-task-design-methodology.md) | Design document | living — consolidated task-authoring/coverage-gate/firewall methodology for rounds 3-5+ |
+| [`REP-004-claude-quality-steering-cleanroom-result.md`](REP-004-claude-quality-steering-cleanroom-result.md) | Observation report (falsification program) | living — R1–2 invocation confirmed; R3 hard-task A/B disconfirms correctness lift |
+| [`REP-005-falsification-program-narrative.md`](REP-005-falsification-program-narrative.md) | Narrative report (program history) | living — Kiro sessions → Codex → Claude R1–3 → R4/4b → R5 (in progress) |
+| [`REP-006-prior-art-related-work.md`](REP-006-prior-art-related-work.md) | Related-work / prior-art note | living — 2026 studies converge (process↑, outcome flat); controls to borrow |
+| [`DD-004-structure-vs-content.md`](DD-004-structure-vs-content.md) | Experiment design (terminal round) | proposed — 4-arm (bare/placebo/labels-only/full) pass-rate A/B; stopping rule |
 
 ## Reading order for a newcomer
 

@@ -232,7 +232,7 @@ driven by the ambient baseline, not by the seed.
   tests, logging, and input-validation behavior. So Round 2 does not measure the seed's
   incremental effect. A valid quality test needs a runtime with **no operator global
   steering**, seed versus nothing. **That follow-up was run on Codex —
-  see [`rep-002-seed-codex-cleanroom.md`](rep-002-seed-codex-cleanroom.md), which found bare Codex wrote no
+  see [`REP-002-seed-codex-cleanroom.md`](REP-002-seed-codex-cleanroom.md), which found bare Codex wrote no
   tests/logging and the tested pre-change seed did not add them.**
 
 ### Evidence tags (Round 2)

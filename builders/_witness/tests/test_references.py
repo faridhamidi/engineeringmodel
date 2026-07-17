@@ -19,11 +19,8 @@ SURFACES = (
     REPO_ROOT / "CLAUDE.md",
     REPO_ROOT / "README.md",
     REPO_ROOT / "AGENTS.md",
-    REPO_ROOT / ".meta" / "README.md",
-    REPO_ROOT / ".meta" / "builder-accessible-layer.md",
-    REPO_ROOT / ".meta" / "builder-accessible-layer.design.md",
-    REPO_ROOT / ".meta" / "ADR-001-builder-accessible-layer.md",
-    REPO_ROOT / ".meta" / "ADR-003-proportionate-quality-steering.md",
+    # .meta docs are intentionally NOT pinned as tested surfaces: they are project
+    # meta / research provenance, decoupled from the builder-surface ratchet by decision.
 )
 
 

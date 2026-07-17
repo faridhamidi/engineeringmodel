@@ -1,7 +1,7 @@
 <!--
 Type: Builder surface (translation)
 Status: implemented
-Origin: .meta/builder-accessible-layer.md (Phase 1 — "translate the line")
+Origin: .meta/FD-001-builder-accessible-layer.md (Phase 1 — "translate the line")
 Owner: repository maintainer (assign on adoption)
 Evidence: this document is implemented and its routing rule is tested
   (builders/_witness/); runtime adherence and substrate enforcement are not demonstrated.
@@ -94,7 +94,7 @@ Before acting outside your workspace, follow [Safe Operation](SAFE_OPERATION.md)
 ## Where this fits
 
 This page is the entry point of a translation layer described in
-[the forward document](../.meta/builder-accessible-layer.md). It restates the
+[the forward document](../.meta/FD-001-builder-accessible-layer.md). It restates the
 methodology's *first question and its consequences* in plain language and links back
 to the full engine for the "why". It does not replace the methodology, and it does
 not weaken it.

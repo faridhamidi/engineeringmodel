@@ -1,11 +1,12 @@
 <!--
 Type: Design document
 Status: ready to execute
-Origin: diagnosis of rep-003-claude-new-steering-behavioral-tests.md
+Origin: diagnosis of REP-003-claude-new-steering-behavioral-tests.md
 Owner: repository maintainer (assign on adoption)
 Last verified against: commits 133001e and 145d9fb; Claude Code 2.1.211; invocation
 validated by native-skill preflight (scratch-config isolation, not --bare), 2026-07-16
-Supersedes / superseded by: none
+Supersedes / superseded by: none. Extended (not replaced) by
+DD-005-cleanroom-task-design-methodology.md, which covers task *authoring* for rounds 3+.
 -->
 
 # Design — Clean-Room Test For Claude Quality Steering
@@ -423,7 +424,7 @@ Write the result as a new observation report; do not rewrite this design.
 <!--
 Type: Observation report
 Status: complete | invalid
-Origin: dd-001-claude-quality-steering-cleanroom.md
+Origin: DD-003-claude-quality-steering-cleanroom.md
 Owner:
 Last verified against: <seed revision>; Claude Code <version>; <model>; <date>
 Related: ADR-003-proportionate-quality-steering.md
