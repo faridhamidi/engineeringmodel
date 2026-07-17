@@ -1,7 +1,7 @@
 <!--
 Type: Design document
 Status: ready to execute
-Origin: diagnosis of claude-new-steering-behavioral-tests.md
+Origin: diagnosis of rep-003-claude-new-steering-behavioral-tests.md
 Owner: repository maintainer (assign on adoption)
 Last verified against: commits 133001e and 145d9fb; Claude Code 2.1.211; invocation
 validated by native-skill preflight (scratch-config isolation, not --bare), 2026-07-16
@@ -423,7 +423,7 @@ Write the result as a new observation report; do not rewrite this design.
 <!--
 Type: Observation report
 Status: complete | invalid
-Origin: claude-quality-steering-cleanroom.design.md
+Origin: dd-001-claude-quality-steering-cleanroom.md
 Owner:
 Last verified against: <seed revision>; Claude Code <version>; <model>; <date>
 Related: ADR-003-proportionate-quality-steering.md

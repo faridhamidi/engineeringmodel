@@ -31,12 +31,14 @@ status, provenance, and freshness are greppable.
 | [`share-ready-seed.design.md`](share-ready-seed.design.md) | Design document | completed, historical |
 | [`ADR-002-share-ready-seed.md`](ADR-002-share-ready-seed.md) | ADR | accepted |
 | [`ADR-003-proportionate-quality-steering.md`](ADR-003-proportionate-quality-steering.md) | ADR | accepted |
-| [`seed-cleanroom-observation.md`](seed-cleanroom-observation.md) | Observation report (evidence) | complete (n=5, single runtime) |
-| [`seed-codex-cleanroom.md`](seed-codex-cleanroom.md) | Observation report (Codex + Claude, real runtimes) | complete (gpt-5.5 + sonnet-4.6, n=2+2 each) |
-| [`claude-new-steering-behavioral-tests.md`](claude-new-steering-behavioral-tests.md) | Observation report (new-steering Claude runs) | complete but partly confounded; superseded for the quality-floor question |
-| [`claude-quality-steering-cleanroom.design.md`](claude-quality-steering-cleanroom.design.md) | Design document | ready to execute (invocation validated) |
-| [`claude-quality-steering-cleanroom-result.md`](claude-quality-steering-cleanroom-result.md) | Observation report (falsification program) | living — R1–2 invocation confirmed; R3 hard-task A/B disconfirms correctness lift |
-| [`falsification-program-narrative.md`](falsification-program-narrative.md) | Narrative report (program history) | living — Kiro sessions → Codex → Claude R1–3 → R4/4b → R5 (in progress) |
+| [`rep-001-seed-cleanroom-observation.md`](rep-001-seed-cleanroom-observation.md) | Observation report (evidence) | complete (n=5, single runtime) |
+| [`rep-002-seed-codex-cleanroom.md`](rep-002-seed-codex-cleanroom.md) | Observation report (Codex + Claude, real runtimes) | complete (gpt-5.5 + sonnet-4.6, n=2+2 each) |
+| [`rep-003-claude-new-steering-behavioral-tests.md`](rep-003-claude-new-steering-behavioral-tests.md) | Observation report (new-steering Claude runs) | complete but partly confounded; superseded for the quality-floor question |
+| [`dd-001-claude-quality-steering-cleanroom.md`](dd-001-claude-quality-steering-cleanroom.md) | Design document | ready to execute (invocation validated) |
+| [`rep-004-claude-quality-steering-cleanroom-result.md`](rep-004-claude-quality-steering-cleanroom-result.md) | Observation report (falsification program) | living — R1–2 invocation confirmed; R3 hard-task A/B disconfirms correctness lift |
+| [`rep-005-falsification-program-narrative.md`](rep-005-falsification-program-narrative.md) | Narrative report (program history) | living — Kiro sessions → Codex → Claude R1–3 → R4/4b → R5 (in progress) |
+| [`rep-006-prior-art-related-work.md`](rep-006-prior-art-related-work.md) | Related-work / prior-art note | living — 2026 studies converge (process↑, outcome flat); controls to borrow |
+| [`dd-002-structure-vs-content.md`](dd-002-structure-vs-content.md) | Experiment design (terminal round) | proposed — 4-arm (bare/placebo/labels-only/full) pass-rate A/B; stopping rule |
 
 ## Reading order for a newcomer
 

@@ -1,13 +1,13 @@
 <!--
 Type: Observation report (behavioural evidence, post-quality-steering)
 Status: complete but PARTLY CONFOUNDED — see "Validity corrections". Superseded for the
-        quality-floor question by claude-quality-steering-cleanroom.design.md.
+        quality-floor question by dd-001-claude-quality-steering-cleanroom.md.
 Scope: the Claude runs that exercised the NEW quality steering (commits 133001e + 145d9fb).
        Excludes the earlier greenfield Claude round, which used the pre-quality seed.
 Owner: repository maintainer (assign on adoption)
 Last verified against: seed generator on local main (post 145d9fb); Claude Code 2.1.211,
                        model us.anthropic.claude-sonnet-4-6, 2026-07-16
-Related: seed-codex-cleanroom.md, seed-cleanroom-observation.md,
+Related: rep-002-seed-codex-cleanroom.md, rep-001-seed-cleanroom-observation.md,
          ADR-003-proportionate-quality-steering.md
 -->
 
@@ -61,7 +61,7 @@ surface. They qualify the findings below; where they conflict, trust this sectio
 floor sits under the `Revertible Envelope` frame with **subjective gates** ("non-trivial",
 "load-bearing", "failure would otherwise be silent"), and there is **no declared precedence**
 that safety/data-integrity override inherited conventions. The corrected experiment
-(`claude-quality-steering-cleanroom.design.md`) is designed to test the quality floor without
+(`dd-001-claude-quality-steering-cleanroom.md`) is designed to test the quality floor without
 these confounds (authorizes the `Skill` tool, uses matched controls, an unprimed prompt, a
 safe baseline, and fault-injection oracles).
 

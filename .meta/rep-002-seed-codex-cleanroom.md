@@ -1,10 +1,10 @@
 <!--
 Type: Observation report (behavioural + quality evidence)
 Status: complete (two real runtimes: Codex CLI gpt-5.5 medium + Claude Code sonnet-4.6 medium; n=2 control + 2 treatment each)
-Origin: follow-up to seed-cleanroom-observation.md, run on Codex then Claude to remove the operator-steering confound
+Origin: follow-up to rep-001-seed-cleanroom-observation.md, run on Codex then Claude to remove the operator-steering confound
 Owner: repository maintainer (assign on adoption)
 Last verified against: source revision 7929550; Codex CLI 0.144.5 (gpt-5.5) + Claude Code 2.1.211 (us.anthropic.claude-sonnet-4-6), 2026-07-16
-Related: seed-cleanroom-observation.md (Kiro rounds), ADR-001-builder-accessible-layer.md, ADR-002-share-ready-seed.md, ADR-003-proportionate-quality-steering.md
+Related: rep-001-seed-cleanroom-observation.md (Kiro rounds), ADR-001-builder-accessible-layer.md, ADR-002-share-ready-seed.md, ADR-003-proportionate-quality-steering.md
 Revision note: ADR-003 implements the proposed quality, skill-loading, and constrained-git changes after this observation. Its post-change behavioral effect has not yet been measured.
 -->
 
@@ -18,7 +18,7 @@ Revision note: ADR-003 implements the proposed quality, skill-loading, and const
 
 ## Why this run exists
 
-The earlier [clean-room observation](seed-cleanroom-observation.md) ran through the Kiro
+The earlier [clean-room observation](rep-001-seed-cleanroom-observation.md) ran through the Kiro
 subagent harness, which inherits the operator's four-file global Kiro steering bundle
 (`code-quality.md`, `security-best-practices.md`, `collaboration-style.md`, and
 `project-conventions.md`, all `inclusion: always`). That confound **voided** its quality

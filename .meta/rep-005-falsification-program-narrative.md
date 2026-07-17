@@ -1,8 +1,8 @@
 <!--
 Type: Narrative report (program history)
 Status: living — audit trail through Round 5 COMPLETE (slate self-invalidated a 2nd time; two probes — orbit-slots + shard-wake — rescued by ground-truth verification; home-turf pass-rate A/B is next)
-Origin: synthesizes seed-cleanroom-observation.md, seed-codex-cleanroom.md, claude-new-steering-behavioral-tests.md,
-        claude-quality-steering-cleanroom.design.md, claude-quality-steering-cleanroom-result.md,
+Origin: synthesizes rep-001-seed-cleanroom-observation.md, rep-002-seed-codex-cleanroom.md, rep-003-claude-new-steering-behavioral-tests.md,
+        dd-001-claude-quality-steering-cleanroom.md, rep-004-claude-quality-steering-cleanroom-result.md,
         and the round-4/4b/5 clean-room work in the (out-of-repo) harness.
 Last updated: 2026-07-17 (Round 5 complete)
 -->
@@ -91,7 +91,7 @@ We then **cross-checked on a second runtime**: Claude (`us.anthropic.claude-sonn
 (2+2). Quality replicated Codex (0/4 tests/logging). But here git worked, which recovered a real
 signal: **2/2 treatment runs excluded the seed scaffold from their commits; 2/2 control runs
 committed a stray README** — a first hint that the seed does affect *commit scope*, even if not
-tests. Findings folded into `seed-codex-cleanroom.md`.
+tests. Findings folded into `rep-002-seed-codex-cleanroom.md`.
 
 ---
 
