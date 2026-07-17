@@ -35,7 +35,7 @@ status, provenance, and freshness are greppable.
 | [`seed-codex-cleanroom.md`](seed-codex-cleanroom.md) | Observation report (Codex + Claude, real runtimes) | complete (gpt-5.5 + sonnet-4.6, n=2+2 each) |
 | [`claude-new-steering-behavioral-tests.md`](claude-new-steering-behavioral-tests.md) | Observation report (new-steering Claude runs) | complete but partly confounded; superseded for the quality-floor question |
 | [`claude-quality-steering-cleanroom.design.md`](claude-quality-steering-cleanroom.design.md) | Design document | ready to execute (invocation validated) |
-| [`claude-quality-steering-cleanroom-result.md`](claude-quality-steering-cleanroom-result.md) | Observation report (result) | complete (sonnet-4.6, n=5+5) |
+| [`claude-quality-steering-cleanroom-result.md`](claude-quality-steering-cleanroom-result.md) | Observation report (falsification program) | living — R1–2 invocation confirmed; R3 hard-task A/B disconfirms correctness lift |
 
 ## Reading order for a newcomer
 

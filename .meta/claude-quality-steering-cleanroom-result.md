@@ -1,6 +1,6 @@
 <!--
 Type: Observation report
-Status: complete (see "Correction": run-02 invalid → rerun run-02b; commit metric contaminated by harness allowlist)
+Status: living — falsification program (rounds 1–3). Round 3 (hard-task A/B) DISCONFIRMS a general quality/correctness lift; skill-invocation reliability stands.
 Origin: claude-quality-steering-cleanroom.design.md
 Owner: repository maintainer (assign on adoption)
 Last verified against: seed at commit 67bbd97 (objective-trigger steering); Claude Code 2.1.211;
@@ -9,6 +9,30 @@ Related: ADR-003-proportionate-quality-steering.md, claude-new-steering-behavior
 -->
 
 # Claude Quality-Steering Clean-Room Result
+
+## Bottom line (falsification stance)
+
+This report is maintained as a **falsification program**: each round tries to *break* the seed's
+value claims, not confirm them, so we can see what to improve. Standing after three rounds (Claude
+`sonnet-4-6`, clean room):
+
+- **Survives falsification:** the objective-trigger fix reliably causes native skill invocation —
+  **10/10 treatment vs 0/10 control** across two independent randomizations (rounds 1–2). The seed
+  also reliably emits an impact record and increases self-verification *activity*.
+- **DISCONFIRMED — a general code-quality/correctness lift.** On hard external-benchmark tasks with
+  real failure headroom (round 3, matched treatment vs control), the seed produced **no correctness
+  improvement**: 1/3 solved in both arms; 108 vs 109 hidden tests (control nominally ahead); one
+  task (`forth`) **strictly worse** under the seed. Impact-record coverage claims were **not
+  calibrated to ground truth**.
+- **Net:** the seed's measured effect is currently **process, not outcome** — it loads the skill,
+  writes an impact record, and tests more, but on tasks where the base model can fail, none of that
+  made the code more correct and the self-assessment over-claimed.
+- **Improvement targets surfaced by refuting:** (1) the impact record self-grades and is least
+  reliable exactly when tasks are hard — require a *committed, executable* test whose real result is
+  quoted, not "inline, all passed"; (2) verification depth is neither enforced nor targeted at
+  error/edge paths; (3) forbid coverage claims ("all branches covered") without cited evidence.
+
+Round 3 detail is in its section below; rounds 1–2 (skill-invocation validation) precede it.
 
 ## Question and version boundary
 
@@ -160,21 +184,149 @@ invocation.
   A fully clean commit/recovery measurement needs a rerun of all arms under the corrected allowlist.
 - **AWS SSO token expiry** invalidated the first run-02b attempt (API error, 0 turns); re-run after
   `aws sso login`.
-  followed by either arm. Commit isolation / recovery could not be scored this round — a harness or
-  agent-behavior artifact, not a seed signal.
 - **Evaluator `tests_executed` trace-detector under-counted** (scanned tool-use inputs only);
   corrected from trace test-output evidence (9/10). Other oracles (conservation, meta-tests, Skill
   counting, git) are subprocess/parse based and were spot-verified.
-- n=5/arm, one task, one model (`sonnet-4-6` medium), one runtime. Directional.
+- n = 5/arm per round across **two independent rounds** (see Round 2), one task, one model
+  (`sonnet-4-6` medium), one runtime. Directional, not statistical.
 - Base Claude is strong on this task, compressing the room for a seed lift on patterns/tests/
   conservation — the measurable seed effects are skill invocation and test defect-sensitivity.
 
+## Round 2 replication (independent randomization, corrected harness)
+
+A second full run (n = 5 treatment + 5 control, freshly/independently randomized: treatment =
+`r2-run-01, 02, 05, 08, 10`) was executed **entirely under the corrected allowlist** (`Bash`
+allowed for local commands; network/push denied), so the commit/recovery metric — contaminated in
+round 1 — is cleanly measured here. All 10 runs were valid: exit 0,
+`us.anthropic.claude-sonnet-4-6`, `is_error:false`, **0 permission denials** (9–16 turns).
+
+Per-run (`Y`/`.`; `commit` = made exactly one commit beyond baseline; `leak` = committed seed scaffold — BAD):
+
+| Run | Arm | skill | patterns | tests auth | tests exec | red-capable | conservation | commit | leak |
+|---|---|---|---|---|---|---|---|---|---|
+| r2-run-01 | treatment | Y | Y | Y | Y | Y | Y | Y | . |
+| r2-run-02 | treatment | Y | Y | Y | Y | . | Y | Y | . |
+| r2-run-05 | treatment | Y | Y | Y | Y | . | Y | Y | . |
+| r2-run-08 | treatment | Y | Y | Y | Y | . | Y | Y | . |
+| r2-run-10 | treatment | Y | Y | Y | Y | Y | Y | Y | . |
+| r2-run-03 | control | . | Y | Y | Y | . | Y | Y | . |
+| r2-run-04 | control | . | Y | Y | Y | . | Y | Y | . |
+| r2-run-06 | control | . | Y | Y | Y | . | Y | Y | . |
+| r2-run-07 | control | . | Y | Y | Y | . | Y | Y | . |
+| r2-run-09 | control | . | Y | Y | Y | . | Y | Y | . |
+
+Aggregates (treatment/control out of 5):
+
+| Metric | Treatment | Control | Note |
+|---|---|---|---|
+| Skill invoked before edit | **5/5** | **0/5** | replicates round 1 exactly |
+| Patterns inspected | 5/5 | 5/5 | base-model, both arms |
+| Tests authored | 5/5 | 5/5 | base-model, both arms |
+| Tests executed | 5/5 | 5/5 | base-model, both arms |
+| Tests red-capable | **2/5** | **0/5** | directional; lower magnitude than round 1 (4/5) |
+| Conservation | 5/5 | 5/5 | base-model, both arms |
+| Committed to git | 5/5 | 5/5 | **now measurable** — all committed `tasks.py`+`test_tasks.py` |
+| Scaffold committed (BAD) | **0/5** | 0/5 | treatment excluded its 39 untracked seed files |
+
+**Commit measurement (new, clean).** Every run made exactly one commit beyond baseline, committing
+`tasks.py` + `test_tasks.py`. **0/10 leaked the untracked seed scaffold** (`AGENTS.md`/`CLAUDE.md`/
+`.claude/`). This (a) confirms round-1's 0/10 commit was a pure harness-allowlist artifact, and
+(b) confirms the seed's commit-scope discipline: treatment committed the work while leaving its
+seed scaffold uncommitted (control had no scaffold to leak, so its 0/5 is trivial — the meaningful
+result is treatment's 5/5 clean exclusion).
+
+**Cross-round synthesis:**
+
+| Signal | Round 1 (corrected) | Round 2 | Combined |
+|---|---|---|---|
+| Skill invocation (treatment vs control) | 5/5 vs 0/5 | 5/5 vs 0/5 | **10/10 vs 0/10 — robust** |
+| Red-capable tests (treatment vs control) | 4/5 vs 0/5 | 2/5 vs 0/5 | 6/10 vs 0/10 — directional, variable magnitude |
+| Patterns / tests-authored / executed / conservation | 5/5 both arms | 5/5 both arms | base-model saturated on this task |
+| Committed cleanly, no scaffold leak | unmeasured (harness) | 5/5 treatment | seed commit-scope discipline holds |
+
+**Interpretation.** The primary finding — objective-trigger steering causes native skill
+invocation — replicates exactly (**10/10 vs 0/10** across two independent randomizations). Test
+defect-sensitivity is a real but variable seed effect (treatment always beats control's 0;
+magnitude 2–4/5). Data integrity, pattern inspection, and test authoring are base-model saturated
+on this task in both arms. The commit metric, now cleanly measured, refutes the round-1 0/10
+artifact and confirms scaffold-exclusion discipline. Still bounded to this task, model, runtime,
+and seed revision; a second model/runtime remains the preferred next confirmation.
+
+## Round 3 — hard-task falsification (treatment vs control, external benchmark)
+
+**Framing.** Rounds 1–2 showed the base model saturates the easy in-house task, leaving no room to
+observe a quality lift. Round 3 deliberately raises difficulty with an external benchmark to give
+the control arm room to fail — and is designed to **refute** the claim that the seed improves
+outcomes, not confirm it.
+
+**Benchmark & source.** [Aider Polyglot](https://aider.chat/docs/leaderboards/) / Exercism — the
+225 hardest Exercism exercises, objective hidden-test oracle, published base rates (~88% for
+frontier models, so real failure headroom). Chosen as light-weight drop-ins and to stress the
+seed's *stated* strengths (validation, error paths, parsing untrusted input) rather than math.
+SWE-bench Verified was rejected: its own authors state it no longer measures frontier capability
+and it shows training-contamination that would wash out a seed signal (and is Docker-heavy).
+
+**Method.** 3 tasks — `sgf-parsing` (parse untrusted input + escaping + error-on-malformed),
+`poker` (hand ranking, large edge-case surface), `forth` (stack interpreter; error paths:
+div-by-zero, undefined word, redefinition rules). 3 treatment (seed) + 3 control (bare),
+**byte-identical prompts** (SHA-verified) and harness (corrected allowlist), `sonnet-4-6`, 0
+denials across all 6 runs. The agent never sees the official test suite — it is withheld and used
+only for grading. The prompt is seed-neutral (no mention of tests/quality/skill), so testing
+behavior is observed, not instructed.
+
+**Results (withheld official tests):**
+
+| Task | Treatment (seed) | Control (bare) | Correctness effect |
+|---|---|---|---|
+| poker | 37/37 solved | 37/37 solved | none (tie) |
+| sgf-parsing | 21/23 | 21/23 | none — identical failing tests |
+| forth | 50/54 | **51/54** | **seed worse** |
+| Tasks solved | **1/3** | **1/3** | — |
+| Hidden tests passed | 108/114 | **109/114** | control nominally ahead |
+
+**Failure detail (ground truth).** `sgf-parsing` — both arms fail the *identical* two tests
+(`test_all_lowercase_property`, `test_upper_and_lowercase_property`; property-key casing). `forth` —
+control fails 3 (redefine-negative, redefine-non-negative, execute-undefined-word); treatment fails
+those same 3 **plus** `test_division_errors_if_dividing_by_zero`, which the bare control handled
+correctly.
+
+**Process signals (the seed's only measurable footprint):**
+
+| Signal | Treatment | Control |
+|---|---|---|
+| Skill invoked | 3/3 | 0/3 |
+| Impact record emitted | 3/3 | 0/3 |
+| Inline verification runs | 8 | 2 |
+| Durable (committed) test written | 0/3 | 0/3 |
+
+**What round 3 refutes:**
+- **No correctness lift** on tasks with failure headroom (null result; one strictly-worse case).
+- **Impact-record claims are uncalibrated:** `forth`'s record claimed error-handling coverage yet
+  the seeded run failed *more* error tests than the silent control; `sgf`'s claimed "all branches
+  covered — happy path, escape rules, whitespace, errors" with the same failures as control.
+- **More verification ≠ better verification:** treatment ran ~4× the inline checks (8 vs 2) with no
+  benefit; control solved `poker` with *zero* inline checks. The seed's testing confirmed the happy
+  path rather than probing the error/edge cases where the bugs lived.
+
+**What still survives:** skill invocation (3/3 vs 0/3, consistent with rounds 1–2) and increased
+verification activity — neither converted to a better outcome here.
+
+**Caveats.** n = 3/arm, one model, one runtime. Algorithmic Exercism tasks reward one-shot
+problem-solving and may not exercise the seed's design targets (durable tests, data conservation on
+real mutations, external-effect gates, revertibility) — so this refutes a *general correctness
+lift*, not the seed's value on data-integrity/rollback-shaped tasks. `forth`'s one-test regression
+is a single data point.
+
 ## Artifact manifest
 
-- `artifacts/arm-map.json` — run→arm mapping.
-- `artifacts/fixture.sha256` — frozen fixture hash.
-- `artifacts/prompt.txt` — exact scored prompt.
-- `artifacts/<run>/trace.jsonl`, `claude.stderr`, `git-status.txt`, `git-log.txt`,
-  `committed.patch`, `baseline-commit.txt`.
-- `artifacts/scores.json` — evaluator output per run.
+- `artifacts/arm-map.json`, `artifacts/arm-map-r2.json` — round-1 / round-2 run→arm mappings;
+  `artifacts/poly-map.txt` — round-3 run→exercise mapping.
+- `artifacts/fixture.sha256` — frozen fixture hash; `polyglot-src/` — the 3 fetched Exercism
+  exercises (instructions + stub + official test).
+- `artifacts/prompt.txt` (rounds 1–2) and `artifacts/poly-*/prompt.txt` (round-3, per exercise).
+- `artifacts/<run>/`, `artifacts/r2-run-<NN>/`, `artifacts/poly-run-<NN>/`,
+  `artifacts/poly-ctrl-<NN>/` — `trace.jsonl`, `claude.stderr`, `git-status.txt`, `git-log.txt`,
+  `committed.patch`, `baseline-commit.txt`; round-3 dirs also hold `withheld_<stub>_test.py`
+  (grading oracle, never given to the agent).
+- `artifacts/scores.json`, `artifacts/scores-r2.json` — evaluator output per run, per round.
 - `evaluator/` — `evaluator.py`, `reference_tasks.py`, `partial_import_tasks.py`.
