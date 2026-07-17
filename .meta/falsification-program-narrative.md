@@ -229,7 +229,7 @@ philosophy propagated down.
 
 ---
 
-## 8. Act VI — Brief v2, an isolated clean room, and Round 5 (now)
+## 8. Act VI — Brief v2, an isolated clean room, and Round 5 (complete)
 
 Round 4B's failure was also partly a **defect in my brief**: its oracle-preflight required only
 three-way discrimination, which proves an oracle can tell *one* wrong solution from the reference —
@@ -339,7 +339,75 @@ What began as "run the tool and see" became a small but real experimental appara
 
 ---
 
-## 10. What we actually know (stated honestly)
+## 10. Why it is hard, and the line between learning and fitting
+
+It is worth saying plainly why five rounds produced so few runnable tasks, because the difficulty is
+not incidental — it is structural, and understanding it is half the result.
+
+The goal sounds trivial ("does the seed make the agent write better code?"), yet nearly every
+obvious way to measure it is booby-trapped, and each difficulty is *forced* by solving the one
+before it. To see a benefit you need a task the bare model can *fail* — but a frontier model rarely
+fails a self-contained task, so the usable difficulty band is narrow (rounds 1–2, and four of five
+tasks in both R4 and R5, saturated). The obvious source of hard tasks — public benchmarks — is
+*contaminated*, so the model recalls instead of reasoning, bypassing the very discipline under test;
+hence bespoke, novel tasks. Inventing your own tasks invites *author bias*, hence an independent
+designer (Codex) — but that designer is itself an LLM that may share blind spots with the subject.
+And grading a novel task *perfectly* is genuinely hard: miss one contract clause and a sloppy
+solution passes anyway, so a "pass" is a lie — which is exactly what sank R4B and R5. Layered on top,
+the system is *nondeterministic*, so single runs mean little and you must compare *pass rates* over
+many trials — and the most informative tasks (the flaky, near-50% ones) need the *most* trials to
+separate signal from luck.
+
+The scarce resource, then, is not money — runs cost pennies — it is **the yield of valid,
+discriminating tasks.** Across three design rounds we authored roughly eighteen candidates and
+salvaged two: `orbit-slots` and `shard-wake`. Every usable task costs a full design session, a
+self-invalidation cycle, and an independent ground-truth review. The ambition of the question is
+broad (seven claims, general code quality, across models); the evidence any one round can
+manufacture is narrow. The correct response is not to inflate the budget but to **scope the claim to
+the evidence** — which is precisely what the program has done as it narrowed from "does the seed
+improve quality?" to "on this recovery-shaped task, for this model, does the seed shift the pass
+rate?"
+
+This raises the obvious, tempting idea: since we have learned so much from the tasks that failed, why
+not *fit the next tasks toward the ones that half-worked*? The answer is a single, load-bearing
+distinction — the line this whole program exists to hold.
+
+**Learning the genre is legitimate; fitting to the outcome is not.** From the failures we can and
+should learn *task shape and difficulty*: validate-then-save saturates; recovery/convergence,
+conflict-against-existing-state, and representational validation produce headroom. Feeding those
+*design principles* into the next round is good science — it is exactly why we pivoted to the
+recovery axis. What we must never do is tune an individual task or its oracle based on the *outcomes
+we observed* — above all, anything the *seeded* arm did. The moment task design is driven by the
+results it produces, you have stopped *measuring* the seed and started *manufacturing* a contrast. In
+statistical terms that is **selecting on the dependent variable**: you can always tweak a task until
+it yields the answer you were hoping for, and then neither a skeptic nor your later self can tell
+whether the effect was real or engineered. That is syok-sendiri wearing a lab coat, and it is the
+precise failure the firewall exists to prevent — hence "do not run the treatment arm during design"
+and "never repair an oracle on observed results."
+
+There is also a plainer reason not to fit to the half-successes yet: **we do not know the direction
+finely enough to fit to it.** `shard-wake`'s headroom is a one-of-two coin flip on a single subcase;
+with n = 2 we cannot tell whether `replace_3` is reliably hard or simply got unlucky once. To fit to
+it now would be to optimise on noise. You must first *establish* the signal, then converge on it.
+
+The honest way to converge — and the real answer to "we need hundreds of tests" — is therefore
+**population-level, not per-task**:
+
+1. Extract the working genre as design principles (recovery seams, existing-state conflicts,
+   interrupted-operation retry, representational validation).
+2. Have an independent, treatment-blind designer **mass-produce** that genre — dozens to hundreds of
+   tasks.
+3. Run them all through the **control-only difficulty screen** (cheap — pennies per run).
+4. Keep only the tasks with *reliable* headroom, selected on control-difficulty and **pre-registered
+   before the seed ever runs.**
+5. Only then run the seed against the survivors, as a pass-rate comparison.
+
+This "fits toward the successful profile" honestly: the failures teach the genre, the screen filters
+for difficulty, and the selection is blind to the seed — so the eventual measurement stays clean. It
+is how two flaky probes become a powered experiment without anyone, ourselves included, tipping the
+scale.
+
+## 11. What we actually know (stated honestly)
 
 **Survives falsification:**
 - The objective-trigger steering fix **reliably causes native skill invocation** — 10/10 treatment
@@ -362,7 +430,7 @@ strongest fair test yet because it puts the seed where it *should* be strongest.
 
 ---
 
-## 11. Limits, honestly named
+## 12. Limits, honestly named
 
 - **Small n, one model, one runtime.** Everything is bounded to `sonnet-4-6` (CLI 2.1.211 for
   Round 1, 2.1.212 thereafter) via Bedrock; results are **directional, not statistical**.
@@ -377,7 +445,7 @@ strongest fair test yet because it puts the seed where it *should* be strongest.
 
 ---
 
-## 12. Closing
+## 13. Closing
 
 The honest state of the program: **the seed reliably changes an agent's *process* — it loads, it
 narrates an impact record, it tests more — but it has not yet been shown to change *outcomes* on
