@@ -1,10 +1,10 @@
 <!--
 Type: Narrative report (program history)
-Status: living — brings the audit trail from the first Kiro-steered sessions through Round 5 (in progress)
+Status: living — audit trail through Round 5 COMPLETE (slate self-invalidated a 2nd time; two probes — orbit-slots + shard-wake — rescued by ground-truth verification; home-turf pass-rate A/B is next)
 Origin: synthesizes seed-cleanroom-observation.md, seed-codex-cleanroom.md, claude-new-steering-behavioral-tests.md,
         claude-quality-steering-cleanroom.design.md, claude-quality-steering-cleanroom-result.md,
         and the round-4/4b/5 clean-room work in the (out-of-repo) harness.
-Last updated: 2026-07-17
+Last updated: 2026-07-17 (Round 5 complete)
 -->
 
 # The Engineering-Model Falsification Program — A Complete Narrative
@@ -24,10 +24,14 @@ love with our own idea, and mistake ritual for substance. Everything below is bu
 self-deception hard: matched controls, withheld graders, ground truth over self-report, an
 independent task author, and pre-registration.
 
-A recurring theme emerges and is worth flagging up front, because it is almost poetic: **the seed's
-core weakness turned out to be a coverage claim that outran reality — and later our own experimental
-oracle failed in exactly the same way, and the same discipline caught it.** The method ate its own
-tail, honestly.
+A recurring theme emerges and is worth flagging up front, because it is almost poetic: **a coverage
+claim outran reality — three times, at three levels.** First the *seed's* impact record claimed "all
+branches covered" while missing edge cases (Round 3). Then our own *experimental oracle* claimed
+discrimination while missing contract clauses (Round 4B). Then the very *Contract-Coverage Gate*
+built to prevent that was itself implemented only syntactically — it checked that clauses were named,
+not that they were fully exercised (Round 5). The same discipline caught all three, including when
+turned on our own instruments. The method ate its own tail, repeatedly and honestly — which is
+exactly what a falsification program is supposed to do.
 
 ---
 
@@ -250,12 +254,66 @@ dragged in `projects/`/`sessions/` folders whose names embedded the prior round 
 references (except the brief's own methodology-level mentions). The old harness is untouched as the
 archive; nothing was deleted.
 
-**Round 5 is running now.** A fresh, isolated Codex session is designing a new pool on the
-recovery/persisted-state axis, coverage-gated, pre-registered, and difficulty-screened on the control
-arm only. When it finishes, the plan is the same ground-truth review applied to Round 4B: run each
-oracle against both wrong-variants, confirm the Coverage Gate is real rather than asserted, and verify
-pre-registration preceded any run — *then* run the treatment-vs-control A/B (kept out of the design
-session to preserve the firewall).
+**Round 5 completed — and self-invalidated a second time.** The fresh, isolated Codex session
+designed five bespoke tasks on the recovery/persisted-state axis (`canopy-relay`, `duet-locker`,
+`shard-wake`, `tide-share`, `counterweight-transfer`), coverage-gated, pre-registered, and ran the
+control-only difficulty screen with **two** control runs per task (ten runs, `sonnet-4-6`).
+
+The screen hit the saturation wall again: **four of five tasks were solved by both controls**
+(27/27, 29/29, 27/27, 29/29 — no headroom). Only **`shard-wake` showed headroom, and it was flaky** —
+control 1 solved 28/28; control 2 failed one subcase (`replace_3_failure_retry_converges`) plus
+conservation.
+
+Then, in mandated final review, Codex found that its **Contract-Coverage Gate had been implemented
+*syntactically*, not semantically** — it verified that every README clause had a *named* subcase,
+but not that each subcase exercised the clause at its finest stated granularity (e.g. `C26` tested
+revision corruption but not operation-index corruption; `C29` deleted only a derived view, not the
+canonical half). Per the brief's Part 10 ("invalidate, do not repair post-screen"), Codex
+**invalidated the entire slate a second time** — again refusing to patch-and-rerun, again honest to a
+fault.
+
+**Ground-truth review — and a course correction.** Rather than accept the blanket invalidation at
+face value, the analyst verified the artifacts directly. Three findings:
+
+1. **The oracle is real.** Running `shard-wake`'s grader independently: reference **28/28**, `wrong_a`
+   **19/28**, `wrong_b` **25/28** (failing exactly the recovery-journal cases `corrupt_pending`,
+   `replace_2`, `replace_3`), bare fixture **12/28**. Genuine three-way discrimination. Re-grading
+   control-2's committed solution reproduced **27/28, failing precisely
+   `replace_3_failure_retry_converges`** — a *real* control failure on convergence/conservation under
+   interrupted recovery, squarely on the seed's home turf.
+2. **`orbit-slots` (the lone Round-4 survivor) holds up too.** Its oracle: reference **5/5** pass,
+   plausible-wrong **4/5 fail**, bare fixture **5/5 fail**. Its control failure — accepting `A@01+2`,
+   a leading-zero, non-canonical field — is a real **input-validation** gap (representational, not
+   semantic: the model checks whether the range is valid but not whether its decimal spelling is
+   canonical).
+3. **The coverage gaps do not touch the signals.** `shard-wake`'s flagged gaps (C26/C29/C30/C41) are
+   *untested variants of other clauses*; they do not affect the C33 headroom failure we would
+   measure. `orbit-slots`' headroom is on its preregistered noncanonical-validation clause.
+
+The important meta-finding is about the *method itself*: **the coverage rule as written is
+unsatisfiable.** "Finest stated granularity" combined with "never repair post-screen" means one can
+*always* argue a clause needs a finer sub-variant, so every slate self-invalidates. Round 4B and
+Round 5 both died on this — three design rounds, zero "clean" runnable tasks, not because the tasks
+were bad but because the acceptance criterion can never be met. The correction is a **bounded**
+completeness standard (every README clause has ≥1 executable subcase with a conservation assertion),
+enforced as a **hard pre-screen gate** so contract-derived completion happens *before* controls run,
+with post-screen invalidation reserved for *outcome-derived* defects only.
+
+**Net position after Round 5.** By ground truth we have **two usable, complementary probes** —
+rescued from over-strict invalidation, and to be disclosed honestly as exactly that (ground-truth-
+validated, not clean preregistered survivors):
+- **`orbit-slots`** — canonical/representational **input validation** (seed claim #2). Caveats: only
+  one control run, and a non-preregistered post-screen oracle amendment (for the A/B, use the
+  preregistered oracle version and re-baseline with two clean controls).
+- **`shard-wake`** — **data conservation + recovery convergence** (seed claims #3, #5). Cleaner: two
+  controls, real flaky headroom, and a coverage gap that does not touch the measured subcase.
+
+Because both tasks' headroom is **flaky (~50% control pass)**, the next step is the program's first
+real treatment-vs-control A/B on the seed's home turf, designed as a **pass-rate comparison** —
+roughly ten trials per arm per task — measuring whether the seed shifts the pass rate on each task's
+headroom subcase (`orbit-slots`: canonical-validation rejection; `shard-wake`: `replace_3`
+convergence/conservation). This is the fairest test the program has mounted, and the first that puts
+the seed where it is supposed to be strongest. It has not yet been run.
 
 ---
 
@@ -295,9 +353,12 @@ What began as "run the tool and see" became a small but real experimental appara
 - **Calibrated self-assessment.** The impact record over-claimed coverage relative to ground truth,
   precisely on the error/edge cases it named.
 
-**Not yet measured (Round 5's job):** whether, on **novel, uncontaminated** tasks in the seed's own
-claimed home turf (recovery/atomicity/consistency), the seed produces a real, calibrated outcome
-difference — the strongest fair test yet, because it puts the seed where it *should* be strongest.
+**Not yet measured (the immediate next step):** whether, on **novel, uncontaminated** tasks in the
+seed's own claimed home turf, the seed produces a real, calibrated outcome difference. Round 5 did
+not run this A/B — its slate self-invalidated on the coverage-gate regress — but it produced **two
+ground-truth-validated probes** (`orbit-slots` for input validation, `shard-wake` for
+conservation/recovery). The pending experiment is a **pass-rate A/B** on those two tasks, the
+strongest fair test yet because it puts the seed where it *should* be strongest.
 
 ---
 
